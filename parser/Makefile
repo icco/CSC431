@@ -18,3 +18,9 @@ antlr.generated.type : TypeCheck.g
 
 safe:
 	\cp *.g *.java ~/.431
+
+clean:
+	rm -v *class
+	rm -v *tokens
+	rm -v antlr.generated*
+
