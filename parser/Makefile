@@ -1,5 +1,6 @@
 FILES=Evil.java
 
+export CLASSPATH=CLASSPATH:./antlr-3.3-complete.jar
 
 Evil.class : antlr.generated ${FILES}
 	javac *.java
