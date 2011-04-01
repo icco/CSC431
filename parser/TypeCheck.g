@@ -43,7 +43,7 @@ decl
 @init {
    System.out.println("Starting declaration");
 }
-   : ^(DECL type ID)
+   : ^(DECL ^(TYPE type) ID)
    ;
 
 type
