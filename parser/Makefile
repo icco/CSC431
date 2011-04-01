@@ -16,13 +16,13 @@ antlr.generated.type : TypeCheck.g
 	java org.antlr.Tool TypeCheck.g
 	touch antlr.generated.type
 
-safe:
-	\cp *.g *.java ~/.431
+run:
+	java Evil
+
+test: Evil.class
+	@./test.sh
 
 clean:
 	rm -v *class
 	rm -v *tokens
 	rm -v antlr.generated*
-
-run:
-	java Evil
