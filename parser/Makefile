@@ -16,11 +16,14 @@ antlr.generated.type : TypeCheck.g
 	java org.antlr.Tool TypeCheck.g
 	touch antlr.generated.type
 
-run:
+run: Evil.class
 	java Evil
 
 test: Evil.class
 	@./test.sh
+
+ast: Evil.class
+	java Evil -displayAST < tests/1.ev
 
 clean:
 	rm -v *class
