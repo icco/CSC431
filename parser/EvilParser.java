@@ -1,4 +1,4 @@
-// $ANTLR 3.3 Nov 30, 2010 12:50:56 Evil.g 2011-03-30 15:43:31
+// $ANTLR 3.3 Nov 30, 2010 12:50:56 Evil.g 2011-04-01 15:50:33
 
    /* package declaration here */
 
@@ -153,7 +153,7 @@ public class EvilParser extends Parser {
 
 
             // AST REWRITE
-            // elements: d, t, f
+            // elements: t, f, d
             // token labels: 
             // rule labels: f, retval, d, t
             // token list labels: 
@@ -1054,7 +1054,7 @@ public class EvilParser extends Parser {
 
 
             // AST REWRITE
-            // elements: t, ilist
+            // elements: ilist, t
             // token labels: 
             // rule labels: retval, t, ilist
             // token list labels: 
@@ -1386,7 +1386,7 @@ public class EvilParser extends Parser {
 
 
             // AST REWRITE
-            // elements: id, s, p, r, FUN, d
+            // elements: d, r, s, p, id, FUN
             // token labels: id
             // rule labels: retval, d, s, r, p
             // token list labels: 
@@ -2123,7 +2123,7 @@ public class EvilParser extends Parser {
 
 
             // AST REWRITE
-            // elements: l, e, ASSIGN
+            // elements: e, l, ASSIGN
             // token labels: 
             // rule labels: retval, e, l
             // token list labels: 
@@ -2480,7 +2480,7 @@ public class EvilParser extends Parser {
 
 
             // AST REWRITE
-            // elements: e, e, WHILE, b
+            // elements: WHILE, e, b, e
             // token labels: 
             // rule labels: retval, e, b
             // token list labels: 

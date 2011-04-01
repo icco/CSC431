@@ -1,4 +1,4 @@
-// $ANTLR 3.3 Nov 30, 2010 12:50:56 TypeCheck.g 2011-03-30 15:43:32
+// $ANTLR 3.3 Nov 30, 2010 12:50:56 TypeCheck.g 2011-04-01 15:50:34
 
    import java.util.Map;
    import java.util.HashMap;
@@ -92,16 +92,39 @@ public class TypeCheck extends TreeParser {
 
 
     // $ANTLR start "verify"
-    // TypeCheck.g:17:1: verify : ;
+    // TypeCheck.g:17:1: verify : ^( PROGRAM types declarations functions ) ;
     public final void verify() throws RecognitionException {
         try {
-            // TypeCheck.g:17:8: ()
-            // TypeCheck.g:17:10: 
+            // TypeCheck.g:17:7: ( ^( PROGRAM types declarations functions ) )
+            // TypeCheck.g:18:2: ^( PROGRAM types declarations functions )
             {
-             System.out.println("Entered tree walker"); 
+            match(input,PROGRAM,FOLLOW_PROGRAM_in_verify40); 
+
+            match(input, Token.DOWN, null); 
+            pushFollow(FOLLOW_types_in_verify42);
+            types();
+
+            state._fsp--;
+
+            pushFollow(FOLLOW_declarations_in_verify44);
+            declarations();
+
+            state._fsp--;
+
+            pushFollow(FOLLOW_functions_in_verify46);
+            functions();
+
+            state._fsp--;
+
+
+            match(input, Token.UP, null); 
 
             }
 
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
         }
         finally {
         }
@@ -109,9 +132,329 @@ public class TypeCheck extends TreeParser {
     }
     // $ANTLR end "verify"
 
+
+    // $ANTLR start "types"
+    // TypeCheck.g:21:1: types : ^( TYPES ( types_declaration )* ) ;
+    public final void types() throws RecognitionException {
+         
+           System.out.println("Starting types"); 
+
+        try {
+            // TypeCheck.g:25:4: ( ^( TYPES ( types_declaration )* ) )
+            // TypeCheck.g:25:6: ^( TYPES ( types_declaration )* )
+            {
+            match(input,TYPES,FOLLOW_TYPES_in_types66); 
+
+            if ( input.LA(1)==Token.DOWN ) {
+                match(input, Token.DOWN, null); 
+                // TypeCheck.g:25:14: ( types_declaration )*
+                loop1:
+                do {
+                    int alt1=2;
+                    int LA1_0 = input.LA(1);
+
+                    if ( (LA1_0==STRUCT) ) {
+                        alt1=1;
+                    }
+
+
+                    switch (alt1) {
+                	case 1 :
+                	    // TypeCheck.g:25:15: types_declaration
+                	    {
+                	    pushFollow(FOLLOW_types_declaration_in_types69);
+                	    types_declaration();
+
+                	    state._fsp--;
+
+
+                	    }
+                	    break;
+
+                	default :
+                	    break loop1;
+                    }
+                } while (true);
+
+
+                match(input, Token.UP, null); 
+            }
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+        }
+        return ;
+    }
+    // $ANTLR end "types"
+
+
+    // $ANTLR start "types_declaration"
+    // TypeCheck.g:28:1: types_declaration : ^( STRUCT ID nested_decl ) ;
+    public final void types_declaration() throws RecognitionException {
+         
+           System.out.println("Starting type declaration"); 
+
+        try {
+            // TypeCheck.g:32:4: ( ^( STRUCT ID nested_decl ) )
+            // TypeCheck.g:32:6: ^( STRUCT ID nested_decl )
+            {
+            match(input,STRUCT,FOLLOW_STRUCT_in_types_declaration90); 
+
+            match(input, Token.DOWN, null); 
+            match(input,ID,FOLLOW_ID_in_types_declaration92); 
+            pushFollow(FOLLOW_nested_decl_in_types_declaration94);
+            nested_decl();
+
+            state._fsp--;
+
+
+            match(input, Token.UP, null); 
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+        }
+        return ;
+    }
+    // $ANTLR end "types_declaration"
+
+
+    // $ANTLR start "nested_decl"
+    // TypeCheck.g:35:1: nested_decl : ( decl )+ ;
+    public final void nested_decl() throws RecognitionException {
+
+           System.out.println("Starting nested declarations");
+
+        try {
+            // TypeCheck.g:39:4: ( ( decl )+ )
+            // TypeCheck.g:39:6: ( decl )+
+            {
+            // TypeCheck.g:39:6: ( decl )+
+            int cnt2=0;
+            loop2:
+            do {
+                int alt2=2;
+                int LA2_0 = input.LA(1);
+
+                if ( (LA2_0==DECL) ) {
+                    alt2=1;
+                }
+
+
+                switch (alt2) {
+            	case 1 :
+            	    // TypeCheck.g:39:7: decl
+            	    {
+            	    pushFollow(FOLLOW_decl_in_nested_decl113);
+            	    decl();
+
+            	    state._fsp--;
+
+
+            	    }
+            	    break;
+
+            	default :
+            	    if ( cnt2 >= 1 ) break loop2;
+                        EarlyExitException eee =
+                            new EarlyExitException(2, input);
+                        throw eee;
+                }
+                cnt2++;
+            } while (true);
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+        }
+        return ;
+    }
+    // $ANTLR end "nested_decl"
+
+
+    // $ANTLR start "decl"
+    // TypeCheck.g:42:1: decl : ^( DECL type ID ) ;
+    public final void decl() throws RecognitionException {
+
+           System.out.println("Starting declaration");
+
+        try {
+            // TypeCheck.g:46:4: ( ^( DECL type ID ) )
+            // TypeCheck.g:46:6: ^( DECL type ID )
+            {
+            match(input,DECL,FOLLOW_DECL_in_decl136); 
+
+            match(input, Token.DOWN, null); 
+            pushFollow(FOLLOW_type_in_decl138);
+            type();
+
+            state._fsp--;
+
+            match(input,ID,FOLLOW_ID_in_decl140); 
+
+            match(input, Token.UP, null); 
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+        }
+        return ;
+    }
+    // $ANTLR end "decl"
+
+
+    // $ANTLR start "type"
+    // TypeCheck.g:49:1: type : ( INT | BOOL | ^( STRUCT ID ) );
+    public final void type() throws RecognitionException {
+
+           System.out.println("Starting type");
+
+        try {
+            // TypeCheck.g:53:4: ( INT | BOOL | ^( STRUCT ID ) )
+            int alt3=3;
+            switch ( input.LA(1) ) {
+            case INT:
+                {
+                alt3=1;
+                }
+                break;
+            case BOOL:
+                {
+                alt3=2;
+                }
+                break;
+            case STRUCT:
+                {
+                alt3=3;
+                }
+                break;
+            default:
+                NoViableAltException nvae =
+                    new NoViableAltException("", 3, 0, input);
+
+                throw nvae;
+            }
+
+            switch (alt3) {
+                case 1 :
+                    // TypeCheck.g:53:6: INT
+                    {
+                    match(input,INT,FOLLOW_INT_in_type161); 
+
+                    }
+                    break;
+                case 2 :
+                    // TypeCheck.g:54:6: BOOL
+                    {
+                    match(input,BOOL,FOLLOW_BOOL_in_type168); 
+
+                    }
+                    break;
+                case 3 :
+                    // TypeCheck.g:55:6: ^( STRUCT ID )
+                    {
+                    match(input,STRUCT,FOLLOW_STRUCT_in_type176); 
+
+                    match(input, Token.DOWN, null); 
+                    match(input,ID,FOLLOW_ID_in_type178); 
+
+                    match(input, Token.UP, null); 
+
+                    }
+                    break;
+
+            }
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+        }
+        return ;
+    }
+    // $ANTLR end "type"
+
+
+    // $ANTLR start "declarations"
+    // TypeCheck.g:58:1: declarations : ;
+    public final void declarations() throws RecognitionException {
+         
+           System.out.println("Starting declarations");
+
+        try {
+            // TypeCheck.g:62:4: ()
+            // TypeCheck.g:63:4: 
+            {
+            }
+
+        }
+        finally {
+        }
+        return ;
+    }
+    // $ANTLR end "declarations"
+
+
+    // $ANTLR start "functions"
+    // TypeCheck.g:65:1: functions : ;
+    public final void functions() throws RecognitionException {
+        try {
+            // TypeCheck.g:65:10: ()
+            // TypeCheck.g:67:1: 
+            {
+            }
+
+        }
+        finally {
+        }
+        return ;
+    }
+    // $ANTLR end "functions"
+
     // Delegated rules
 
 
  
+
+    public static final BitSet FOLLOW_PROGRAM_in_verify40 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_types_in_verify42 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_declarations_in_verify44 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_functions_in_verify46 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_TYPES_in_types66 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_types_declaration_in_types69 = new BitSet(new long[]{0x0000000000000018L});
+    public static final BitSet FOLLOW_STRUCT_in_types_declaration90 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ID_in_types_declaration92 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_nested_decl_in_types_declaration94 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_decl_in_nested_decl113 = new BitSet(new long[]{0x0000000004000002L});
+    public static final BitSet FOLLOW_DECL_in_decl136 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_type_in_decl138 = new BitSet(new long[]{0x0100000000000000L});
+    public static final BitSet FOLLOW_ID_in_decl140 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_INT_in_type161 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_BOOL_in_type168 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_STRUCT_in_type176 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ID_in_type178 = new BitSet(new long[]{0x0000000000000008L});
 
 }
