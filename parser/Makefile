@@ -26,6 +26,6 @@ ast: Evil.class
 	java Evil -displayAST < tests/1.ev
 
 clean:
-	rm -v *class
-	rm -v *tokens
-	rm -v antlr.generated*
+	rm -fv *class
+	rm -fv *tokens
+	rm -fv antlr.generated*
