@@ -14,23 +14,26 @@ options
    import java.util.Iterator;
 }
 
-verify:
- ^(PROGRAM types declarations functions)
-;
+verify
+@init {
+   System.out.println("Init");
+}
+   : ^(PROGRAM types declarations functions)
+   ;
 
 types
-@init { 
-   System.out.println("Starting types"); 
-} 
+@init {
+   System.out.println("Starting types");
+}
    : ^(TYPES (types_declaration)*)
-;
+   ;
 
 types_declaration
-@init { 
-   System.out.println("Starting type declaration"); 
+@init {
+   System.out.println("Starting type declaration");
 }
    : ^(STRUCT ID nested_decl)
-;
+   ;
 
 nested_decl
 @init {
@@ -41,7 +44,7 @@ nested_decl
 
 decl
 @init {
-   System.out.println("Starting declaration");
+   System.out.println("Starting decl");
 }
    : ^(DECL ^(TYPE type) ID)
    ;
@@ -56,12 +59,37 @@ type
    ;
 
 declarations
-@init { 
+@init {
    System.out.println("Starting declarations");
-} 
+}
+   : ^(DECLS declaration*)
+   ;
+
+declaration
+@init {
+   System.out.println("Starting declaration");
+}
+   : ^(DECLLIST ^(TYPE type) id_list)
+   ;
+
+id_list
+@init {
+   System.out.println("Starting id_list");
+}
+   : ID (ID)*
+   ;
+
+functions
+@init {
+   System.out.println("Starting functions");
+}
    :
    ;
 
-functions:
-
-;
+return_type
+@init {
+   System.out.println("Starting return type");
+}
+   :  type
+   |  VOID
+   ;
