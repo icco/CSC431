@@ -83,13 +83,41 @@ functions
 @init {
    System.out.println("Starting functions");
 }
-   :
+   : ^(FUNCS function*)
+   ;
+
+function
+@init {
+   System.out.println("Starting a function");
+}
+   : ^(FUN ID parameters ^(RETTYPE return_type) declarations statement_list)
    ;
 
 return_type
 @init {
    System.out.println("Starting return type");
 }
-   :  type
-   |  VOID
+   : type
+   | VOID
+   ;
+
+parameters
+@init {
+   System.out.println("Starting parameters");
+}
+   : ^(PARAMS decl*)
+   ;
+
+statement_list
+@init {
+   System.out.println("Starting statements");
+}
+   : //^(STMTS statement*)
+   ;
+
+statement
+@init {
+   System.out.println("Starting a statement");
+}
+   :
    ;
