@@ -1,0 +1,14 @@
+struct A
+{
+   int i;
+   struct A a;
+};
+
+bool bob;
+int i, j, k;
+struct B b, bb, bbb;
+
+fun main() int
+{
+   return 0;
+}

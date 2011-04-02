@@ -19,7 +19,7 @@ antlr.generated.type : TypeCheck.g
 run: Evil.class
 	java Evil
 
-test: Evil.class
+test: clean Evil.class
 	@./test.sh
 
 ast: Evil.class
