@@ -17,7 +17,8 @@ antlr.generated.type : TypeCheck.g
 	touch antlr.generated.type
 
 run: Evil.class
-	java Evil
+	cat tests/basic.ev
+	java Evil < tests/basic.ev
 
 test: clean Evil.class
 	@./test.sh

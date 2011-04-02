@@ -119,15 +119,7 @@ statement
 @init {
    System.out.println("Starting a statement");
 }
-   : block
-   | assignment
-   | print
-   | read
-   | conditional
-   | loop
-   | delete
-   | ret
-   | invocation
+   : ret
    ;
 
 block
@@ -137,98 +129,15 @@ block
    : ^(BLOCK statement_list)
    ;
 
-assignment
-@init {
-   System.out.println("Starting an assignment");
-}
-   : ^(ASSIGN expression lvalue)
-   ;
-
-lvalue
-@init {
-   System.out.println("Starting an lvalue");
-}
-   :  ID ID*
-   ;
-
-print
-   :  PRINT expression
-   ;
-
-read
-   :  READ lvalue
-   ;
-
-conditional
-   :  IF expression block (ELSE block)?
-   ;
-
-loop
-   : ^(WHILE expression block expression)
-   ;
-
-delete
-   : DELETE expression
-   ;
-
 ret
-   : RETURN (expression)?
+   : RETURN (factor)?
    ;
 
-invocation
-   : ^(INVOKE ID arguments)
-   ;
-
-expression
-   : boolterm ((AND^ | OR^) boolterm)*
-   ;
-boolterm
-   : simple ((EQ^ | LT^ | GT^ | NE^ | LE^ | GE^) simple)?
-   ;
-simple
-   : term ((PLUS^ | MINUS^) term)*
-   ;
-term
-   : unary ((TIMES^ | DIVIDE^) unary)*
-   ;
-unary
-   : odd_not
-   | odd_neg
-   | selector
-   ;
-odd_not
-   :  even_not
-   |  ^(NOT selector)
-   ;
-even_not
-   :  odd_not
-   |  selector
-   ;
-odd_neg
-   :  even_neg
-   |  ^(NEG selector)
-   ;
-even_neg
-   :  odd_neg
-   |  selector
-   ;
-selector
-   :  factor (ID)*
-   ;
 factor
-   :  expression
-   | ^(INVOKE ID arguments)
-   |  ID
-   |  INTEGER
+   :  ID
+   | INTEGER
    |  TRUE
    |  FALSE
    |  NEW ID
    |  NULL
-   ;
-arguments
-   :  arg_list
-   ;
-arg_list
-   :  ^(ARGS expression+)
-   | ARGS
    ;
