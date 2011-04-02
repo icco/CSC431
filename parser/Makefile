@@ -30,3 +30,4 @@ clean:
 	rm -fv *class
 	rm -fv *tokens
 	rm -fv antlr.generated*
+	rm -fv EvilLexer.java EvilParser.java TypeCheck.java
