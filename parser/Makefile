@@ -37,5 +37,5 @@ clean:
 debug: clean
 	@make -s -B -e DEBUGFLAGS=-trace
 
-debug_run: debug run
+run_debug: debug run
 
