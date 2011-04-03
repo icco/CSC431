@@ -4,6 +4,7 @@ options
 {
    tokenVocab=Evil;
    ASTLabelType=CommonTree;
+   backtrack=true;
 }
 
 @header
