@@ -119,7 +119,7 @@ assignment
 lvalue
 @init {
 }
-   :  ID (^(DOT ID))*
+   :  ID (DOT ID)*
    ;
 
 print
@@ -166,41 +166,50 @@ invocation
 
 // From here on out, there be dragons.
 expression
+@init {
+}
    : boolterm (^((AND | OR) boolterm))*
    ;
 
 boolterm
+@init {
+}
    : simple (^((EQ | LT | GT | NE | LE | GE) simple))?
    ;
 
 simple
+@init {
+}
    : term (^((PLUS | MINUS) term))*
    ;
 
 term
+@init {
+}
    : unary ((TIMES | DIVIDE) unary)*
    ;
 
 unary
-   : selector
-   | ^(NOT selector)
-   | ^(NEG selector)
-   ;
-
-selector
-   : factor (^(DOT ID))*
+@init {
+}
+   : factor
+   | ^(NOT factor)
+   | ^(NEG factor)
    ;
 
 factor
-   :  INTEGER
-   |  TRUE
-   |  FALSE
-   |  ^(NEW ID)
-   |  NULL
-   |  ID
+@init {
+}
+   : INTEGER
+   | TRUE
+   | FALSE
+   | ^(NEW ID)
+   | NULL
+   | lvalue
    ;
 
 arguments
+@init {
+}
    : ^(ARGS (expression)*)
    ;
-
