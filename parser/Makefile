@@ -19,10 +19,10 @@ antlr.generated.type : TypeCheck.g
 	touch antlr.generated.type
 
 run: Evil.class
-	cat tests/basic.ev
-	java Evil < tests/basic.ev
+	cat tests/1.ev
+	java Evil < tests/1.ev
 
-test: clean Evil.class
+test: Evil.class
 	@./test.sh
 
 ast: Evil.class
@@ -34,7 +34,7 @@ clean:
 	@rm -fv antlr.generated*
 	@rm -fv EvilLexer.java EvilParser.java TypeCheck.java
 
-debug:
+debug: clean
 	@make -s -B -e DEBUGFLAGS=-trace
 
 debug_run: debug run
