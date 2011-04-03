@@ -196,14 +196,18 @@ term
    ;
 
 unary
-   : (factor (ID)*)
-   | ^(NOT (factor (ID)*))
-   | ^(NEG (factor (ID)*))
+   : selector
+   | ^(NOT selector)
+   | ^(NEG selector)
+   ;
+
+selector
+   : factor (DOT ID)*
    ;
 
 factor
    :  expression
-   | ^(INVOKE ID arguments)
+   |  invocation
    |  ID
    |  INTEGER
    |  TRUE
