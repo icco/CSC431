@@ -202,41 +202,31 @@ invocation
 
 // From here on out, there be dragons.
 expression
-   : boolterm ((AND^ | OR^) boolterm)*
+   : boolterm ((AND | OR) boolterm)*
    ;
+
 boolterm
-   : simple ((EQ^ | LT^ | GT^ | NE^ | LE^ | GE^) simple)?
+   : simple ((EQ | LT | GT | NE | LE | GE) simple)?
    ;
+
 simple
-   : term ((PLUS^ | MINUS^) term)*
+   : term ((PLUS | MINUS) term)*
    ;
+
 term
-   : unary ((TIMES^ | DIVIDE^) unary)*
+   : unary ((TIMES | DIVIDE) unary)*
    ;
+
 unary
-   : odd_not
-   | odd_neg
-   | selector
+   : selector
+   | ^(NOT selector)
+   | ^(NEG selector)
    ;
-odd_not
-   :  even_not
-   |  ^(NOT selector)
-   ;
-even_not
-   :  odd_not
-   |  selector
-   ;
-odd_neg
-   :  even_neg
-   |  ^(NEG selector)
-   ;
-even_neg
-   :  odd_neg
-   |  selector
-   ;
+
 selector
    :  factor (ID)*
    ;
+
 factor
    :  expression
    | ^(INVOKE ID arguments)
@@ -247,9 +237,11 @@ factor
    |  NEW ID
    |  NULL
    ;
+
 arguments
    :  arg_list
    ;
+
 arg_list
    :  ^(ARGS expression+)
    | ARGS
