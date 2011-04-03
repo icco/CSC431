@@ -196,9 +196,9 @@ term
    ;
 
 unary
-   : (factor (ID)*)
-   | ^(NOT (factor (ID)*))
-   | ^(NEG (factor (ID)*))
+   : (factor (DOT ID)*)
+   | ^(NOT (factor (DOT ID)*))
+   | ^(NEG (factor (DOT ID)*))
    ;
 
 factor
