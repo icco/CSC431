@@ -1,5 +1,7 @@
 FILES=Evil.java
 
+DEBUGFLAGS=
+
 export CLASSPATH=CLASSPATH:.:./antlr-3.3-complete.jar
 
 Evil.class : antlr.generated ${FILES}
@@ -13,7 +15,7 @@ antlr.generated.evil : Evil.g
 	touch antlr.generated.evil
 
 antlr.generated.type : TypeCheck.g
-	java org.antlr.Tool TypeCheck.g
+	java org.antlr.Tool ${DEBUGFLAGS} TypeCheck.g
 	touch antlr.generated.type
 
 run: Evil.class
@@ -31,3 +33,6 @@ clean:
 	rm -fv *tokens
 	rm -fv antlr.generated*
 	rm -fv EvilLexer.java EvilParser.java TypeCheck.java
+
+debug:
+	make -B -e DEBUGFLAGS=-trace   
