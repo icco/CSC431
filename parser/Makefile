@@ -29,10 +29,13 @@ ast: Evil.class
 	java Evil -displayAST < tests/1.ev
 
 clean:
-	rm -fv *class
-	rm -fv *tokens
-	rm -fv antlr.generated*
-	rm -fv EvilLexer.java EvilParser.java TypeCheck.java
+	@rm -fv *class
+	@rm -fv *tokens
+	@rm -fv antlr.generated*
+	@rm -fv EvilLexer.java EvilParser.java TypeCheck.java
 
 debug:
-	make -B -e DEBUGFLAGS=-trace   
+	@make -s -B -e DEBUGFLAGS=-trace
+
+debug_run: debug run
+
