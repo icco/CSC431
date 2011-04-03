@@ -56,13 +56,7 @@ declarations
 declaration
 @init {
 }
-   : ^(DECLLIST ^(TYPE type) id_list)
-   ;
-
-id_list
-@init {
-}
-   : ID (ID)*
+   : ^(DECLLIST ^(TYPE type) (ID)+)
    ;
 
 functions
@@ -125,7 +119,7 @@ assignment
 lvalue
 @init {
 }
-   :  ID (DOT ID)*
+   :  ID (^(DOT ID))*
    ;
 
 print
@@ -143,7 +137,7 @@ read
 conditional
 @init {
 }
-   :  IF expression block (ELSE block)?
+   :  ^(IF expression block (ELSE block)?)
    ;
 
 loop
@@ -155,13 +149,13 @@ loop
 delete
 @init {
 }
-   : DELETE expression
+   : ^(DELETE expression)
    ;
 
 ret
 @init {
 }
-   : RETURN (expression)?
+   : ^(RETURN (expression)?)
    ;
 
 invocation
@@ -172,15 +166,15 @@ invocation
 
 // From here on out, there be dragons.
 expression
-   : boolterm ((AND | OR) boolterm)*
+   : boolterm (^((AND | OR) boolterm))*
    ;
 
 boolterm
-   : simple ((EQ | LT | GT | NE | LE | GE) simple)?
+   : simple (^((EQ | LT | GT | NE | LE | GE) simple))?
    ;
 
 simple
-   : term ((PLUS | MINUS) term)*
+   : term (^((PLUS | MINUS) term))*
    ;
 
 term
@@ -194,18 +188,16 @@ unary
    ;
 
 selector
-   : factor (DOT ID)*
+   : factor (^(DOT ID))*
    ;
 
 factor
-   :  expression
-   |  invocation
-   |  ID
-   |  INTEGER
+   :  INTEGER
    |  TRUE
    |  FALSE
-   |  NEW ID
+   |  ^(NEW ID)
    |  NULL
+   |  ID
    ;
 
 arguments
