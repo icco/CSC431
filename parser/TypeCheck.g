@@ -98,7 +98,15 @@ statement_list
 statement
 @init {
 }
-   : ret
+   : block
+   | assignment
+   | print
+   | read
+   | conditional
+   | loop
+   | delete
+   | ret
+   | invocation
    ;
 
 block
@@ -107,15 +115,112 @@ block
    : ^(BLOCK statement_list)
    ;
 
+assignment
+@init {
+   System.out.println("Starting an assignment");
+}
+   : ^(ASSIGN expression lvalue)
+   ;
+
+lvalue
+@init {
+   System.out.println("Starting an lvalue");
+}
+   :  ID ID*
+   ;
+
+print
+@init {
+   System.out.println("Starting a print");
+}
+   :  PRINT expression
+   ;
+
+read
+@init {
+   System.out.println("Starting a read");
+}
+   :  READ lvalue
+   ;
+
+conditional
+@init {
+   System.out.println("Starting a conditional");
+}
+   :  IF expression block (ELSE block)?
+   ;
+
+loop
+@init {
+   System.out.println("Starting a loop");
+}
+   : ^(WHILE expression block expression)
+   ;
+
+delete
+@init {
+   System.out.println("Starting a delete");
+}
+   : DELETE expression
+   ;
+
 ret
-   : RETURN (factor)?
+@init {
+   System.out.println("Starting a return");
+}
+   : RETURN (expression)?
+   ;
+
+invocation
+@init {
+   System.out.println("Starting an invocation ");
+}
+   : ^(INVOKE ID arguments)
+   ;
+
+// From here on out, there be dragons.
+expression
+   : boolterm ((AND | OR) boolterm)*
+   ;
+
+boolterm
+   : simple ((EQ | LT | GT | NE | LE | GE) simple)?
+   ;
+
+simple
+   : term ((PLUS | MINUS) term)*
+   ;
+
+term
+   : unary ((TIMES | DIVIDE) unary)*
+   ;
+
+unary
+   : selector
+   | ^(NOT selector)
+   | ^(NEG selector)
+   ;
+
+selector
+   :  factor (ID)*
    ;
 
 factor
-   :  ID
-   | INTEGER
+   :  expression
+   | ^(INVOKE ID arguments)
+   |  ID
+   |  INTEGER
    |  TRUE
    |  FALSE
    |  NEW ID
    |  NULL
+   ;
+
+arguments
+   :  arg_list
+   ;
+
+arg_list
+   :  ^(ARGS expression+)
+   | ARGS
    ;
