@@ -118,63 +118,54 @@ block
 
 assignment
 @init {
-   System.out.println("Starting an assignment");
 }
    : ^(ASSIGN expression lvalue)
    ;
 
 lvalue
 @init {
-   System.out.println("Starting an lvalue");
 }
-   :  ID ID*
+   :  ID (DOT ID)*
    ;
 
 print
 @init {
-   System.out.println("Starting a print");
 }
    :  PRINT expression
    ;
 
 read
 @init {
-   System.out.println("Starting a read");
 }
    :  READ lvalue
    ;
 
 conditional
 @init {
-   System.out.println("Starting a conditional");
 }
    :  IF expression block (ELSE block)?
    ;
 
 loop
 @init {
-   System.out.println("Starting a loop");
 }
    : ^(WHILE expression block expression)
    ;
 
 delete
 @init {
-   System.out.println("Starting a delete");
 }
    : DELETE expression
    ;
 
 ret
 @init {
-   System.out.println("Starting a return");
 }
    : RETURN (expression)?
    ;
 
 invocation
 @init {
-   System.out.println("Starting an invocation ");
 }
    : ^(INVOKE ID arguments)
    ;
