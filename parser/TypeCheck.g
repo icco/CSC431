@@ -218,13 +218,9 @@ term
    ;
 
 unary
-   : selector
-   | ^(NOT selector)
-   | ^(NEG selector)
-   ;
-
-selector
-   :  factor (ID)*
+   : (factor (ID)*)
+   | ^(NOT (factor (ID)*))
+   | ^(NEG (factor (ID)*))
    ;
 
 factor
@@ -239,10 +235,6 @@ factor
    ;
 
 arguments
-   :  arg_list
+   : (^(ARGS expression+) | ARGS)
    ;
 
-arg_list
-   :  ^(ARGS expression+)
-   | ARGS
-   ;
