@@ -209,6 +209,6 @@ factor
    ;
 
 arguments
-   : (^(ARGS expression+) | ARGS)
+   : ^(ARGS (expression)*)
    ;
 
