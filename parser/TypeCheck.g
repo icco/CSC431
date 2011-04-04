@@ -183,10 +183,16 @@ expression
 @init {
 }
    : factor
-   | ^((AND | OR) factor factor)
-   | ^((EQ | LT | GT | NE | LE | GE) factor factor)
-   | ^((PLUS | MINUS) factor factor)
-   | ^((TIMES | DIVIDE) factor factor)
+   | ^(unop factor)
+   | ^(binop factor factor)
+   ;
+
+binop 
+   : (AND | OR | EQ | LT | GT | NE | LE | GE | PLUS | MINUS | TIMES | DIVIDE)
+   ;
+
+unop
+   : (NOT | NEG)
    ;
 
 factor
@@ -199,8 +205,6 @@ factor
    | NULL
    | ID
    | ^(DOT factor ID)
-   | ^(NOT factor)
-   | ^(NEG factor)
    | invocation
    ;
 
