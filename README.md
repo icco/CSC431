@@ -2,7 +2,12 @@
 
 Programming Languages 2: The Compiling.
 
+## Usage
+
+    usage: java Evil [options] filename.ev
+     -a,--displayAST   Print out a dotty graph of the AST.
+     -h,--help         Print this help message.
+
 ## Questions for Keen
 
- * What is the best way (and or place) to put compiler options?
- * We're running into issues with mutally left-recursive terms, what is the best way to deal with this?
+ * None... right now...
