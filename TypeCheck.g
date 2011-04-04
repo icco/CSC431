@@ -119,25 +119,33 @@ assignment
 lvalue
 @init {
 }
-   :  ID (DOT ID)*
+   :  ID 
+   | ^(DOT lvalue_h ID)
+   ;
+
+lvalue_h
+@init {
+}
+   :  ID 
+   | ^(DOT lvalue_h ID) 
    ;
 
 print
 @init {
 }
-   :  PRINT expression
+   :  ^(PRINT expression (ENDL)?)
    ;
 
 read
 @init {
 }
-   :  READ lvalue
+   :  ^(READ lvalue)
    ;
 
 conditional
 @init {
 }
-   :  ^(IF expression block (ELSE block)?)
+   :  ^(IF expression block (block)?)
    ;
 
 loop
@@ -170,14 +178,20 @@ arguments
    : ^(ARGS (expression)*)
    ;
 
-// From here on out, there be dragons.
 expression
 @init {
 }
-   : factor (^((AND | OR) factor))*
-   | factor (^((EQ | LT | GT | NE | LE | GE) factor))?
-   | factor (^((PLUS | MINUS) factor))*
-   | factor ((TIMES | DIVIDE) factor)*
+   : factor
+   | ^(unop factor)
+   | ^(binop factor factor)
+   ;
+
+binop 
+   : (AND | OR | EQ | LT | GT | NE | LE | GE | PLUS | MINUS | TIMES | DIVIDE)
+   ;
+
+unop
+   : (NOT | NEG)
    ;
 
 factor
@@ -188,8 +202,7 @@ factor
    | FALSE
    | ^(NEW ID)
    | NULL
-   | lvalue
-   | ^(NOT factor)
-   | ^(NEG factor)
+   | ID
+   | ^(DOT factor ID)
+   | invocation
    ;
-
