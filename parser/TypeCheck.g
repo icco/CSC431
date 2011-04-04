@@ -133,19 +133,19 @@ lvalue_h
 print
 @init {
 }
-   :  PRINT expression
+   :  ^(PRINT expression (ENDL)?)
    ;
 
 read
 @init {
 }
-   :  READ lvalue
+   :  ^(READ lvalue)
    ;
 
 conditional
 @init {
 }
-   :  ^(IF expression block (ELSE block)?)
+   :  ^(IF expression block (block)?)
    ;
 
 loop
@@ -182,10 +182,11 @@ arguments
 expression
 @init {
 }
-   : factor (^((AND | OR) factor))*
-   | factor (^((EQ | LT | GT | NE | LE | GE) factor))?
-   | factor (^((PLUS | MINUS) factor))*
-   | factor ((TIMES | DIVIDE) factor)*
+   : factor
+   | ^((AND | OR) factor factor)
+   | ^((EQ | LT | GT | NE | LE | GE) factor factor)
+   | ^((PLUS | MINUS) factor factor)
+   | ^((TIMES | DIVIDE) factor factor)
    ;
 
 factor
@@ -196,8 +197,10 @@ factor
    | FALSE
    | ^(NEW ID)
    | NULL
-   | lvalue
+   | ID
+   | ^(DOT factor ID)
    | ^(NOT factor)
    | ^(NEG factor)
+   | invocation
    ;
 
