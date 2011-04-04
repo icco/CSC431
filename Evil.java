@@ -56,6 +56,8 @@ public class Evil {
 
    /**
     * Defines possible options and sets them up.
+    *
+    * see http://commons.apache.org/cli/usage.html for more details.
     */
    private static void parseParameters(String [] args) {
       // create the command line parser
