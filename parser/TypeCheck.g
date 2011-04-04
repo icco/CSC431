@@ -172,37 +172,20 @@ invocation
    : ^(INVOKE ID arguments)
    ;
 
+arguments
+@init {
+}
+   : ^(ARGS (expression)*)
+   ;
+
 // From here on out, there be dragons.
 expression
 @init {
 }
-   : boolterm (^((AND | OR) boolterm))*
-   ;
-
-boolterm
-@init {
-}
-   : simple (^((EQ | LT | GT | NE | LE | GE) simple))?
-   ;
-
-simple
-@init {
-}
-   : term (^((PLUS | MINUS) term))*
-   ;
-
-term
-@init {
-}
-   : unary ((TIMES | DIVIDE) unary)*
-   ;
-
-unary
-@init {
-}
-   : factor
-   | ^(NOT factor)
-   | ^(NEG factor)
+   : factor (^((AND | OR) factor))*
+   | factor (^((EQ | LT | GT | NE | LE | GE) factor))?
+   | factor (^((PLUS | MINUS) factor))*
+   | factor ((TIMES | DIVIDE) factor)*
    ;
 
 factor
@@ -214,10 +197,7 @@ factor
    | ^(NEW ID)
    | NULL
    | lvalue
+   | ^(NOT factor)
+   | ^(NEG factor)
    ;
 
-arguments
-@init {
-}
-   : ^(ARGS (expression)*)
-   ;
