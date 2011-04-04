@@ -178,7 +178,6 @@ arguments
    : ^(ARGS (expression)*)
    ;
 
-// From here on out, there be dragons.
 expression
 @init {
 }
@@ -207,4 +206,3 @@ factor
    | ^(DOT factor ID)
    | invocation
    ;
-
