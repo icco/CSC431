@@ -119,7 +119,15 @@ assignment
 lvalue
 @init {
 }
-   :  ID (DOT ID)*
+   :  ID 
+   | ^(DOT lvalue_h ID)
+   ;
+
+lvalue_h
+@init {
+}
+   :  ID 
+   | ^(DOT lvalue_h ID) 
    ;
 
 print
