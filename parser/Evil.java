@@ -2,110 +2,112 @@ import org.antlr.runtime.*;
 import org.antlr.runtime.tree.*;
 import org.antlr.stringtemplate.*;
 
+import org.apache.commons.cli.*;
+
 import java.io.*;
 import java.util.Vector;
 import java.util.HashMap;
 
-public class Evil
-{
-   public static void main(String[] args)
-   {
+/**
+ * This is the base of our compiler.
+ *
+ * It deals with command line arguments, and sets the flow of things.
+ *
+ * @author Nat Welch
+ * @author Ben Sweedler
+ */
+public class Evil {
+   public static void main(String[] args) {
+      // Store the options
       parseParameters(args);
 
       CommonTokenStream tokens = new CommonTokenStream(createLexer());
       EvilParser parser = new EvilParser(tokens);
       EvilParser.program_return ret = null;
-      
-      try
-      {
+
+      try {
          ret = parser.program();
-      }
-      catch (org.antlr.runtime.RecognitionException e)
-      {
+      } catch (org.antlr.runtime.RecognitionException e) {
          error(e.toString());
       }
 
       CommonTree t = (CommonTree)ret.getTree();
-      if (_displayAST && t != null)
-      {
+      if (cmd.hasOption("displayAST") && t != null) {
          DOTTreeGenerator gen = new DOTTreeGenerator();
          StringTemplate st = gen.toDOT(t);
          System.out.println(st);
       }
 
-      /*
-         To create and invoke a tree parser.  Modify with the appropriate
-         name of the tree parser and the appropriate start rule.
-      */
-      try
-      {
+      // To create and invoke a tree parser.  Modify with the appropriate
+      // name of the tree parser and the appropriate start rule.
+      try {
          CommonTreeNodeStream nodes = new CommonTreeNodeStream(t);
          nodes.setTokenStream(tokens);
          TypeCheck tparser = new TypeCheck(nodes);
 
          tparser.verify();
-      }
-      catch (org.antlr.runtime.RecognitionException e)
-      {
+      } catch (org.antlr.runtime.RecognitionException e) {
          error(e.toString());
       }
    }
 
-   private static final String DISPLAYAST = "-displayAST";
-
+   public static CommandLine cmd = null;
    private static String _inputFile = null;
-   private static boolean _displayAST = false;
 
-   private static void parseParameters(String [] args)
-   {
-      for (int i = 0; i < args.length; i++)
-      {
-         if (args[i].equals(DISPLAYAST))
-         {
-            _displayAST = true;
+   /**
+    * Defines possible options and sets them up.
+    */
+   private static void parseParameters(String [] args) {
+      // create the command line parser
+      CommandLineParser parser = new PosixParser();
+
+      // create the options
+      Options options = new Options();
+      options.addOption("a", "displayAST", false, "Print out a dotty graph of the AST." );
+      options.addOption("h", "help", false, "Print this help message." );
+
+      try {
+         // parse the command line arguments
+         cmd = parser.parse( options, args );
+
+         if (cmd.hasOption("help")) {
+            // automatically generate the help statement
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp("java Evil", options);
+            System.exit(0);
          }
-         else if (args[i].charAt(0) == '-')
-         {
-            System.err.println("unexpected option: " + args[i]);
-            System.exit(1);
+
+         String[] fileArgs = cmd.getArgs();
+
+         if (fileArgs.length > 1) {
+            error("Too many files to compile.");
+         } else if (fileArgs.length == 0) {
+            _inputFile = null;
+         } else {
+            _inputFile = fileArgs[0];
          }
-         else if (_inputFile != null)
-        {
-            System.err.println("too many files specified");
-            System.exit(1);
-         }
-         else
-         {
-            _inputFile = args[i];
-         }
+      } catch (ParseException exp) {
+         error("Unexpected exception:" + exp.getMessage());
       }
    }
 
-
-   private static void error(String msg)
-   {
+   public static void error(String msg) {
       System.err.println(msg);
       System.exit(1);
    }
 
-   private static EvilLexer createLexer()
-   {
-      try
-      {
+   private static EvilLexer createLexer() {
+      try {
          ANTLRInputStream input;
          if (_inputFile == null)
          {
             input = new ANTLRInputStream(System.in);
-         }
-         else
-         {
+         } else {
             input = new ANTLRInputStream(
-               new BufferedInputStream(new FileInputStream(_inputFile)));
+                  new BufferedInputStream(new FileInputStream(_inputFile)));
          }
          return new EvilLexer(input);
-      }
-      catch (java.io.IOException e)
-      {
+      } catch (java.io.IOException e) {
          System.err.println("file not found: " + _inputFile);
          System.exit(1);
          return null;
