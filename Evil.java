@@ -75,7 +75,7 @@ public class Evil {
          if (cmd.hasOption("help")) {
             // automatically generate the help statement
             HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp("java Evil", options);
+            formatter.printHelp("java Evil [options] filename.ev", options);
             System.exit(0);
          }
 

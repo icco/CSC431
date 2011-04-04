@@ -10,24 +10,23 @@ all: Evil.class
 
 # We define the classpath in this shell file.
 classpath:
-	./classpath.sh
+	@./classpath.sh
 
 Evil.class: classpath antlr.generated ${FILES}
 	javac *.java
 
 antlr.generated: antlr.generated.evil antlr.generated.type
-	touch antlr.generated
+	@touch antlr.generated
 
 antlr.generated.evil: Evil.g
 	java org.antlr.Tool Evil.g
-	touch antlr.generated.evil
+	@touch antlr.generated.evil
 
 antlr.generated.type: TypeCheck.g
 	java org.antlr.Tool ${DEBUGFLAGS} TypeCheck.g
-	touch antlr.generated.type
+	@touch antlr.generated.type
 
 run: Evil.class
-	cat tests/1.ev
 	java Evil < tests/1.ev
 
 test: Evil.class
@@ -39,7 +38,7 @@ debug:
 run_debug: debug run
 
 ast: Evil.class
-	java Evil --displayAST < tests/1.ev
+	java Evil --displayAST tests/1.ev
 
 help: Evil.class
 	@java Evil -h
