@@ -121,7 +121,7 @@ assignment
    }
    ;
 
-lvalue
+lvalue returns [Type t]
 @init {
 }
    :  ID 
