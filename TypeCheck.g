@@ -113,7 +113,11 @@ block
 assignment
 @init {
 }
-   : ^(ASSIGN expression lvalue)
+   : ^(ASSIGN ex=expression lval=lvalue)
+   {
+      if (!$ex.t.equals($lval.t)) {
+         Evil.error("Assignment lvalue type doesn't match expresion");
+      }
    ;
 
 lvalue
@@ -178,7 +182,7 @@ arguments
    : ^(ARGS (expression)*)
    ;
 
-expression
+expression returns [Type t]
 @init {
 }
    : factor

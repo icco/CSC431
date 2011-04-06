@@ -50,6 +50,11 @@ tokens
    /* package declaration here */
 }
 
+@members {
+   private static SymbolTable symbols = new SymbolTable();
+}
+
+
 /*
    Lexer Rules
 */
@@ -92,8 +97,6 @@ WS       :  (  ' '
 COMMENT  :  '#' (~'\n')* '\n'
             { skip(); }
          ;
-
-
 /*
    Parser Rules
 */

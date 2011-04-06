@@ -6,6 +6,8 @@
 FILES=Evil.java
 DEBUGFLAGS=
 
+export CLASSPATH=$CLASSPATH:.:./antlr-3.3-complete.jar:./commons-cli-1.2.jar
+
 all: Evil.class
 
 # We define the classpath in this shell file.
