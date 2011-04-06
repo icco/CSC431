@@ -15,7 +15,7 @@ classpath:
 	@./classpath.sh
 
 Evil.class: classpath antlr.generated ${FILES}
-	javac *.java
+	javac -Xlint:unchecked *.java
 
 antlr.generated: antlr.generated.evil antlr.generated.type
 	@touch antlr.generated
