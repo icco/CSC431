@@ -118,6 +118,7 @@ assignment
       if (!$ex.t.equals($lval.t)) {
          Evil.error("Assignment lvalue type doesn't match expresion");
       }
+   }
    ;
 
 lvalue
