@@ -6,6 +6,8 @@
 FILES=Evil.java
 DEBUGFLAGS=
 
+export CLASSPATH=$CLASSPATH:.:./antlr-3.3-complete.jar:./commons-cli-1.2.jar
+
 all: Evil.class
 
 # We define the classpath in this shell file.
@@ -13,7 +15,7 @@ classpath:
 	@./classpath.sh
 
 Evil.class: classpath antlr.generated ${FILES}
-	javac *.java
+	javac -Xlint:unchecked *.java
 
 antlr.generated: antlr.generated.evil antlr.generated.type
 	@touch antlr.generated
