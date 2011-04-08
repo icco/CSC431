@@ -1,14 +1,12 @@
 tree grammar TypeCheck;
 
-options
-{
+options {
    tokenVocab=Evil;
    ASTLabelType=CommonTree;
    backtrack=true;
 }
 
-@header
-{
+@header {
    import java.util.Map;
    import java.util.HashMap;
    import java.util.Vector;
