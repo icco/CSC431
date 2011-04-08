@@ -21,13 +21,13 @@ options {
 verify
 @init {
 }
-   : ^(PROGRAM types 
-   
-   declarations 
+   : ^(PROGRAM types
+
+   declarations
    {
       symTable.bindDeclarations($declarations.symbols, true);
    }
-      
+
    functions)
    {
       symTable.bindDeclarations($declarations.symbols, true);
@@ -51,7 +51,7 @@ var_decl returns [Symbol s]
 }
    : ^(DECL ^(TYPE type) ID)
    {
-      $s = new Symbol($ID.getText(), $type.t); 
+      $s = new Symbol($ID.getText(), $type.t);
       $s.setLine($ID.getLine());
    }
    ;
@@ -75,14 +75,14 @@ declaration returns [List<Symbol> symbols]
 @init {
    $symbols = new LinkedList<Symbol>();
 }
-   : ^(DECLLIST ^(TYPE type) (ID 
-   { 
+   : ^(DECLLIST ^(TYPE type) (ID
+   {
       String name = $ID.getText();
       Type t = $type.t;
       Symbol s = new Symbol(name, t);
       s.setLine($ID.getLine());
 
-      $symbols.add(s); 
+      $symbols.add(s);
    })+)
    ;
 
@@ -96,10 +96,10 @@ functions returns [List<Symbol> symbols]
 function returns [Symbol s]
 @init {
 }
-   : ^(FUN ID parameters ^(RETTYPE return_type) declarations 
+   : ^(FUN ID parameters ^(RETTYPE return_type) declarations
     {
        FuncType fun = new FuncType();
-       
+
        fun.setParams($parameters.params);
        fun.setReturn($return_type.t);
 
@@ -227,6 +227,13 @@ invocation returns [Type t]
 @init {
 }
    : ^(INVOKE ID arguments)
+   {
+      Type ty = symTable.get($ID.getText());
+      if (ty.is_func())
+         t = ((FuncType)ty).getReturn();
+      else
+         Evil.error("You can only invoke functions.");
+   }
    ;
 
 arguments
@@ -267,7 +274,7 @@ binop returns [OperatorType t]
       t.setType("BoolType");
       t.setOutType("BoolType");
    }
-   | (EQ | LT | GT | NE | LE | GE) 
+   | (EQ | LT | GT | NE | LE | GE)
    {
       t = new OperatorType();
       t.setBinary();
@@ -304,9 +311,9 @@ factor returns [Type t]
    : INTEGER { $t = new IntType(); }
    | TRUE { $t = new BoolType(); }
    | FALSE { $t = new BoolType(); }
-   | ^(NEW ID) { $t = new NullType(); }
+   | ^(NEW ID) { $t = new StructType(); }
    | NULL { $t = new NullType(); }
-   | ID { $t = new NullType(); }
+   | ID { $t = symTable.get($ID.getText()); }
    | ^(DOT factor ID) { $t = new NullType(); }
    | invocation
    ;
