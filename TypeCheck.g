@@ -166,7 +166,7 @@ assignment
 }
    : ^(ASSIGN ex=expression lval=lvalue)
    {
-      if ($ex.t != null && !$ex.t.equals($lval.t)) {
+      if (!$ex.t.equals($lval.t)) {
          Evil.error("Assignment lvalue type doesn't match expresion");
       }
    }
@@ -175,14 +175,14 @@ assignment
 lvalue returns [Type t]
 @init {
 }
-   :  ID
+   : ID { $t = symTable.get($ID.getText()); }
    | ^(DOT lvalue_h ID)
    ;
 
-lvalue_h
+lvalue_h returns [Type t]
 @init {
 }
-   :  ID
+   : ID { $t = symTable.get($ID.getText()); }
    | ^(DOT lvalue_h ID)
    ;
 
@@ -251,7 +251,7 @@ arguments
 expression returns [Type t]
 @init {
 }
-   : factor
+   : f=factor { t = $f.t; }
    | ^(u=unop f1=factor)
    {
       if ($f1.t != null) {
@@ -321,5 +321,5 @@ factor returns [Type t]
    | NULL { $t = new NullType(); }
    | ID { $t = symTable.get($ID.getText()); }
    | ^(DOT factor ID) { $t = new NullType(); }
-   | invocation
+   | i=invocation { $t = $i.t; }
    ;
