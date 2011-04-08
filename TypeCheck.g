@@ -263,7 +263,7 @@ ret returns [Type t]
       }
 
       if (!ret.equals(funcRetType)) {
-         Evil.error("Return type does not match function type.");
+         Evil.error("Return type " + ret + " does not match function return type " + funcRetType  + ".");
       } else {
          $t = ret;
       }
