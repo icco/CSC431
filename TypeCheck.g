@@ -21,9 +21,9 @@ options {
 verify
 @init {
 }
-   : ^(PROGRAM types 
-   
-   declarations 
+   : ^(PROGRAM types
+
+   declarations
    {
       symTable.bindDeclarations($declarations.symbols, true);
    }
@@ -52,7 +52,7 @@ var_decl returns [Symbol s]
 }
    : ^(DECL ^(TYPE type) ID)
    {
-      $s = new Symbol($ID.getText(), $type.t); 
+      $s = new Symbol($ID.getText(), $type.t);
       $s.setLine($ID.getLine());
    }
    ;
@@ -76,14 +76,14 @@ declaration returns [List<Symbol> symbols]
 @init {
    $symbols = new LinkedList<Symbol>();
 }
-   : ^(DECLLIST ^(TYPE type) (ID 
-   { 
+   : ^(DECLLIST ^(TYPE type) (ID
+   {
       String name = $ID.getText();
       Type t = $type.t;
       Symbol s = new Symbol(name, t);
       s.setLine($ID.getLine());
 
-      $symbols.add(s); 
+      $symbols.add(s);
    })+)
    ;
 
@@ -97,10 +97,10 @@ functions returns [List<Symbol> symbols]
 function returns [Symbol s]
 @init {
 }
-   : ^(FUN ID parameters ^(RETTYPE return_type) declarations 
+   : ^(FUN ID parameters ^(RETTYPE return_type) declarations
     {
        FuncType fun = new FuncType();
-       
+
        fun.setParams($parameters.params);
        fun.setReturn($return_type.t);
 
@@ -196,13 +196,20 @@ read
 conditional
 @init {
 }
-   :  ^(IF expression block (block)?)
+   :  ^(IF e=expression block (block)?)
+   {
+      if (!$e.t.is_bool()) { Evil.error("Conditional in if must be a boolean."); }
+   }
    ;
 
 loop
 @init {
 }
-   : ^(WHILE expression block expression)
+   : ^(WHILE e1=expression block e2=expression)
+   {
+      if (!$e1.t.is_bool()) { Evil.error("Conditional in while must be a boolean."); }
+      if (!$e2.t.is_bool()) { Evil.error("Conditional in while must be a boolean."); }
+   }
    ;
 
 delete
@@ -221,6 +228,13 @@ invocation returns [Type t]
 @init {
 }
    : ^(INVOKE ID arguments)
+   {
+      Type ty = symTable.get($ID.getText());
+      if (ty.is_func())
+         t = ((FuncType)ty).getReturn();
+      else
+         Evil.error("You can only invoke functions.");
+   }
    ;
 
 arguments
@@ -238,6 +252,8 @@ expression returns [Type t]
       if ($f1.t != null) {
          if (!$u.t.checkValid($f1.t)) { Evil.error($u.t.toString()); }
       }
+
+      t = u.out();
    }
    | ^(u=binop f1=factor f2=factor)
    {
@@ -246,6 +262,8 @@ expression returns [Type t]
          if (!$u.t.checkValid($f1.t, $f2.t)) { Evil.error($u.t.toString()); }
          if (!$f1.t.equals($f2.t)) { Evil.error("Both objects in a boolean operation must be the same type."); }
       }
+
+      t = u.out();
    }
    ;
 
@@ -255,12 +273,21 @@ binop returns [OperatorType t]
       t = new OperatorType();
       t.setBinary();
       t.setType("BoolType");
+      t.setOutType("BoolType");
    }
-   | (EQ | LT | GT | NE | LE | GE | PLUS | MINUS | TIMES | DIVIDE)
+   | (EQ | LT | GT | NE | LE | GE)
    {
       t = new OperatorType();
       t.setBinary();
       t.setType("IntType");
+      t.setOutType("BoolType");
+   }
+   | (PLUS | MINUS | TIMES | DIVIDE)
+   {
+      t = new OperatorType();
+      t.setBinary();
+      t.setType("IntType");
+      t.setOutType("IntType");
    }
    ;
 
@@ -285,9 +312,9 @@ factor returns [Type t]
    : INTEGER { $t = new IntType(); }
    | TRUE { $t = new BoolType(); }
    | FALSE { $t = new BoolType(); }
-   | ^(NEW ID)
-   | NULL
-   | ID
-   | ^(DOT factor ID)
+   | ^(NEW ID) { $t = new StructType(); }
+   | NULL { $t = new NullType(); }
+   | ID { $t = symTable.get($ID.getText()); }
+   | ^(DOT factor ID) { $t = new NullType(); }
    | invocation
    ;

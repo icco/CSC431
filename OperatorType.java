@@ -1,6 +1,7 @@
 public class OperatorType extends Type {
    private int number_of_args = 0;
-   private String takes_type = "IntType";
+   private String takes_type = "NullType";
+   private String out_type = "NullType";
 
    public void setBinary() {
       this.number_of_args = 2;
@@ -12,6 +13,10 @@ public class OperatorType extends Type {
 
    public void setType(String in) {
       this.takes_type = in;
+   }
+
+   public void setOutType(String in) {
+      this.out_type = in;
    }
 
    public boolean checkValid(Type a) {
@@ -30,5 +35,16 @@ public class OperatorType extends Type {
    public String toString() {
       return "This operator requires " + this.number_of_args 
          + " arguments and both must be " + this.takes_type;
+   }
+
+   public Type out() {
+      // This is the dumb way to do it, but could get java abstraction working.
+      if (this.out_type.equals("IntType")) {
+         return new IntType();
+      } else if (this.out_type.equals("BoolType")) {
+         return new BoolType();
+      } else {
+         return new NullType();
+      }
    }
 }
