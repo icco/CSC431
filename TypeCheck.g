@@ -362,7 +362,7 @@ factor returns [Type t]
    | ID { $t = symTable.get($ID.getText()); }
    | ^(DOT f=factor ID) {
          if ($f.t.is_struct()) {
-            $t = new NullType(); // Implement.
+            $t = $f.t.getField($ID.getText());
          } else {
             Evil.error("Trying to access field of a non-struct.");
          }
