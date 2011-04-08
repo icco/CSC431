@@ -23,13 +23,11 @@ verify
 }
    : ^(PROGRAM types
 
-   declarations
-   {
+   declarations {
       symTable.bindDeclarations($declarations.symbols, true);
    }
 
-   functions
-   {
+   functions {
       // We're binding the function deeper in the tree,
       // but I'm leaving this here in case that ends up not working.
       // symTable.bindDeclarations($functions.symbols, true);
@@ -47,6 +45,9 @@ types_declaration
 @init {
 }
    : ^(STRUCT ID (var_decl)+)
+   {
+      // TODO: We need to build the actual struct to store here.
+   }
    ;
 
 var_decl returns [Symbol s]
@@ -64,7 +65,12 @@ type returns [Type t]
 }
    : INT { $t = new IntType(); }
    | BOOL { $t = new BoolType(); }
-   | ^(STRUCT ID) { $t = new StructType(); /** TODO */  }
+   | ^(STRUCT ID) {
+      // TODO
+      // This is someone creating a new struct. So we need the name of the
+      // struct they are creating, such as A or something.
+      $t = new StructType();
+   }
    ;
 
 declarations returns [List<Symbol> symbols]
