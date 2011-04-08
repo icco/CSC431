@@ -153,6 +153,7 @@ parameters returns [List<Symbol> params]
 
 statement_list returns [Type t]
 @init {
+   $t = new VoidType();
 }
    : ^(STMTS (statement
    {
@@ -165,7 +166,7 @@ statement_list returns [Type t]
 statement returns [Type t]
 @init {
 }
-   : block
+   : block { $t = $block.t; }
    | assignment
    | print
    | read
@@ -173,13 +174,13 @@ statement returns [Type t]
    | loop
    | delete
    | ret { $t = $ret.t; }
-   | invocation
+   | i=invocation { $t = $i.t; }
    ;
 
-block
+block returns [Type t]
 @init {
 }
-   : ^(BLOCK statement_list)
+   : ^(BLOCK statement_list { $t = $statement_list.t; })
    ;
 
 assignment
@@ -221,10 +222,10 @@ read
    :  ^(READ lvalue)
    ;
 
-conditional
+conditional returns [Type t]
 @init {
 }
-   :  ^(IF e=expression block (block)?)
+   :  ^(IF e=expression tb=block (fb=block)?)
    {
       if (!$e.t.is_bool()) { Evil.error("Conditional in if must be a boolean."); }
    }
