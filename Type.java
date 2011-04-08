@@ -4,6 +4,14 @@ public abstract class Type {
       return this instanceof BoolType;
    }
 
+   public boolean is_int() {
+      return this instanceof IntType;
+   }
+
+   public boolean equals(Object obj) {
+      return obj.getClass().equals(this.getClass());
+   }
+
    public String toString() {
       return this.getClass().getName();
    }

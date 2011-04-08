@@ -3,13 +3,13 @@
 # @author Ben Sweedler
 # @author Nat Welch
 
-FILES=Evil.java
+FILES=BoolType.java DottedTree.java Evil.java FunctionTree.java FuncType.java IntType.java StructType.java Symbol.java SymbolTable.java Type.java
 DEBUGFLAGS=
 JAVAFLAGS=-Xlint:unchecked
 
 TYPECHECKOBJECTS=Type.java BoolType.java IntType.java FuncType.java StructType.java SymbolTable.java
 
-export CLASSPATH=$CLASSPATH:.:./antlr-3.3-complete.jar:./commons-cli-1.2.jar
+export CLASSPATH=.:./antlr-3.3-complete.jar:./commons-cli-1.2.jar
 
 all: Evil.class
 
@@ -26,9 +26,6 @@ antlr.generated.evil: Evil.g
 antlr.generated.type: TypeCheck.g
 	java org.antlr.Tool ${DEBUGFLAGS} TypeCheck.g
 	@touch antlr.generated.type
-
-Type.class: Type.java
-	javac -
 
 run: Evil.class
 	java Evil < tests/1.ev
