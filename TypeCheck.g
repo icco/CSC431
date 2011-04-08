@@ -148,13 +148,20 @@ read
 conditional
 @init {
 }
-   :  ^(IF expression block (block)?)
+   :  ^(IF e=expression block (block)?)
+   {
+      if (!$e.t.is_bool()) { Evil.error("Conditional in if must be a boolean."); }
+   }
    ;
 
 loop
 @init {
 }
-   : ^(WHILE expression block expression)
+   : ^(WHILE e1=expression block e2=expression)
+   {
+      if (!$e1.t.is_bool()) { Evil.error("Conditional in while must be a boolean."); }
+      if (!$e2.t.is_bool()) { Evil.error("Conditional in while must be a boolean."); }
+   }
    ;
 
 delete
@@ -169,7 +176,7 @@ ret
    : ^(RETURN (expression)?)
    ;
 
-invocation
+invocation returns [Type t]
 @init {
 }
    : ^(INVOKE ID arguments)
@@ -190,6 +197,8 @@ expression returns [Type t]
       if ($f1.t != null) {
          if (!$u.t.checkValid($f1.t)) { Evil.error($u.t.toString()); }
       }
+
+      t = u.out();
    }
    | ^(u=binop f1=factor f2=factor)
    {
@@ -198,6 +207,8 @@ expression returns [Type t]
          if (!$u.t.checkValid($f1.t, $f2.t)) { Evil.error($u.t.toString()); }
          if (!$f1.t.equals($f2.t)) { Evil.error("Both objects in a boolean operation must be the same type."); }
       }
+
+      t = u.out();
    }
    ;
 
@@ -207,12 +218,21 @@ binop returns [OperatorType t]
       t = new OperatorType();
       t.setBinary();
       t.setType("BoolType");
+      t.setOutType("BoolType");
    }
-   | (EQ | LT | GT | NE | LE | GE | PLUS | MINUS | TIMES | DIVIDE)
+   | (EQ | LT | GT | NE | LE | GE) 
    {
       t = new OperatorType();
       t.setBinary();
       t.setType("IntType");
+      t.setOutType("BoolType");
+   }
+   | (PLUS | MINUS | TIMES | DIVIDE)
+   {
+      t = new OperatorType();
+      t.setBinary();
+      t.setType("IntType");
+      t.setOutType("IntType");
    }
    ;
 
@@ -237,9 +257,9 @@ factor returns [Type t]
    : INTEGER { $t = new IntType(); }
    | TRUE { $t = new BoolType(); }
    | FALSE { $t = new BoolType(); }
-   | ^(NEW ID)
+   | ^(NEW ID) { $t = new NullType(); }
    | NULL { $t = new NullType(); }
-   | ID
-   | ^(DOT factor ID)
+   | ID { $t = new NullType(); }
+   | ^(DOT factor ID) { $t = new NullType(); }
    | invocation
    ;
