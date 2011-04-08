@@ -1,27 +1,13 @@
 import java.util.List;
 
 public class FuncType extends Type {
-   public static class Parameter {
-      Type t;
-      String name;
-
-      Parameter(Type t, String name) {
-         this.t = t;
-         this.name = name;
-      }
-
-      public Type getType() { return t; }
-      public String getName() { return name; }
-   }
-
-   private List<Parameter> params;
+   private List<Symbol> params;
    private Type ret;
 
-   public List<Parameter> getParams() {
-      return params;
-   }
+   /** Getters and Setters */
+   public List<Symbol> getParams() { return params; }
+   public Type getReturn() { return ret; }
 
-   public Type getReturn() {
-      return ret;
-   }
+   public void setParams(List<Symbol> p) { this.params = p; }
+   public void setReturn(Type t) { this.ret = t; }
 }

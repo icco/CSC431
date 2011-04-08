@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 public class SymbolTable {
    protected Map<String, Type> globals;
@@ -10,11 +11,11 @@ public class SymbolTable {
       locals = new HashMap<String, Type>(); 
    }
 
-   public boolean add(String name, Type t) {
-      return add(name, t, false);
+   public boolean bind(String name, Type t) {
+      return bind(name, t, false);
    }
 
-   public boolean add(String name, Type t, boolean isGlobal) {
+   public boolean bind(String name, Type t, boolean isGlobal) {
       Map<String, Type> table = (isGlobal ? globals : locals);
 
       if (table.get(name) == null) {
@@ -42,11 +43,23 @@ public class SymbolTable {
       return null;
    }
 
-   public void addParameters(FuncType func) {
+   public void clearLocals() {
       locals.clear();
+   }
 
-      for (FuncType.Parameter t : func.getParams()) {
-         add(t.getName(), t.getType());
+   public void bindParameters(FuncType func) {
+      for (Symbol s : func.getParams()) {
+         bind(s.getName(), s.getType());
+      }
+   }
+
+   public void bindDeclarations(List<Symbol> symbols) {
+      bindDeclarations(symbols, false);
+   }
+
+   public void bindDeclarations(List<Symbol> symbols, boolean isGlobal) {
+      for (Symbol s : symbols) {
+         bind(s.getName(), s.getType(), isGlobal);
       }
    }
 }
