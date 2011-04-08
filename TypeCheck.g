@@ -172,6 +172,7 @@ assignment
    }
    ;
 
+// TODO: This needs more work...
 lvalue returns [Type t]
 @init {
 }
@@ -186,6 +187,7 @@ lvalue_h returns [Type t]
    | ^(DOT lvalue_h ID)
    ;
 
+// TODO: This needs more work...
 print
 @init {
 }
