@@ -27,7 +27,7 @@ verify
    {
       symTable.bindDeclarations($declarations.symbols, true);
    }
-      
+
    functions
    {
       // We're binding the function deeper in the tree,
@@ -253,7 +253,7 @@ arguments
 expression returns [Type t]
 @init {
 }
-   : f=factor { t = $f.t; }
+   : f=factor { $t = $f.t; }
    | ^(u=unop f1=factor)
    {
       if ($f1.t != null) {
@@ -322,6 +322,12 @@ factor returns [Type t]
    | ^(NEW ID) { $t = new StructType(); }
    | NULL { $t = new NullType(); }
    | ID { $t = symTable.get($ID.getText()); }
-   | ^(DOT factor ID) { $t = new NullType(); }
+   | ^(DOT f=factor ID) {
+         if ($f.t.is_struct()) {
+            $t = new NullType(); // Implement.
+         } else {
+            Evil.error("Trying to access field of a non-struct.");
+         }
+      }
    | i=invocation { $t = $i.t; }
    ;
