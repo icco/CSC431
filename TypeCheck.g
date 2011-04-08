@@ -102,7 +102,6 @@ function returns [Symbol s]
 }
    : ^(FUN ID parameters ^(RETTYPE return_type) declarations
     {
-
        fun.setParams($parameters.params);
        fun.setReturn($return_type.t);
 
@@ -116,7 +115,6 @@ function returns [Symbol s]
        $s.setLine($ID.getLine());
 
        symTable.bind($s, true);
-
     }
 
     statement_list
@@ -129,7 +127,7 @@ function returns [Symbol s]
        }
     }
 
-       
+
     )
    ;
 
@@ -150,10 +148,10 @@ parameters returns [List<Symbol> params]
 statement_list returns [Type t]
 @init {
 }
-   : ^(STMTS (statement 
-   { 
+   : ^(STMTS (statement
+   {
       if ($statement.t != null) {
-         $t = $statement.t; 
+         $t = $statement.t;
       }
    }) *)
    ;
