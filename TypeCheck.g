@@ -16,6 +16,7 @@ options {
 
 @members {
    private static SymbolTable symTable = new SymbolTable();
+   private static String currentFunc;
 }
 
 verify
@@ -117,6 +118,7 @@ function returns [Symbol s]
 
        $s = new Symbol();
        $s.setName($ID.getText());
+       currentFunc = $ID.getText().copy();
        $s.setType(fun);
        $s.setLine($ID.getLine());
 
@@ -252,10 +254,17 @@ ret returns [Type t]
 }
    : ^(RETURN (expression)?)
    {
+      Type ret = VoidType();
+      Type funcRetType = symTable.getFunction(currentFunc).getReturn();
+
       if ($expression.t != null) {
-         $t = $expression.t;
+         ret = $expression.t;
+      }
+
+      if (!ret.equals(funcRetType)) {
+         Evil.error("Return type does not match function type.");
       } else {
-         $t = new VoidType();
+         $t = ret;
       }
    }
    ;
@@ -265,11 +274,12 @@ invocation returns [Type t]
 }
    : ^(INVOKE ID arguments)
    {
-      Type ty = symTable.get($ID.getText());
-      if (ty.is_func())
-         t = ((FuncType)ty).getReturn();
-      else
+      Type ty = symTable.getFunction($ID.getText());
+      if (ty.is_func()) {
+         t = ty.getReturn();
+      } else {
          Evil.error("You can only invoke functions.");
+      }
    }
    ;
 
