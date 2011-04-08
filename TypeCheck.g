@@ -118,7 +118,7 @@ function returns [Symbol s]
 
        $s = new Symbol();
        $s.setName($ID.getText());
-       currentFunc = $ID.getText().copy();
+       currentFunc = $ID.getText();
        $s.setType(fun);
        $s.setLine($ID.getLine());
 
@@ -254,7 +254,7 @@ ret returns [Type t]
 }
    : ^(RETURN (expression)?)
    {
-      Type ret = VoidType();
+      Type ret = new VoidType();
       Type funcRetType = symTable.getFunction(currentFunc).getReturn();
 
       if ($expression.t != null) {
@@ -274,11 +274,9 @@ invocation returns [Type t]
 }
    : ^(INVOKE ID arguments)
    {
-      Type ty = symTable.getFunction($ID.getText());
+      FuncType ty = symTable.getFunction($ID.getText());
       if (ty.is_func()) {
          t = ty.getReturn();
-      } else {
-         Evil.error("You can only invoke functions.");
       }
    }
    ;

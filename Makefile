@@ -3,7 +3,7 @@
 # @author Ben Sweedler
 # @author Nat Welch
 
-FILES=BoolType.java DottedTree.java Evil.java FunctionTree.java FuncType.java IntType.java StructType.java Symbol.java SymbolTable.java Type.java OperatorType.java
+FILES=BoolType.java DottedTree.java Evil.java VoidType.java FunctionTree.java FuncType.java IntType.java StructType.java Symbol.java SymbolTable.java Type.java OperatorType.java
 DEBUGFLAGS=
 RUNFLAGS=
 JAVAFLAGS=-Xlint:unchecked
