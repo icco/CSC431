@@ -5,6 +5,7 @@
 
 FILES=BoolType.java DottedTree.java Evil.java FunctionTree.java FuncType.java IntType.java StructType.java Symbol.java SymbolTable.java Type.java OperatorType.java
 DEBUGFLAGS=
+RUNFLAGS=
 JAVAFLAGS=-Xlint:unchecked
 
 TYPECHECKOBJECTS=Type.java BoolType.java IntType.java FuncType.java StructType.java SymbolTable.java Symbol.java
@@ -28,7 +29,7 @@ antlr.generated.type: TypeCheck.g
 	@touch antlr.generated.type
 
 run: Evil.class
-	java Evil < tests/1.ev
+	java Evil ${RUNFLAGS} < tests/1.ev
 
 test: Evil.class
 	@./test.sh
@@ -36,7 +37,8 @@ test: Evil.class
 debug:
 	@make -s -B -e DEBUGFLAGS=-trace
 
-run_debug: debug run
+run_debug: debug 
+	@make -s run -e RUNFLAGS=-d
 
 ast: Evil.class
 	java Evil --displayAST tests/1.ev
