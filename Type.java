@@ -12,6 +12,18 @@ public abstract class Type {
       return this instanceof IntType;
    }
 
+   public boolean is_struct() {
+      return this instanceof StructType;
+   }
+
+   public boolean is_void() {
+      return this instanceof VoidType;
+   }
+
+   public boolean is_null() {
+      return this instanceof NullType;
+   }
+
    public boolean equals(Object obj) {
       return obj.getClass().equals(this.getClass());
    }
