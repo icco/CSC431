@@ -11,19 +11,23 @@ public class SymbolTable {
       locals = new HashMap<String, Type>(); 
    }
 
-   public boolean bind(String name, Type t) {
-      return bind(name, t, false);
+   public boolean bind(Symbol s) {
+      return bind(s, false);
    }
 
-   public boolean bind(String name, Type t, boolean isGlobal) {
+   public boolean bind(Symbol s, boolean isGlobal) {
       Map<String, Type> table = (isGlobal ? globals : locals);
 
-      if (table.get(name) == null) {
-         table.put(name, t);
+      if (table.get(s.getName()) == null) {
+         table.put(s.getName(), s.getType());
+
+         System.err.println("Bound " 
+          + (isGlobal ? "global" : "local") + " variable " + s);
+
       } else {
-         Evil.error("Cannot redeclare " + name 
+         Evil.error("Cannot redeclare " + s 
           + " as " + (isGlobal ? "global" : "local") 
-          + " variable");
+          + " variable.");
       }
 
       return true;
@@ -49,7 +53,7 @@ public class SymbolTable {
 
    public void bindParameters(FuncType func) {
       for (Symbol s : func.getParams()) {
-         bind(s.getName(), s.getType());
+         bind(s);
       }
    }
 
@@ -59,7 +63,7 @@ public class SymbolTable {
 
    public void bindDeclarations(List<Symbol> symbols, boolean isGlobal) {
       for (Symbol s : symbols) {
-         bind(s.getName(), s.getType(), isGlobal);
+         bind(s, isGlobal);
       }
    }
 }

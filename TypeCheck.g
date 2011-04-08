@@ -21,11 +21,14 @@ options {
 verify
 @init {
 }
-   : ^(PROGRAM types declarations 
+   : ^(PROGRAM types 
+   
+   declarations 
    {
       symTable.bindDeclarations($declarations.symbols, true);
    }
-      functions)
+      
+   functions)
    {
       symTable.bindDeclarations($declarations.symbols, true);
    }
@@ -49,6 +52,7 @@ var_decl returns [Symbol s]
    : ^(DECL ^(TYPE type) ID)
    {
       $s = new Symbol($ID.getText(), $type.t); 
+      $s.setLine($ID.getLine());
    }
    ;
 
@@ -76,6 +80,7 @@ declaration returns [List<Symbol> symbols]
       String name = $ID.getText();
       Type t = $type.t;
       Symbol s = new Symbol(name, t);
+      s.setLine($ID.getLine());
 
       $symbols.add(s); 
    })+)
@@ -105,6 +110,7 @@ function returns [Symbol s]
        $s = new Symbol();
        $s.setName($ID.getText());
        $s.setType(fun);
+       $s.setLine($ID.getLine());
     }
        statement_list)
    ;
