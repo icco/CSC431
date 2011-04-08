@@ -238,7 +238,7 @@ factor returns [Type t]
    | TRUE { $t = new BoolType(); }
    | FALSE { $t = new BoolType(); }
    | ^(NEW ID)
-   | NULL
+   | NULL { $t = new NullType(); }
    | ID
    | ^(DOT factor ID)
    | invocation
