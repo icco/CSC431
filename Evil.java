@@ -17,6 +17,8 @@ import java.util.HashMap;
  * @author Ben Sweedler
  */
 public class Evil {
+   private static boolean debugFlag = false;
+
    public static void main(String[] args) {
       // Store the options
       parseParameters(args);
@@ -66,6 +68,7 @@ public class Evil {
       // create the options
       Options options = new Options();
       options.addOption("a", "displayAST", false, "Print out a dotty graph of the AST." );
+      options.addOption("d", "debug", false, "Print debug messages while running." );
       options.addOption("h", "help", false, "Print this help message." );
 
       try {
@@ -77,6 +80,10 @@ public class Evil {
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("java Evil [options] filename.ev", options);
             System.exit(0);
+         }
+
+         if (cmd.hasOption("debug")) {
+            debugFlag = true;
          }
 
          String[] fileArgs = cmd.getArgs();
@@ -101,6 +108,12 @@ public class Evil {
    public static void error(String msg, int lineno) {
       System.err.println(lineno + ": " + msg);
       System.exit(1);
+   }
+
+   public static void debug(String msg) {
+      if (debugFlag) {
+         System.err.println(msg);
+      }
    }
 
    private static EvilLexer createLexer() {

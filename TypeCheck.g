@@ -98,10 +98,10 @@ functions returns [List<Symbol> symbols]
 
 function returns [Symbol s]
 @init {
+   FuncType fun = new FuncType();
 }
    : ^(FUN ID parameters ^(RETTYPE return_type) declarations
     {
-       FuncType fun = new FuncType();
 
        fun.setParams($parameters.params);
        fun.setReturn($return_type.t);
@@ -118,7 +118,19 @@ function returns [Symbol s]
        symTable.bind($s, true);
 
     }
-       statement_list)
+
+    statement_list
+    {
+       Type returnStatement = $statement_list.t;
+
+       if (!fun.getReturn().equals(returnStatement)) {
+          Evil.error("Function " + $s.getName() + " has return type "
+           + fun.getReturn() + " but is returning " + returnStatement);
+       }
+    }
+
+       
+    )
    ;
 
 return_type returns [Type t]
@@ -135,13 +147,18 @@ parameters returns [List<Symbol> params]
    : ^(PARAMS (var_decl { $params.add($var_decl.s); })*)
    ;
 
-statement_list
+statement_list returns [Type t]
 @init {
 }
-   : ^(STMTS statement*)
+   : ^(STMTS (statement 
+   { 
+      if ($statement.t != null) {
+         $t = $statement.t; 
+      }
+   }) *)
    ;
 
-statement
+statement returns [Type t]
 @init {
 }
    : block
@@ -151,7 +168,7 @@ statement
    | conditional
    | loop
    | delete
-   | ret
+   | ret { $t = $ret.t; }
    | invocation
    ;
 
@@ -225,10 +242,17 @@ delete
    : ^(DELETE expression)
    ;
 
-ret
+ret returns [Type t]
 @init {
 }
    : ^(RETURN (expression)?)
+   {
+      if ($expression.t != null) {
+         $t = $expression.t;
+      } else {
+         $t = new VoidType();
+      }
+   }
    ;
 
 invocation returns [Type t]

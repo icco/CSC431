@@ -41,6 +41,9 @@ run_debug: debug run
 ast: Evil.class
 	java Evil --displayAST tests/1.ev
 
+d: Evil.class
+	java Evil -d tests/1.ev
+
 help: Evil.class
 	@java Evil -h
 
