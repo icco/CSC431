@@ -4,6 +4,10 @@ public abstract class Type {
       return this instanceof BoolType;
    }
 
+   public boolean is_func() {
+      return this instanceof FuncType;
+   }
+
    public boolean is_int() {
       return this instanceof IntType;
    }
