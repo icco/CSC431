@@ -30,7 +30,9 @@ verify
       
    functions
    {
-      symTable.bindDeclarations($functions.symbols, true);
+      // We're binding the function deeper in the tree,
+      // but I'm leaving this here in case that ends up not working.
+      // symTable.bindDeclarations($functions.symbols, true);
    }
    )
    ;
@@ -112,6 +114,9 @@ function returns [Symbol s]
        $s.setName($ID.getText());
        $s.setType(fun);
        $s.setLine($ID.getLine());
+
+       symTable.bind($s, true);
+
     }
        statement_list)
    ;
