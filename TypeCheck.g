@@ -31,7 +31,7 @@ verify
    functions {
       // We're binding the function deeper in the tree,
       // but I'm leaving this here in case that ends up not working.
-      // symTable.bindDeclarations($functions.symbols, true);
+      // symTable.bindFunctions($functions.symbols, true);
    }
    )
    ;
@@ -112,17 +112,18 @@ function returns [Symbol s]
        fun.setParams($parameters.params);
        fun.setReturn($return_type.t);
 
+       // Bind parameters and locals.
        symTable.clearLocals();
        symTable.bindParameters(fun);
        symTable.bindDeclarations($declarations.symbols);
 
+       // Bind function itself to allow for recursion.
        $s = new Symbol();
        $s.setName($ID.getText());
        currentFunc = $ID.getText();
        $s.setType(fun);
        $s.setLine($ID.getLine());
-
-       symTable.bind($s, true);
+       symTable.bindFunction($s);
     }
 
     statement_list
