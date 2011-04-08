@@ -18,8 +18,8 @@ public class SymbolTable {
    public String getTableName(Map table) {
       if (table == globals) return "global";
       if (table == locals) return "local";
-      if (table == structs) return "function";
-      if (table == functions) return "struct";
+      if (table == structs) return "structs";
+      if (table == functions) return "functions";
       return "";
    }
 
@@ -47,10 +47,11 @@ public class SymbolTable {
       if (table.get(s.getName()) == null) {
 
          table.put(s.getName(), s.getType());
-         Evil.debug("Bound " + s + "in " + getTableName(table));
+         Evil.debug("Bound " + s + " in " + getTableName(table) + " table");
 
       } else {
-         Evil.error("Cannot redeclare " + s + " as " + getTableName(table));
+         Evil.error("Cannot redeclare " + s 
+          + " as " + getTableName(table));
       }
    }
 
@@ -108,7 +109,7 @@ public class SymbolTable {
       }
    }
 
-   public void bindStruct(List<Symbol> symbols) {
+   public void bindStructs(List<Symbol> symbols) {
       for (Symbol s : symbols) {
          bindStruct(s);
       }

@@ -42,13 +42,19 @@ types
    : ^(TYPES (types_declaration)*)
    ;
 
-types_declaration
+types_declaration returns [StructType struct]
 @init {
+   $struct = new StructType();
 }
-   : ^(STRUCT ID (var_decl)+)
-   {
-      // TODO: We need to build the actual struct to store here.
-   }
+   : ^(STRUCT ID 
+      { 
+         String name = $ID.getText();
+         Symbol s = new Symbol(name, $struct, $ID.getLine());
+
+         $struct.setName(name);
+         symTable.bindStruct(s);
+      }
+      (var_decl { $struct.addField($var_decl.s); })+)
    ;
 
 var_decl returns [Symbol s]
@@ -56,8 +62,7 @@ var_decl returns [Symbol s]
 }
    : ^(DECL ^(TYPE type) ID)
    {
-      $s = new Symbol($ID.getText(), $type.t);
-      $s.setLine($ID.getLine());
+      $s = new Symbol($ID.getText(), $type.t, $ID.getLine());
    }
    ;
 
@@ -364,7 +369,8 @@ factor returns [Type t]
          if ($f.t.is_struct()) {
             $t = new NullType(); // Implement.
          } else {
-            Evil.error("Trying to access field of a non-struct.");
+            Evil.error("Trying to access field of a non-struct on line " 
+             + $DOT.getLine() + ".");
          }
       }
    | i=invocation { $t = $i.t; }
