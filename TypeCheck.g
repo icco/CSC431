@@ -122,15 +122,15 @@ assignment
 lvalue returns [Type t]
 @init {
 }
-   :  ID 
+   :  ID
    | ^(DOT lvalue_h ID)
    ;
 
 lvalue_h
 @init {
 }
-   :  ID 
-   | ^(DOT lvalue_h ID) 
+   :  ID
+   | ^(DOT lvalue_h ID)
    ;
 
 print
@@ -185,24 +185,58 @@ expression returns [Type t]
 @init {
 }
    : factor
-   | ^(unop factor)
-   | ^(binop factor factor)
+   | ^(u=unop f1=factor)
+   {
+      if ($f1.t != null) {
+         if (!$u.t.checkValid($f1.t)) { Evil.error($u.t.toString()); }
+      }
+   }
+   | ^(u=binop f1=factor f2=factor)
+   {
+      // These must be the same, and the correct type for their operation.
+      if ($f1.t != null && $f2.t != null) {
+         if (!$u.t.checkValid($f1.t, $f2.t)) { Evil.error($u.t.toString()); }
+         if (!$f1.t.equals($f2.t)) { Evil.error("Both objects in a boolean operation must be the same type."); }
+      }
+   }
    ;
 
-binop 
-   : (AND | OR | EQ | LT | GT | NE | LE | GE | PLUS | MINUS | TIMES | DIVIDE)
+binop returns [OperatorType t]
+   : (AND | OR)
+   {
+      t = new OperatorType();
+      t.setBinary();
+      t.setType("BoolType");
+   }
+   | (EQ | LT | GT | NE | LE | GE | PLUS | MINUS | TIMES | DIVIDE)
+   {
+      t = new OperatorType();
+      t.setBinary();
+      t.setType("IntType");
+   }
    ;
 
-unop
-   : (NOT | NEG)
+unop returns [OperatorType t]
+   : NOT
+   {
+      t = new OperatorType();
+      t.setUnary();
+      t.setType("BoolType");
+   }
+   | NEG
+   {
+      t = new OperatorType();
+      t.setUnary();
+      t.setType("IntType");
+   }
    ;
 
-factor
+factor returns [Type t]
 @init {
 }
-   : INTEGER
-   | TRUE
-   | FALSE
+   : INTEGER { $t = new IntType(); }
+   | TRUE { $t = new BoolType(); }
+   | FALSE { $t = new BoolType(); }
    | ^(NEW ID)
    | NULL
    | ID
