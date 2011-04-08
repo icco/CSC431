@@ -43,10 +43,10 @@ public class SymbolTable {
    }
 
    public void addParameters(FuncType func) {
-   
-   }
-
-   public void clearLocals() {
       locals.clear();
+
+      for (FuncType.Parameter t : func.getParams()) {
+         add(t.getName(), t.getType());
+      }
    }
 }
