@@ -13,12 +13,24 @@ options
    import java.util.HashMap;
    import java.util.Vector;
    import java.util.Iterator;
+   import java.util.LinkedList;
+}
+
+@members {
+   private static SymbolTable symTable = new SymbolTable();
 }
 
 verify
 @init {
 }
-   : ^(PROGRAM types declarations functions)
+   : ^(PROGRAM types declarations 
+   {
+      symTable.bindDeclarations($declarations.symbols, true);
+   }
+      functions)
+   {
+      symTable.bindDeclarations($declarations.symbols, true);
+   }
    ;
 
 types
@@ -33,55 +45,84 @@ types_declaration
    : ^(STRUCT ID (var_decl)+)
    ;
 
-var_decl
+var_decl returns [Symbol s]
 @init {
 }
    : ^(DECL ^(TYPE type) ID)
+   {
+      $s = new Symbol($ID.getText(), $type.t); 
+   }
    ;
 
-type
+type returns [Type t]
 @init {
 }
-   : INT
-   | BOOL
-   | ^(STRUCT ID)
+   : INT { $t = new IntType(); }
+   | BOOL { $t = new BoolType(); }
+   | ^(STRUCT ID) { $t = new StructType(); /** TODO */  }
    ;
 
-declarations
+declarations returns [List<Symbol> symbols]
 @init {
+   $symbols = new LinkedList<Symbol>();
 }
-   : ^(DECLS declaration*)
+   : ^(DECLS (declaration { $symbols.addAll($declaration.symbols); })*)
    ;
 
-declaration
+declaration returns [List<Symbol> symbols]
 @init {
+   $symbols = new LinkedList<Symbol>();
 }
-   : ^(DECLLIST ^(TYPE type) (ID)+)
+   : ^(DECLLIST ^(TYPE type) (ID 
+   { 
+      String name = $ID.getText();
+      Type t = $type.t;
+      Symbol s = new Symbol(name, t);
+
+      $symbols.add(s); 
+   })+)
    ;
 
-functions
+functions returns [List<Symbol> symbols]
 @init {
+   $symbols = new LinkedList<Symbol>();
 }
-   : ^(FUNCS function*)
+   : ^(FUNCS (function { $symbols.add($function.s); })*)
    ;
 
-function
+function returns [Symbol s]
 @init {
 }
-   : ^(FUN ID parameters ^(RETTYPE return_type) declarations statement_list)
+   : ^(FUN ID parameters ^(RETTYPE return_type) declarations 
+    {
+       FuncType fun = new FuncType();
+       
+       fun.setParams($parameters.params);
+       fun.setReturn($return_type.t);
+
+       symTable.clearLocals();
+       symTable.bindParameters(fun);
+       symTable.bindDeclarations($declarations.symbols);
+
+       $s = new Symbol();
+       $s.setName($ID.getText());
+       $s.setType(fun);
+    }
+       statement_list)
    ;
 
-return_type
+return_type returns [Type t]
 @init {
 }
-   : type
-   | VOID
+   : type { $t = $type.t; }
+   | VOID { $t = new VoidType(); }
    ;
 
-parameters
+parameters returns [List<Symbol> params]
 @init {
+   $params = new LinkedList<Symbol>();
 }
-   : ^(PARAMS var_decl*)
+   : ^(PARAMS (var_decl { $params.add($var_decl.s); })*)
    ;
 
 statement_list
@@ -171,7 +212,7 @@ ret
    : ^(RETURN (expression)?)
    ;
 
-invocation
+invocation returns [Type t]
 @init {
 }
    : ^(INVOKE ID arguments)

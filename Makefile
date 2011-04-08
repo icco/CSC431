@@ -7,7 +7,7 @@ FILES=Evil.java
 DEBUGFLAGS=
 JAVAFLAGS=-Xlint:unchecked
 
-TYPECHECKOBJECTS=Type.java BoolType.java IntType.java FuncType.java StructType.java SymbolTable.java
+TYPECHECKOBJECTS=Type.java BoolType.java IntType.java FuncType.java StructType.java SymbolTable.java Symbol.java
 
 export CLASSPATH=$CLASSPATH:.:./antlr-3.3-complete.jar:./commons-cli-1.2.jar
 
