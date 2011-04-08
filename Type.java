@@ -25,7 +25,7 @@ public abstract class Type {
    }
 
    public boolean equals(Object obj) {
-      return obj.getClass().equals(this.getClass());
+      return obj != null && obj.getClass().equals(this.getClass());
    }
 
    public String toString() {
