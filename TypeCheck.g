@@ -364,7 +364,7 @@ factor returns [Type t]
          if ($f.t.is_struct()) {
             $t = $f.t.getField($ID.getText());
          } else {
-            Evil.error("Trying to access field of a non-struct.");
+            Evil.error("Trying to access field of a " + $f.t + ".");
          }
       }
    | i=invocation { $t = $i.t; }
