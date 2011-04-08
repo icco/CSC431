@@ -28,10 +28,11 @@ verify
       symTable.bindDeclarations($declarations.symbols, true);
    }
       
-   functions)
+   functions
    {
-      symTable.bindDeclarations($declarations.symbols, true);
+      symTable.bindDeclarations($functions.symbols, true);
    }
+   )
    ;
 
 types

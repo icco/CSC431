@@ -21,8 +21,7 @@ public class SymbolTable {
       if (table.get(s.getName()) == null) {
          table.put(s.getName(), s.getType());
 
-         System.err.println("Bound " 
-          + (isGlobal ? "global" : "local") + " variable " + s);
+         //System.err.println("Bound " + (isGlobal ? "global" : "local") + " variable " + s);
 
       } else {
          Evil.error("Cannot redeclare " + s 
