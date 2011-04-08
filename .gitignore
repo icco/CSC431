@@ -1,3 +1,7 @@
 *.class
 *.swp
 antlr.generated*
+*.tokens
+EvilLexer.java
+EvilParser.java
+TypeCheck.java

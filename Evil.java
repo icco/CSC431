@@ -98,6 +98,11 @@ public class Evil {
       System.exit(1);
    }
 
+   public static void error(String msg, int lineno) {
+      System.err.println(lineno + ": " + msg);
+      System.exit(1);
+   }
+
    private static EvilLexer createLexer() {
       try {
          ANTLRInputStream input;
