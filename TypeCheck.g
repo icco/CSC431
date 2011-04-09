@@ -188,7 +188,7 @@ assignment
    : ^(ASSIGN ex=expression lval=lvalue)
    {
       if (!$ex.t.equals($lval.t)) {
-         Evil.error("Assignment lvalue type doesn't match expresion");
+         Evil.error("Assignment lvalue type doesn't match expresion", $ASSIGN.getLine());
       }
    }
    ;
@@ -226,7 +226,7 @@ conditional returns [Type t]
 }
    :  ^(IF e=expression tb=block (fb=block)?)
    {
-      if (!$e.t.is_bool()) { Evil.error("Conditional in if must be a boolean."); }
+      if (!$e.t.is_bool()) { Evil.error("Conditional in if must be a boolean.", $IF.getLine()); }
    }
    ;
 
@@ -235,8 +235,8 @@ loop
 }
    : ^(WHILE e1=expression block e2=expression)
    {
-      if (!$e1.t.is_bool()) { Evil.error("Conditional in while must be a boolean."); }
-      if (!$e2.t.is_bool()) { Evil.error("Conditional in while must be a boolean."); }
+      if (!$e1.t.is_bool()) { Evil.error("Conditional in while must be a boolean.", $WHILE.getLine()); }
+      if (!$e2.t.is_bool()) { Evil.error("Conditional in while must be a boolean.", $WHILE.getLine()); }
    }
    ;
 
@@ -360,12 +360,14 @@ unop returns [OperatorType t]
       t = new OperatorType();
       t.setUnary();
       t.setType("BoolType");
+      t.setOutType("BoolType");
    }
    | NEG
    {
       t = new OperatorType();
       t.setUnary();
       t.setType("IntType");
+      t.setOutType("IntType");
    }
    ;
 
