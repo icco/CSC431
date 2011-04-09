@@ -6,7 +6,7 @@ struct A
 
 bool bob;
 int i, j, k;
-struct B b, bb, bbb;
+struct A b, bb, bbb;
 
 fun main() int
 {
