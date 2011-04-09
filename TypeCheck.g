@@ -269,19 +269,41 @@ ret returns [Type t]
 invocation returns [Type t]
 @init {
 }
-   : ^(INVOKE ID arguments)
+   : ^(INVOKE ID args=arguments)
    {
       FuncType ty = symTable.getFunction($ID.getText());
+
+      // Make sure args == parameters
+      if ($args.types.size() == ty.getParams().size()) {
+
+         for (int ndx = 0; ndx < ty.getParams().size(); ndx++) {
+            Type p = ty.getParams().get(ndx).getType();
+            Type a = $args.types.get(ndx);
+
+            if (!p.equals(a)) {
+               Evil.error("Mismatched type in call to function " + $ID.getText()
+                + ", argument " + (ndx + 1) + " should be " + p + " but is " + a
+                + ".", $ID.getLine());
+            }
+         }
+         
+      } else {
+         Evil.error("Call to " + $ID.getText() + " has " 
+          + $args.types.size() + " arguments, but needs " 
+          + ty.getParams().size() + ".", $ID.getLine());
+      }
+
       if (ty.is_func()) {
          t = ty.getReturn();
       }
    }
    ;
 
-arguments
+arguments returns [List<Type> types]
 @init {
+   $types = new LinkedList<Type>();
 }
-   : ^(ARGS (expression)*)
+   : ^(ARGS (ex=expression { $types.add($ex.t); })*)
    ;
 
 expression returns [Type t]
