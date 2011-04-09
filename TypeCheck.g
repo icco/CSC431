@@ -268,7 +268,7 @@ ret returns [Type t]
       }
 
       if (!ret.equals(funcRetType)) {
-         Evil.error("Return type does not match function type.");
+         Evil.error("Return type " + ret + " does not match function return type " + funcRetType  + ".");
       } else {
          $t = ret;
       }
@@ -367,10 +367,10 @@ factor returns [Type t]
    | ID { $t = symTable.get($ID.getText()); }
    | ^(DOT f=factor ID) {
          if ($f.t.is_struct()) {
-            $t = new NullType(); // Implement.
+            $t = $f.t.getField($ID.getText());
          } else {
-            Evil.error("Trying to access field of a non-struct on line " 
-             + $DOT.getLine() + ".");
+            Evil.error("Trying to access field of a " + $f.t + " on line " 
+            + $DOT.getLine() + ".");
          }
       }
    | i=invocation { $t = $i.t; }

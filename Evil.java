@@ -18,6 +18,8 @@ import java.util.HashMap;
  */
 public class Evil {
    private static boolean debugFlag = false;
+   public static CommandLine cmd = null;
+   private static String _inputFile = null;
 
    public static void main(String[] args) {
       // Store the options
@@ -52,9 +54,6 @@ public class Evil {
          error(e.toString());
       }
    }
-
-   public static CommandLine cmd = null;
-   private static String _inputFile = null;
 
    /**
     * Defines possible options and sets them up.
@@ -101,12 +100,12 @@ public class Evil {
    }
 
    public static void error(String msg) {
-      System.err.println(msg);
-      System.exit(1);
+      error(msg, 0);
    }
 
    public static void error(String msg, int lineno) {
-      System.err.println(lineno + ": " + msg);
+      System.err.println(lineno + " : " + msg);
+      //System.err.println(_inputFile + ":" + lineno + " : " + msg);
       System.exit(1);
    }
 
