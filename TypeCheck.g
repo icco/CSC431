@@ -133,8 +133,6 @@ function returns [Symbol s]
     {
        Type returnStatement = $statement_list.t;
     }
-
-
     )
    ;
 
@@ -261,7 +259,7 @@ ret returns [Type t]
       }
 
       if (!ret.equals(funcRetType)) {
-         Evil.error("Return type " + ret + " does not match function return type " + funcRetType  + ".");
+         Evil.error("Return type " + ret + " does not match function return type " + funcRetType  + ".", $RETURN.getLine());
       } else {
          $t = ret;
       }
