@@ -362,9 +362,9 @@ factor returns [Type t]
    | ID { $t = symTable.get($ID.getText()); }
    | ^(DOT f=factor ID) {
          if ($f.t.is_struct()) {
-            $t = $f.t.getField($ID.getText());
+            $t = ((StructType)$f.t).getField($ID.getText());
          } else {
-            Evil.error("Trying to access field of a " + $f.t + ".");
+            Evil.error("Trying to access field of a " + $f.t + ".", $ID.getLine());
          }
       }
    | i=invocation { $t = $i.t; }
