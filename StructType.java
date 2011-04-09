@@ -6,6 +6,7 @@ public class StructType extends Type implements Cloneable {
 
    StructType() {
       members = new HashMap<String, Type>();
+      name = "noname";
    }
 
    public StructType clone() {
@@ -20,7 +21,7 @@ public class StructType extends Type implements Cloneable {
       Type t = members.get(field);
 
       if (t == null) {
-         Evil.error("Trying to access undeclared field" + field 
+         Evil.error("Trying to access undeclared field " + field 
           + " in struct " + getName());
       }
 
@@ -29,4 +30,8 @@ public class StructType extends Type implements Cloneable {
 
    public void setName(String name) { this.name = name; }
    public String getName() { return this.name; }
+
+   public String toString() {
+      return super.toString() + " " + getName();
+   }
 }
