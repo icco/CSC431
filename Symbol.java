@@ -9,6 +9,11 @@ public class Symbol {
       this.t = t;
    }
 
+   public Symbol(String name, Type t, int line) {
+      this(name, t);
+      this.lineNumber = line;
+   }
+
    public String toString() {
       return getType() + " " + getName() + " on line " + getLine();
    }

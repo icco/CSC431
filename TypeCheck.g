@@ -42,13 +42,19 @@ types
    : ^(TYPES (types_declaration)*)
    ;
 
-types_declaration
+types_declaration returns [StructType struct]
 @init {
+   $struct = new StructType();
 }
-   : ^(STRUCT ID (var_decl)+)
-   {
-      // TODO: We need to build the actual struct to store here.
-   }
+   : ^(STRUCT ID 
+      { 
+         String name = $ID.getText();
+         Symbol s = new Symbol(name, $struct, $ID.getLine());
+
+         $struct.setName(name);
+         symTable.bindStruct(s);
+      }
+      (var_decl { $struct.addField($var_decl.s); })+)
    ;
 
 var_decl returns [Symbol s]
@@ -56,8 +62,7 @@ var_decl returns [Symbol s]
 }
    : ^(DECL ^(TYPE type) ID)
    {
-      $s = new Symbol($ID.getText(), $type.t);
-      $s.setLine($ID.getLine());
+      $s = new Symbol($ID.getText(), $type.t, $ID.getLine());
    }
    ;
 
@@ -67,10 +72,8 @@ type returns [Type t]
    : INT { $t = new IntType(); }
    | BOOL { $t = new BoolType(); }
    | ^(STRUCT ID) {
-      // TODO
-      // This is someone creating a new struct. So we need the name of the
-      // struct they are creating, such as A or something.
-      $t = new StructType();
+      StructType struct = symTable.getStruct($ID.getText());
+      $t = struct.clone();
    }
    ;
 
@@ -362,7 +365,8 @@ factor returns [Type t]
    | ID { $t = symTable.get($ID.getText()); }
    | ^(DOT f=factor ID) {
          if ($f.t.is_struct()) {
-            $t = ((StructType)$f.t).getField($ID.getText());
+            StructType struct = (StructType)$f.t;
+            $t = struct.getField($ID.getText());
          } else {
             Evil.error("Trying to access field of a " + $f.t + ".", $ID.getLine());
          }
