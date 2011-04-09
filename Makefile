@@ -8,7 +8,7 @@ DEBUGFLAGS=
 RUNFLAGS=
 JAVAFLAGS=-Xlint:unchecked
 
-TYPECHECKOBJECTS=Type.java BoolType.java IntType.java FuncType.java StructType.java SymbolTable.java Symbol.java
+TYPECHECKOBJECTS=Type.java BoolType.java IntType.java FuncType.java StructType.java SymbolTable.java Symbol.java NullType.java
 
 export CLASSPATH=.:./antlr-3.3-complete.jar:./commons-cli-1.2.jar
 

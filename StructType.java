@@ -6,11 +6,24 @@ public class StructType extends Type implements Cloneable {
 
    StructType() {
       members = new HashMap<String, Type>();
-      name = "noname";
+      name = "shouldn't exist";
    }
 
    public StructType clone() {
       return this; /** TODO if we want this for more than type checking */
+   }
+
+   public boolean equals(Object other) {
+      StructType otherStruct;
+
+      if (other instanceof StructType) {
+         otherStruct = (StructType)other;
+
+         return otherStruct instanceof NullType 
+          || otherStruct.getName().equals(getName());
+      }
+
+      return false;
    }
 
    public void addField(Symbol s) {

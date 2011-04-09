@@ -377,7 +377,9 @@ factor returns [Type t]
    : INTEGER { $t = new IntType(); }
    | TRUE { $t = new BoolType(); }
    | FALSE { $t = new BoolType(); }
-   | ^(NEW ID) { $t = new StructType(); }
+   | ^(NEW ID) { 
+      $t = symTable.getStruct($ID.getText()).clone();
+    }
    | NULL { $t = new NullType(); }
    | ID { $t = symTable.get($ID.getText()); }
    | ^(DOT f=factor ID) {
