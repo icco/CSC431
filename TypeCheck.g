@@ -132,11 +132,6 @@ function returns [Symbol s]
     statement_list
     {
        Type returnStatement = $statement_list.t;
-
-       if (!fun.getReturn().equals(returnStatement)) {
-          Evil.error("Function " + $s.getName() + " has return type "
-           + fun.getReturn() + " but is returning " + returnStatement);
-       }
     }
 
 
