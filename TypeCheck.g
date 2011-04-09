@@ -338,12 +338,14 @@ unop returns [OperatorType t]
       t = new OperatorType();
       t.setUnary();
       t.setType("BoolType");
+      t.setOutType("BoolType");
    }
    | NEG
    {
       t = new OperatorType();
       t.setUnary();
       t.setType("IntType");
+      t.setOutType("IntType");
    }
    ;
 
