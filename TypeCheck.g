@@ -29,9 +29,7 @@ verify
    }
 
    functions {
-      // We're binding the function deeper in the tree,
-      // but I'm leaving this here in case that ends up not working.
-      // symTable.bindFunctions($functions.symbols, true);
+      symTable.getFunction("main");
    }
    )
    ;

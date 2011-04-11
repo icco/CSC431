@@ -1,0 +1,15 @@
+struct A
+{
+   int i;
+   struct A a;
+};
+
+bool bob;
+int i, j, k;
+struct A b, bb, bbb;
+
+fun foo() int
+{
+   return 0;
+}
+
