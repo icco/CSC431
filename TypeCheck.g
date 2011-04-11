@@ -132,6 +132,11 @@ function returns [Symbol s]
 
     statement_list {
        Type returnStatement = $statement_list.t;
+
+       if (returnStatement == null ||
+        !returnStatement.equals(fun.getReturn())) {
+          Evil.error("There are some branches that don't return correctly.");
+       }
     }
     )
    ;
@@ -156,9 +161,7 @@ statement_list returns [Type t]
 }
    : ^(STMTS (statement
    {
-      if ($statement.t != null) {
-         $t = $statement.t;
-      }
+      $t = $statement.t; /** Works unless code is allowed after return statment */
    }) *)
    ;
 
@@ -169,8 +172,8 @@ statement returns [Type t]
    | assignment
    | print
    | read
-   | conditional
-   | loop
+   | conditional { $t = $conditional.t; }
+   | loop { $t = $loop.t; }
    | delete
    | ret { $t = $ret.t; }
    | i=invocation { $t = $i.t; }
@@ -221,12 +224,23 @@ read
 conditional returns [Type t]
 @init {
 }
-   : ^(IF e=expression tb=block (fb=block)?) {
-      if (!$e.t.is_bool()) { Evil.error("Conditional in if must be a boolean.", $IF.getLine()); }
+   :  ^(IF e=expression tb=block (fb=block)?) {
+      if (!$e.t.is_bool()) {
+         Evil.error("Conditional in if must be a boolean.", $IF.getLine());
+      }
+
+      if ($fb.t == null) {
+         $t = $tb.t;
+      } else if ($tb.t.equals($fb.t)) {
+         $t = $tb.t;
+      } else {
+         $t = null;
+         Evil.error("There are some branches that don't return correctly");
+      }
    }
    ;
 
-loop
+loop returns [Type t]
 @init {
 }
    : ^(WHILE e1=expression block e2=expression) {
