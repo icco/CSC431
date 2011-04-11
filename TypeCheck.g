@@ -131,11 +131,10 @@ function returns [Symbol s]
     }
 
     statement_list {
-       Type returnStatement = $statement_list.t;
+       Boolean foundReturn = $statement_list.ret;
 
-       if (returnStatement == null ||
-        !returnStatement.equals(fun.getReturn())) {
-          Evil.error("There are some branches that don't return correctly.", $ID.getLine());
+       if (!(fun.getReturn() instanceof VoidType) && !foundReturn) {
+          Evil.error("Missing return statment for function.", $ID.getLine());
        }
     }
     )
@@ -155,34 +154,35 @@ parameters returns [List<Symbol> params]
    : ^(PARAMS (var_decl { $params.add($var_decl.s); })*)
    ;
 
-statement_list returns [Type t]
+statement_list returns [Boolean ret]
 @init {
-   $t = new VoidType();
+   $ret = false;
 }
    : ^(STMTS (statement
    {
-      $t = $statement.t; /** Works unless code is allowed after return statment */
+      $ret = $ret || $statement.ret; 
    }) *)
    ;
 
-statement returns [Type t]
+statement returns [Boolean ret]
 @init {
+   $ret = false;
 }
-   : block { $t = $block.t; }
+   : block { $ret = $block.ret; }
    | assignment
    | print
    | read
-   | conditional { $t = $conditional.t; }
-   | loop { $t = $loop.t; }
+   | conditional { $ret = $conditional.ret; }
+   | loop 
    | delete
-   | ret { $t = $ret.t; }
-   | i=invocation { $t = $i.t; }
+   | ret { $ret = true; }
+   | i=invocation 
    ;
 
-block returns [Type t]
+block returns [Boolean ret]
 @init {
 }
-   : ^(BLOCK statement_list { $t = $statement_list.t; })
+   : ^(BLOCK statement_list { $ret = $statement_list.ret; })
    ;
 
 assignment
@@ -221,7 +221,7 @@ read
    : ^(READ lvalue)
    ;
 
-conditional returns [Type t]
+conditional returns [Boolean ret]
 @init {
 }
    :  ^(IF e=expression tb=block (fb=block)?) {
@@ -229,12 +229,10 @@ conditional returns [Type t]
          Evil.error("Conditional in if must be a boolean.", $IF.getLine());
       }
 
-      if ($fb.t == null) {
-         $t = $tb.t;
-      } else if ($tb.t.equals($fb.t)) {
-         $t = $tb.t;
+      if ($fb.ret == null) {
+         $ret = $tb.ret;
       } else {
-         $t = new VoidType(); 
+         $ret = $tb.ret && $fb.ret;   
       }
    }
    ;
@@ -254,7 +252,7 @@ delete
    : ^(DELETE expression)
    ;
 
-ret returns [Type t]
+ret 
 @init {
 }
    : ^(RETURN (expression)?) {
@@ -266,10 +264,10 @@ ret returns [Type t]
       }
 
       if (!ret.equals(funcRetType)) {
-         Evil.error("Return type " + ret + " does not match function return type " + funcRetType  + ".", $RETURN.getLine());
-      } else {
-         $t = ret;
-      }
+         Evil.error("Return type " + ret 
+          + " does not match function return type " + funcRetType  
+          + ".", $RETURN.getLine());
+      } 
    }
    ;
 
