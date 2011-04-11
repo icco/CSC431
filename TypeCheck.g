@@ -234,8 +234,7 @@ conditional returns [Type t]
       } else if ($tb.t.equals($fb.t)) {
          $t = $tb.t;
       } else {
-         $t = null;
-         Evil.error("There are some branches that don't return correctly");
+         $t = new VoidType(); 
       }
    }
    ;
