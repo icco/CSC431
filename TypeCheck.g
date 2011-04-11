@@ -135,7 +135,7 @@ function returns [Symbol s]
 
        if (returnStatement == null ||
         !returnStatement.equals(fun.getReturn())) {
-          Evil.error("There are some branches that don't return correctly.");
+          Evil.error("There are some branches that don't return correctly.", $ID.getLine());
        }
     }
     )
