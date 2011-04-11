@@ -21,4 +21,3 @@ fun bar(int i) int      # control flow case
       }
    }
 }
-
