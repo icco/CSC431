@@ -1,3 +1,10 @@
+/**
+ * Type checker.
+ *
+ * @author Nat Welch
+ * @author Ben Sweedler
+ */
+
 tree grammar TypeCheck;
 
 options {
@@ -44,8 +51,7 @@ types_declaration returns [StructType struct]
 @init {
    $struct = new StructType();
 }
-   : ^(STRUCT ID 
-      { 
+   : ^(STRUCT ID {
          String name = $ID.getText();
          Symbol s = new Symbol(name, $struct, $ID.getLine());
 
@@ -58,8 +64,7 @@ types_declaration returns [StructType struct]
 var_decl returns [Symbol s]
 @init {
 }
-   : ^(DECL ^(TYPE type) ID)
-   {
+   : ^(DECL ^(TYPE type) ID) {
       $s = new Symbol($ID.getText(), $type.t, $ID.getLine());
    }
    ;
@@ -86,8 +91,7 @@ declaration returns [List<Symbol> symbols]
 @init {
    $symbols = new LinkedList<Symbol>();
 }
-   : ^(DECLLIST ^(TYPE type) (ID
-   {
+   : ^(DECLLIST ^(TYPE type) (ID {
       String name = $ID.getText();
       Type t = $type.t;
       Symbol s = new Symbol(name, t);
@@ -108,8 +112,7 @@ function returns [Symbol s]
 @init {
    FuncType fun = new FuncType();
 }
-   : ^(FUN ID parameters ^(RETTYPE return_type) declarations
-    {
+   : ^(FUN ID parameters ^(RETTYPE return_type) declarations {
        fun.setParams($parameters.params);
        fun.setReturn($return_type.t);
 
@@ -127,13 +130,12 @@ function returns [Symbol s]
        symTable.bindFunction($s);
     }
 
-    statement_list
-    {
+    statement_list {
        Type returnStatement = $statement_list.t;
 
-       if (returnStatement == null || 
+       if (returnStatement == null ||
         !returnStatement.equals(fun.getReturn())) {
-          Evil.error("There are some branches that don't return correctly.");  
+          Evil.error("There are some branches that don't return correctly.");
        }
     }
     )
@@ -186,15 +188,13 @@ block returns [Type t]
 assignment
 @init {
 }
-   : ^(ASSIGN ex=expression lval=lvalue)
-   {
+   : ^(ASSIGN ex=expression lval=lvalue) {
       if (!$ex.t.equals($lval.t)) {
          Evil.error("Assignment lvalue type doesn't match expresion", $ASSIGN.getLine());
       }
    }
    ;
 
-// TODO: This needs more work...
 lvalue returns [Type t]
 @init {
 }
@@ -209,26 +209,24 @@ lvalue_h returns [Type t]
    | ^(DOT lvalue_h ID)
    ;
 
-// TODO: This needs more work...
 print
 @init {
 }
-   :  ^(PRINT expression (ENDL)?)
+   : ^(PRINT expression (ENDL)?)
    ;
 
 read
 @init {
 }
-   :  ^(READ lvalue)
+   : ^(READ lvalue)
    ;
 
 conditional returns [Type t]
 @init {
 }
-   :  ^(IF e=expression tb=block (fb=block)?)
-   {
-      if (!$e.t.is_bool()) { 
-         Evil.error("Conditional in if must be a boolean.", $IF.getLine()); 
+   :  ^(IF e=expression tb=block (fb=block)?) {
+      if (!$e.t.is_bool()) {
+         Evil.error("Conditional in if must be a boolean.", $IF.getLine());
       }
 
       if ($fb.t == null) {
@@ -244,8 +242,7 @@ conditional returns [Type t]
 loop returns [Type t]
 @init {
 }
-   : ^(WHILE e1=expression block e2=expression)
-   {
+   : ^(WHILE e1=expression block e2=expression) {
       if (!$e1.t.is_bool()) { Evil.error("Conditional in while must be a boolean.", $WHILE.getLine()); }
       if (!$e2.t.is_bool()) { Evil.error("Conditional in while must be a boolean.", $WHILE.getLine()); }
    }
@@ -260,8 +257,7 @@ delete
 ret returns [Type t]
 @init {
 }
-   : ^(RETURN (expression)?)
-   {
+   : ^(RETURN (expression)?) {
       Type ret = new VoidType();
       Type funcRetType = symTable.getFunction(currentFunc).getReturn();
 
@@ -280,13 +276,11 @@ ret returns [Type t]
 invocation returns [Type t]
 @init {
 }
-   : ^(INVOKE ID args=arguments)
-   {
+   : ^(INVOKE ID args=arguments) {
       FuncType ty = symTable.getFunction($ID.getText());
 
       // Make sure args == parameters
       if ($args.types.size() == ty.getParams().size()) {
-
          for (int ndx = 0; ndx < ty.getParams().size(); ndx++) {
             Type p = ty.getParams().get(ndx).getType();
             Type a = $args.types.get(ndx);
@@ -297,10 +291,9 @@ invocation returns [Type t]
                 + ".", $ID.getLine());
             }
          }
-         
       } else {
-         Evil.error("Call to " + $ID.getText() + " has " 
-          + $args.types.size() + " arguments, but needs " 
+         Evil.error("Call to " + $ID.getText() + " has "
+          + $args.types.size() + " arguments, but needs "
           + ty.getParams().size() + ".", $ID.getLine());
       }
 
@@ -321,43 +314,38 @@ expression returns [Type t]
 @init {
 }
    : f=factor { $t = $f.t; }
-   | ^(u=unop f1=factor)
-   {
+   | ^(u=unop f1=factor) {
       if ($f1.t != null) {
          if (!$u.t.checkValid($f1.t)) { Evil.error($u.t.toString()); }
       }
 
-      t = u.out();
+      $t = u.out();
    }
-   | ^(u=binop f1=factor f2=factor)
-   {
+   | ^(u=binop f1=factor f2=factor) {
       // These must be the same, and the correct type for their operation.
       if ($f1.t != null && $f2.t != null) {
          if (!$u.t.checkValid($f1.t, $f2.t)) { Evil.error($u.t.toString()); }
          if (!$f1.t.equals($f2.t)) { Evil.error("Both objects in a boolean operation must be the same type."); }
       }
 
-      t = u.out();
+      $t = u.out();
    }
    ;
 
 binop returns [OperatorType t]
-   : (AND | OR)
-   {
+   : (AND | OR) {
       t = new OperatorType();
       t.setBinary();
       t.setType("BoolType");
       t.setOutType("BoolType");
    }
-   | (EQ | LT | GT | NE | LE | GE)
-   {
+   | (EQ | LT | GT | NE | LE | GE) {
       t = new OperatorType();
       t.setBinary();
       t.setType("IntType");
       t.setOutType("BoolType");
    }
-   | (PLUS | MINUS | TIMES | DIVIDE)
-   {
+   | (PLUS | MINUS | TIMES | DIVIDE) {
       t = new OperatorType();
       t.setBinary();
       t.setType("IntType");
@@ -366,15 +354,13 @@ binop returns [OperatorType t]
    ;
 
 unop returns [OperatorType t]
-   : NOT
-   {
+   : NOT {
       t = new OperatorType();
       t.setUnary();
       t.setType("BoolType");
       t.setOutType("BoolType");
    }
-   | NEG
-   {
+   | NEG {
       t = new OperatorType();
       t.setUnary();
       t.setType("IntType");
@@ -388,7 +374,7 @@ factor returns [Type t]
    : INTEGER { $t = new IntType(); }
    | TRUE { $t = new BoolType(); }
    | FALSE { $t = new BoolType(); }
-   | ^(NEW ID) { 
+   | ^(NEW ID) {
       $t = symTable.getStruct($ID.getText()).clone();
     }
    | NULL { $t = new NullType(); }
