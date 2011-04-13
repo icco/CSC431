@@ -3,7 +3,10 @@
 # This is a test script for milestone 1.
 
 for file in $(ls tests/*.ev); do
-   echo "--- Running test $file"
    java Evil $file
-   echo ""
+   if [ $? -eq 0 ]; then
+      echo "."
+   else
+      echo "F"
+   fi
 done
