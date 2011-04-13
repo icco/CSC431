@@ -19,7 +19,7 @@ import java.util.HashMap;
 public class Evil {
    private static boolean debugFlag = false;
    public static CommandLine cmd = null;
-   private static String _inputFile = null;
+   private static String inputFile = null;
 
    public static void main(String[] args) {
       // Store the options
@@ -87,12 +87,13 @@ public class Evil {
 
          String[] fileArgs = cmd.getArgs();
 
+         // Set input file.
          if (fileArgs.length > 1) {
             error("Too many files to compile.");
          } else if (fileArgs.length == 0) {
-            _inputFile = null;
+            inputFile = null;
          } else {
-            _inputFile = fileArgs[0];
+            inputFile = fileArgs[0];
          }
       } catch (ParseException exp) {
          error("Unexpected exception:" + exp.getMessage());
@@ -104,8 +105,11 @@ public class Evil {
    }
 
    public static void error(String msg, int lineno) {
-      System.err.println(lineno + " : " + msg);
-      //System.err.println(_inputFile + ":" + lineno + " : " + msg);
+      if (inputFile == null)
+         System.err.println(lineno + " : " + msg);
+      else
+         System.err.println(inputFile + ":" + lineno + " : " + msg);
+
       System.exit(1);
    }
 
@@ -118,16 +122,12 @@ public class Evil {
    private static EvilLexer createLexer() {
       try {
          ANTLRInputStream input;
-         if (_inputFile == null)
-         {
-            input = new ANTLRInputStream(System.in);
-         } else {
-            input = new ANTLRInputStream(
-                  new BufferedInputStream(new FileInputStream(_inputFile)));
-         }
+
+         input = new ANTLRInputStream(new BufferedInputStream(new FileInputStream(inputFile)));
+
          return new EvilLexer(input);
       } catch (java.io.IOException e) {
-         System.err.println("file not found: " + _inputFile);
+         System.err.println("file not found: " + inputFile);
          System.exit(1);
          return null;
       }
