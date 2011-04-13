@@ -69,6 +69,7 @@ public class Evil {
       options.addOption("a", "displayAST", false, "Print out a dotty graph of the AST." );
       options.addOption("d", "debug", false, "Print debug messages while running." );
       options.addOption("h", "help", false, "Print this help message." );
+      options.addOption("i", "dumpIL", false, "Dump ILOC to STDOUT." );
 
       try {
          // parse the command line arguments
