@@ -31,14 +31,7 @@ public class StructType extends Type implements Cloneable {
    }
 
    public Type getField(String field) {
-      Type t = members.get(field);
-
-      if (t == null) {
-         Evil.error("Trying to access undeclared field " + field 
-          + " in struct " + getName());
-      }
-
-      return t;
+      return members.get(field);
    }
 
    public void setName(String name) { this.name = name; }

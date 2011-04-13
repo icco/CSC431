@@ -380,7 +380,13 @@ factor returns [Type t]
    | ^(DOT f=factor ID) {
          if ($f.t.is_struct()) {
             StructType struct = (StructType)$f.t;
-            $t = struct.getField($ID.getText());
+            String field = $ID.getText();
+
+            $t = struct.getField(field);
+            if ($t == null) {
+               Evil.error("Trying to access undeclared field " + field 
+                + " in struct " + struct.getName(), $DOT.getLine());
+            }
          } else {
             Evil.error("Trying to access field of a " + $f.t + ".", $ID.getLine());
          }
