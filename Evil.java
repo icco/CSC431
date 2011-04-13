@@ -90,9 +90,9 @@ public class Evil {
 
          // Set input file.
          if (fileArgs.length > 1) {
-            error("Too many files to compile.");
+            error("Only one file can be compiled at a time.");
          } else if (fileArgs.length == 0) {
-            inputFile = null;
+            error("No files specified.");
          } else {
             inputFile = fileArgs[0];
          }
