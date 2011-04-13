@@ -36,7 +36,9 @@ verify
    }
 
    functions {
-      symTable.getFunction("main");
+      if (symTable.getFunction("main") == null) {
+         Evil.error("Function main is undeclared.", $PROGRAM.getLine());
+      }
    }
    )
    ;
@@ -76,6 +78,9 @@ type returns [Type t]
    | BOOL { $t = new BoolType(); }
    | ^(STRUCT ID) {
       StructType struct = symTable.getStruct($ID.getText());
+      if (struct == null)
+         Evil.error("Struct " + $ID.getText() + " is undeclared", $ID.getLine());
+
       $t = struct.clone();
    }
    ;
@@ -160,7 +165,7 @@ statement_list returns [Boolean ret]
 }
    : ^(STMTS (statement
    {
-      $ret = $ret || $statement.ret; 
+      $ret = $ret || $statement.ret;
    }) *)
    ;
 
@@ -173,10 +178,10 @@ statement returns [Boolean ret]
    | print
    | read
    | conditional { $ret = $conditional.ret; }
-   | loop 
+   | loop
    | delete
    | ret { $ret = true; }
-   | i=invocation 
+   | i=invocation
    ;
 
 block returns [Boolean ret]
@@ -190,7 +195,7 @@ assignment
 }
    : ^(ASSIGN ex=expression lval=lvalue) {
       if (!$ex.t.equals($lval.t)) {
-         Evil.error("Assignment lvalue type doesn't match expresion", $ASSIGN.getLine());
+         Evil.error("Assignment lvalue type doesn't match expresion.", $ASSIGN.getLine());
       }
    }
    ;
@@ -198,14 +203,26 @@ assignment
 lvalue returns [Type t]
 @init {
 }
-   : ID { $t = symTable.get($ID.getText()); }
+   : ID {
+      Type s = symTable.get($ID.getText());
+      if (s == null)
+         Evil.error("Reference to undeclared variable " + $ID.getText(), $ID.getLine());
+
+      $t = s;
+      }
    | ^(DOT lvalue_h ID)
    ;
 
 lvalue_h returns [Type t]
 @init {
 }
-   : ID { $t = symTable.get($ID.getText()); }
+   : ID {
+      Type s = symTable.get($ID.getText());
+      if (s == null)
+         Evil.error("Reference to undeclared variable " + $ID.getText(), $ID.getLine());
+
+      $t = s;
+      }
    | ^(DOT lvalue_h ID)
    ;
 
@@ -232,7 +249,7 @@ conditional returns [Boolean ret]
       if ($fb.ret == null) {
          $ret = $tb.ret;
       } else {
-         $ret = $tb.ret && $fb.ret;   
+         $ret = $tb.ret && $fb.ret;
       }
    }
    ;
@@ -252,22 +269,29 @@ delete
    : ^(DELETE expression)
    ;
 
-ret 
+ret
 @init {
 }
    : ^(RETURN (expression)?) {
       Type ret = new VoidType();
-      Type funcRetType = symTable.getFunction(currentFunc).getReturn();
+      FuncType f = symTable.getFunction(currentFunc);
+      Type funcRetType = null;
+
+      if (f == null) {
+         Evil.error("Function " + currentFunc + "is undeclared", $RETURN.getLine());
+      } else {
+         funcRetType = f.getReturn();
+      }
 
       if ($expression.t != null) {
          ret = $expression.t;
       }
 
       if (!ret.equals(funcRetType)) {
-         Evil.error("Return type " + ret 
-          + " does not match function return type " + funcRetType  
+         Evil.error("Return type " + ret
+          + " does not match function return type " + funcRetType
           + ".", $RETURN.getLine());
-      } 
+      }
    }
    ;
 
@@ -276,6 +300,9 @@ invocation returns [Type t]
 }
    : ^(INVOKE ID args=arguments) {
       FuncType ty = symTable.getFunction($ID.getText());
+      if (ty == null) {
+         Evil.error("Function " + $ID.getText() + "is undeclared", $ID.getLine());
+      }
 
       // Make sure args == parameters
       if ($args.types.size() == ty.getParams().size()) {
@@ -373,10 +400,21 @@ factor returns [Type t]
    | TRUE { $t = new BoolType(); }
    | FALSE { $t = new BoolType(); }
    | ^(NEW ID) {
-      $t = symTable.getStruct($ID.getText()).clone();
+      StructType s = symTable.getStruct($ID.getText());
+      if (s == null) {
+         Evil.error("Struct " + $ID.getText() + " is undeclared", $ID.getLine());
+      } else {
+         $t = s.clone();
+      }
     }
    | NULL { $t = new NullType(); }
-   | ID { $t = symTable.get($ID.getText()); }
+   | ID {
+      Type s = symTable.get($ID.getText());
+      if (s == null)
+         Evil.error("Reference to undeclared variable " + $ID.getText(), $ID.getLine());
+
+      $t = s;
+      }
    | ^(DOT f=factor ID) {
          if ($f.t.is_struct()) {
             StructType struct = (StructType)$f.t;
@@ -384,7 +422,7 @@ factor returns [Type t]
 
             $t = struct.getField(field);
             if ($t == null) {
-               Evil.error("Trying to access undeclared field " + field 
+               Evil.error("Trying to access undeclared field " + field
                 + " in struct " + struct.getName(), $DOT.getLine());
             }
          } else {

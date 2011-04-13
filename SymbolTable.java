@@ -9,10 +9,10 @@ public class SymbolTable {
    protected Map<String, Type> functions;
 
    public SymbolTable() {
-      globals = new HashMap<String, Type>(); 
-      locals = new HashMap<String, Type>(); 
-      structs = new HashMap<String, Type>(); 
-      functions = new HashMap<String, Type>(); 
+      globals = new HashMap<String, Type>();
+      locals = new HashMap<String, Type>();
+      structs = new HashMap<String, Type>();
+      functions = new HashMap<String, Type>();
    }
 
    public String getTableName(Map table) {
@@ -50,8 +50,7 @@ public class SymbolTable {
          Evil.debug("Bound " + s + " in " + getTableName(table) + " table");
 
       } else {
-         Evil.error("Cannot redeclare " + s 
-          + " as " + getTableName(table));
+         Evil.error("Cannot redeclare " + s + " as " + getTableName(table), s.getLine());
       }
    }
 
@@ -64,18 +63,11 @@ public class SymbolTable {
          return globals.get(name);
       }
 
-      Evil.error("Reference to undeclared variable " + name);
-
       return null;
    }
 
    public StructType getStruct(String name) {
       StructType s = (StructType)structs.get(name);
-
-      if (s == null) {
-         Evil.error("Struct " + name + " is undeclared");
-      }
-
       return s;
    }
 
@@ -83,7 +75,7 @@ public class SymbolTable {
       FuncType fun = (FuncType)functions.get(name);
 
       if (fun == null) {
-         Evil.error("Function " + name + " is undeclared");
+         return null;
       }
 
       return fun;
