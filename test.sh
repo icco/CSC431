@@ -5,4 +5,5 @@
 for file in $(ls tests/*.ev); do
    echo "--- Running test $file"
    java Evil $file
+   echo ""
 done
