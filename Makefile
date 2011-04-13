@@ -29,7 +29,7 @@ antlr.generated.type: TypeCheck.g
 	@touch antlr.generated.type
 
 run: Evil.class
-	java Evil ${RUNFLAGS} < tests/2.ev
+	java Evil ${RUNFLAGS} tests/2.ev
 
 test: Evil.class
 	@./test.sh
