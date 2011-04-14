@@ -3,22 +3,26 @@
 # @author Ben Sweedler
 # @author Nat Welch
 
-TYPEOBJECTS=Type.java BoolType.java DottedTree.java Evil.java VoidType.java FunctionTree.java FuncType.java IntType.java StructType.java Symbol.java SymbolTable.java Type.java OperatorType.java NullType.java
 DEBUGFLAGS=
 RUNFLAGS=
+JAVAFLAGS=-Xlint:unchecked
 
-TYPEOBJECTS=Type.java BoolType.java IntType.java FuncType.java StructType.java SymbolTable.java Symbol.java NullType.java
+TYPEOBJECTS=Type.java BoolType.java VoidType.java FuncType.java IntType.java StructType.java Symbol.java Type.java OperatorType.java NullType.java
+EVILOBJECTS=DottedTree.java FunctionTree.java TypeCheck.java SymbolTable.java
+
+TYPECLASSES=${TYPEOBJECTS:.java=.class}
+EVILCLASSES=${EVILOBJECTS:.java=.class}
 
 export CLASSPATH=.:./antlr-3.3-complete.jar:./commons-cli-1.2.jar
 
+# default rule of .java files to depend on their .class file.
 .SUFFIXES: .java .class
 .java.class:
-	javac $*.java
+	javac ${JAVAFLAGS} $*.java
 
 all: Evil.class
 
-Evil.class: antlr.generated ${FILES} ${TYPEOBJECTS}
-	javac ${JAVAFLAGS} *.java
+Evil.class: ${TYPECLASSES} antlr.generated ${EVILCLASSES}
 
 antlr.generated: antlr.generated.evil antlr.generated.type
 	@touch antlr.generated
@@ -30,6 +34,8 @@ antlr.generated.evil: Evil.g
 antlr.generated.type: TypeCheck.g
 	java org.antlr.Tool ${DEBUGFLAGS} TypeCheck.g
 	@touch antlr.generated.type
+
+TypeCheck.class: TypeCheck.java
 
 run: Evil.class
 	java Evil ${RUNFLAGS} tests/4.ev
