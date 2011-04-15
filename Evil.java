@@ -47,9 +47,14 @@ public class Evil {
          CommonTreeNodeStream nodes = new CommonTreeNodeStream(t);
          nodes.setTokenStream(tokens);
          TypeCheck tparser = new TypeCheck(nodes);
+         CFG cfg = new CFG(nodes);
 
          if (typeFlag)
             tparser.verify();
+
+         cfg.build();
+         if (dumpFlag)
+            cfg.dump();
 
          System.out.println(typeFlag);
 

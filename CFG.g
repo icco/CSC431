@@ -1,21 +1,37 @@
-tree grammar Walker;
+/**
+ * CFG Builder.
+ * @author Ben Sweedler
+ * @author Nat Welch
+ */
 
-options
-{
+tree grammar CFG;
+
+options {
    tokenVocab=Evil;
    ASTLabelType=CommonTree;
    backtrack=true;
 }
 
-@header
-{
+@header {
    import java.util.Map;
    import java.util.HashMap;
    import java.util.Vector;
    import java.util.Iterator;
 }
 
-verify
+@members {
+   // Creates a CFG mapping label names to boxes
+   private static GraphTable cfg = new GraphTable(100);
+
+   public void dump() {
+      // Verify that build has already been run?
+
+      // Print out Graph.
+      System.out.println(cfg);
+   }
+}
+
+build
 @init {
 }
    : ^(PROGRAM types declarations functions)
@@ -68,7 +84,12 @@ functions
 function
 @init {
 }
-   : ^(FUN ID parameters ^(RETTYPE return_type) declarations statement_list)
+   : ^(FUN ID parameters ^(RETTYPE return_type) declarations statement_list) {
+
+      // Store the function...
+      Node n = new Node();
+      cfg.put($ID.getText(), n);
+   }
    ;
 
 return_type
@@ -119,15 +140,15 @@ assignment
 lvalue
 @init {
 }
-   :  ID 
+   :  ID
    | ^(DOT lvalue_h ID)
    ;
 
 lvalue_h
 @init {
 }
-   :  ID 
-   | ^(DOT lvalue_h ID) 
+   :  ID
+   | ^(DOT lvalue_h ID)
    ;
 
 print
@@ -186,7 +207,7 @@ expression
    | ^(binop factor factor)
    ;
 
-binop 
+binop
    : (AND | OR | EQ | LT | GT | NE | LE | GE | PLUS | MINUS | TIMES | DIVIDE)
    ;
 

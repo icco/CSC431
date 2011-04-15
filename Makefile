@@ -17,7 +17,7 @@ all: Evil.class
 Evil.class: antlr.generated ${FILES} ${TYPECHECKOBJECTS}
 	javac ${JAVAFLAGS} *.java
 
-antlr.generated: antlr.generated.evil antlr.generated.type
+antlr.generated: antlr.generated.evil antlr.generated.type antlr.generated.cfg
 	@touch antlr.generated
 
 antlr.generated.evil: Evil.g
@@ -27,6 +27,10 @@ antlr.generated.evil: Evil.g
 antlr.generated.type: TypeCheck.g
 	java org.antlr.Tool ${DEBUGFLAGS} TypeCheck.g
 	@touch antlr.generated.type
+
+antlr.generated.cfg: CFG.g
+	java org.antlr.Tool ${DEBUGFLAGS} CFG.g
+	@touch antlr.generated.cfg
 
 run: Evil.class
 	java Evil ${RUNFLAGS} tests/4.ev
