@@ -21,7 +21,7 @@ options {
 
 @members {
    // Creates a CFG mapping label names to boxes
-   private static GraphTable cfg = new GraphTable(100);
+   private static GraphTable cfg = new GraphTable();
 
    public void dump() {
       // Verify that build has already been run?
