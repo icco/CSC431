@@ -17,7 +17,6 @@ import java.util.HashMap;
  * @author Ben Sweedler
  */
 public class Evil {
-   private static boolean debugFlag = false;
    public static CommandLine cmd = null;
    private static String inputFile = null;
 
@@ -49,11 +48,20 @@ public class Evil {
          nodes.setTokenStream(tokens);
          TypeCheck tparser = new TypeCheck(nodes);
 
-         tparser.verify();
+         if (typeFlag)
+            tparser.verify();
+
+         System.out.println(typeFlag);
+
       } catch (org.antlr.runtime.RecognitionException e) {
          error(e.toString());
       }
    }
+
+   // Input Flags
+   private static boolean debugFlag = false;
+   private static boolean dumpFlag = false;
+   private static boolean typeFlag = true;
 
    /**
     * Defines possible options and sets them up.
@@ -70,6 +78,7 @@ public class Evil {
       options.addOption("d", "debug", false, "Print debug messages while running." );
       options.addOption("h", "help", false, "Print this help message." );
       options.addOption("i", "dumpIL", false, "Dump ILOC to STDOUT." );
+      options.addOption("t", "notype", false, "Don't Typecheck." );
 
       try {
          // parse the command line arguments
@@ -84,6 +93,14 @@ public class Evil {
 
          if (cmd.hasOption("debug")) {
             debugFlag = true;
+         }
+
+         if (cmd.hasOption("dumpIL")) {
+            dumpFlag = true;
+         }
+
+         if (cmd.hasOption("notype")) {
+            typeFlag = false;
          }
 
          String[] fileArgs = cmd.getArgs();
