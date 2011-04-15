@@ -32,7 +32,7 @@ antlr.generated: antlr.generated.evil antlr.generated.type antlr.generated.cfg
 	@touch antlr.generated
 
 antlr.generated.evil: ${SOURCEDIR}/Evil.g
-	java org.antlr.Tool ${ANTLRFLAGS} src/Evil.g
+	java org.antlr.Tool ${ANTLRFLAGS} ${DEBUGFLAGS} src/Evil.g
 	@touch antlr.generated.evil
 
 antlr.generated.type: ${SOURCEDIR}/TypeCheck.g
