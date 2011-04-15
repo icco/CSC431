@@ -5,7 +5,7 @@
 
 DEBUGFLAGS=
 RUNFLAGS=
-JAVAFLAGS=-Xlint:unchecked
+JAVAFLAGS=-d classes -Xlint:unchecked
 
 TYPEOBJECTS=Type.java BoolType.java VoidType.java FuncType.java IntType.java StructType.java Symbol.java Type.java OperatorType.java NullType.java
 EVILOBJECTS=DottedTree.java FunctionTree.java TypeCheck.java SymbolTable.java
@@ -13,14 +13,17 @@ EVILOBJECTS=DottedTree.java FunctionTree.java TypeCheck.java SymbolTable.java
 TYPECLASSES=${TYPEOBJECTS:.java=.class}
 EVILCLASSES=${EVILOBJECTS:.java=.class}
 
-export CLASSPATH=.:./antlr-3.3-complete.jar:./commons-cli-1.2.jar
+export CLASSPATH=.:./classes:./antlr-3.3-complete.jar:./commons-cli-1.2.jar
+
+all: Evil.class 
+
+classes:
+	mkdir classes -p
+	@touch classes
 
 # default rule of .java files to depend on their .class file.
-.SUFFIXES: .java .class
-.java.class:
+classes/%.class: classes %.java 
 	javac ${JAVAFLAGS} $*.java
-
-all: Evil.class
 
 Evil.class: ${TYPECLASSES} antlr.generated ${EVILCLASSES}
 
@@ -59,6 +62,7 @@ help: Evil.class
 	@java Evil -h
 
 clean:
+	@rm -rfv classes
 	@rm -fv *class
 	@rm -fv *tokens
 	@rm -fv antlr.generated*
