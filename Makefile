@@ -3,47 +3,52 @@
 # @author Ben Sweedler
 # @author Nat Welch
 
+SOURCEDIR=src
+CLASSDIR=classes
+
 DEBUGFLAGS=
 RUNFLAGS=
+
 JAVAFLAGS=-d classes -Xlint:unchecked
+ANTLRFLAGS=-lib ${CLASSDIR}
 
-TYPEOBJECTS=Type.java BoolType.java VoidType.java FuncType.java IntType.java StructType.java Symbol.java Type.java OperatorType.java NullType.java
-EVILOBJECTS=DottedTree.java FunctionTree.java TypeCheck.java SymbolTable.java
+TYPEFILES=Type.java BoolType.java FuncType.java IntType.java NullType.java OperatorType.java StructType.java Symbol.java VoidType.java
+TYPEOBJECTS=${TYPEFILES:%.java=${SOURCEDIR}/%.java}
+TYPECLASSES=${TYPEOBJECTS:${SOURCEDIR}/%.java=${CLASSDIR}/%.class}
 
-TYPECLASSES=${TYPEOBJECTS:.java=.class}
-EVILCLASSES=${EVILOBJECTS:.java=.class}
+EVILFILES=FunctionTree.java DottedTree.java SymbolTable.java TypeCheck.java
+EVILOBJECTS=${EVILFILES:%.java=${SOURCEDIR}/%.java}
+EVILCLASSES=${EVILOBJECTS:${SOURCEDIR}/%.java=${CLASSDIR}/%.class}
 
-export CLASSPATH=.:./classes:./antlr-3.3-complete.jar:./commons-cli-1.2.jar
+export CLASSPATH=.:./src:./${CLASSDIR}:./antlr-3.3-complete.jar:./commons-cli-1.2.jar
 
-all: Evil.class 
+all: ${CLASSDIR}/Evil.class 
 
-classes:
-	mkdir classes -p
-	@touch classes
+${CLASSDIR}:
+	mkdir ${CLASSDIR} -p
+	@touch ${CLASSDIR}
 
 # default rule of .java files to depend on their .class file.
-classes/%.class: classes %.java 
-	javac ${JAVAFLAGS} $*.java
+${CLASSDIR}/%.class: ${CLASSDIR} ${SOURCEDIR}/%.java
+	javac ${JAVAFLAGS} ${SOURCEDIR}/$*.java
 
-Evil.class: ${TYPECLASSES} antlr.generated ${EVILCLASSES}
+${CLASSDIR}/Evil.class: ${TYPECLASSES} antlr.generated ${EVILCLASSES} 
 
 antlr.generated: antlr.generated.evil antlr.generated.type
 	@touch antlr.generated
 
-antlr.generated.evil: Evil.g
-	java org.antlr.Tool Evil.g
+antlr.generated.evil: src/Evil.g
+	java org.antlr.Tool ${ANTLRFLAGS} src/Evil.g
 	@touch antlr.generated.evil
 
-antlr.generated.type: TypeCheck.g
-	java org.antlr.Tool ${DEBUGFLAGS} TypeCheck.g
+antlr.generated.type: src/TypeCheck.g
+	java org.antlr.Tool ${ANTLRFLAGS} ${DEBUGFLAGS} src/TypeCheck.g 
 	@touch antlr.generated.type
 
-TypeCheck.class: TypeCheck.java
-
-run: Evil.class
+run: all
 	java Evil ${RUNFLAGS} tests/4.ev
 
-test: Evil.class
+test: all
 	@./test.sh
 
 debug:
@@ -63,8 +68,7 @@ help: Evil.class
 
 clean:
 	@rm -rfv classes
-	@rm -fv *class
-	@rm -fv *tokens
+	@rm -fv *.tokens
 	@rm -fv antlr.generated*
-	@rm -fv EvilLexer.java EvilParser.java TypeCheck.java
+	@rm -fv src/EvilLexer.java src/EvilParser.java src/TypeCheck.java
 
