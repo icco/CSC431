@@ -34,7 +34,7 @@ ${CLASSDIR}/%.class: ${CLASSDIR} ${SOURCEDIR}/%.java
 
 ${CLASSDIR}/Evil.class: ${TYPECLASSES} antlr.generated ${EVILCLASSES} 
 
-antlr.generated: antlr.generated.evil antlr.generated.type
+antlr.generated: antlr.generated.evil antlr.generated.type antlr.generated.cfg
 	@touch antlr.generated
 
 antlr.generated.evil: src/Evil.g
@@ -47,6 +47,10 @@ antlr.generated.type: src/TypeCheck.g
 
 run: all
 	java Evil ${RUNFLAGS} tests/4.ev
+
+antlr.generated.cfg: CFG.g
+	java org.antlr.Tool ${DEBUGFLAGS} CFG.g
+	@touch antlr.generated.cfg
 
 test: all
 	@./test.sh

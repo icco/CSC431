@@ -195,7 +195,7 @@ assignment
 }
    : ^(ASSIGN ex=expression lval=lvalue) {
       if (!$ex.t.equals($lval.t)) {
-         Evil.error("Assignment lvalue type doesn't match expresion.", $ASSIGN.getLine());
+         Evil.error("Assignment lvalue type (" + $lval.t + ") doesn't match expresion(" + $ex.t + ").", $ASSIGN.getLine());
       }
    }
    ;
@@ -210,7 +210,20 @@ lvalue returns [Type t]
 
       $t = s;
       }
-   | ^(DOT lvalue_h ID)
+   | ^(DOT lvalue_h ID) {
+         if ($lvalue_h.t.is_struct()) {
+            StructType struct = (StructType)$lvalue_h.t;
+            String field = $ID.getText();
+
+            $t = struct.getField(field);
+            if ($t == null) {
+               Evil.error("Trying to access undeclared field " + field
+                + " in struct " + struct.getName(), $DOT.getLine());
+            }
+         } else {
+            Evil.error("Trying to access field of a " + $lvalue_h.t + ".", $ID.getLine());
+         }
+      }
    ;
 
 lvalue_h returns [Type t]
@@ -223,7 +236,20 @@ lvalue_h returns [Type t]
 
       $t = s;
       }
-   | ^(DOT lvalue_h ID)
+   | ^(DOT l=lvalue_h ID) {
+         if ($l.t.is_struct()) {
+            StructType struct = (StructType)$l.t;
+            String field = $ID.getText();
+
+            $t = struct.getField(field);
+            if ($t == null) {
+               Evil.error("Trying to access undeclared field " + field
+                + " in struct " + struct.getName(), $DOT.getLine());
+            }
+         } else {
+            Evil.error("Trying to access field of a " + $l.t + ".", $ID.getLine());
+         }
+      }
    ;
 
 print
