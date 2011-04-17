@@ -19,7 +19,6 @@ for instr in mathi:
 public class %(classname)s extends MathInstruction {
    public static String instr = "%(instr)s";
 }
-
    """ % {'date': datetime.now().isoformat(' '), 'classname': classname, 'instr': instr}
 
    f = open(filename, 'w')

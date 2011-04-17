@@ -46,7 +46,7 @@ antlr.generated.cfg: ${SOURCEDIR}/CFG.g
 	java org.antlr.Tool ${ANTLRFLAGS} ${DEBUGFLAGS} src/CFG.g
 	@touch antlr.generated.cfg
 
-instructions: src/Instruction.java src/MathInstruction.java
+instructions: generate_instructions.py
 	./generate_instructions.py
 
 run: all
