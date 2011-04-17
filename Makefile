@@ -22,7 +22,7 @@ sources = $(wildcard ${SOURCEDIR}/*.java)
 iclasses = $(sources:.java=.class)
 classes = $(subst ${SOURCEDIR},${CLASSDIR},$(iclasses))
 
-all: ${CLASSDIR} antlr.generated $(classes)
+all: ${CLASSDIR} antlr.generated instructions $(classes)
 
 %.class: $(subst ${CLASSDIR},${SOURCEDIR},$(subst .class,.java,$@))
 	$(JAVAC) $(subst ${CLASSDIR},${SOURCEDIR},$(subst .class,.java,$@))
@@ -45,6 +45,9 @@ antlr.generated.type: ${SOURCEDIR}/TypeCheck.g
 antlr.generated.cfg: ${SOURCEDIR}/CFG.g
 	java org.antlr.Tool ${ANTLRFLAGS} ${DEBUGFLAGS} src/CFG.g
 	@touch antlr.generated.cfg
+
+instructions:
+	./generate_instructions.py
 
 run: all
 	java Evil ${RUNFLAGS} tests/4.ev
