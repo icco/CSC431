@@ -50,7 +50,7 @@ instructions: generate_instructions.py
 	./generate_instructions.py
 
 run: all
-	java Evil ${RUNFLAGS} tests/4.ev
+	java Evil -i ${RUNFLAGS} tests/4.ev
 
 typetest: all
 	@./typetest.sh
