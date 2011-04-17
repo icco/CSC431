@@ -2,6 +2,7 @@
 *.swp
 antlr.generated*
 *.tokens
-EvilLexer.java
-EvilParser.java
-TypeCheck.java
+src/EvilLexer.java
+src/EvilParser.java
+src/TypeCheck.java
+src/CFG.java

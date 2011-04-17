@@ -56,8 +56,6 @@ public class Evil {
          if (dumpFlag)
             cfg.dump();
 
-         System.out.println(typeFlag);
-
       } catch (org.antlr.runtime.RecognitionException e) {
          error(e.toString());
       }
