@@ -1,2 +1,1 @@
-public class Instruction {
-}
+public class Instruction {}
