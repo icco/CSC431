@@ -8,7 +8,33 @@ import java.util.ArrayList;
  * A box representing a block I guess.
  */
 public class Node {
+   private static int labelCount = 0;
+
    protected ArrayList<Instruction> instructions;
    protected ArrayList<Node> parents;
    protected ArrayList<Node> children;
+   private String label;
+
+   public void addParent(Node parent) { parents.add(parent); }
+   public void addChild(Node child) { children.add(child); }
+
+   public String getLabel() { return label; }
+   public void setLabel(String label) { this.label = label; }
+
+   public Node() { }
+   public Node(String label) { 
+      setLabel(nextLabel(label)); // label
+   }
+
+   public static String nextLabel() {
+      return nextLabel("");
+   }
+
+   public static String nextLabel(String id) {
+      return "." + id + labelCount++;
+   }
+
+   public String toString() {
+      return getLabel();
+   }
 }

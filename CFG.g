@@ -21,7 +21,8 @@ options {
 
 @members {
    // Creates a CFG mapping label names to boxes
-   private static GraphTable cfg = new GraphTable(100);
+   private static GraphTable cfg = new GraphTable();
+   private static Node finalNode; // final node for the current function.
 
    public void dump() {
       // Verify that build has already been run?
@@ -83,12 +84,24 @@ functions
 
 function
 @init {
+   Node start = new Node();
 }
-   : ^(FUN ID parameters ^(RETTYPE return_type) declarations statement_list) {
+   : ^(FUN ID { 
+      start.setLabel($ID.getText());
 
+      /* All paths from start end with the function's final node */
+      finalNode = new Node($ID.getText() + "_final"); 
+      
+   } parameters ^(RETTYPE return_type) declarations statement_list[start]) 
+   {
       // Store the function...
-      Node n = new Node();
-      cfg.put($ID.getText(), n);
+
+      // Loading paraters code. 
+
+      // Statement list code.
+
+      // Exiting code.
+      cfg.put($ID.getText(), start);
    }
    ;
 
@@ -101,121 +114,198 @@ return_type
 
 parameters
 @init {
+   // Code for getting stored arguments?
 }
    : ^(PARAMS var_decl*)
    ;
 
-statement_list
+statement_list[Node current] returns [Node exit]
 @init {
 }
-   : ^(STMTS statement*)
+   : ^(STMTS (statement[current] { current = $statement.exit;   })*)
    ;
 
-statement
+statement[Node current] returns [Node exit]
+@init {
+   $exit = current;
+}
+   : block[current] { $exit = $block.exit; }
+   | assignment[current]
+   | print[current]
+   | read[current]
+   | conditional[current] { $exit = $conditional.exit; }
+   | loop[current] { $exit = $loop.exit; }
+   | delete[current]
+   | ret[current] { $exit = $ret.exit; }
+   | invocation[current]
+   ;
+
+block[Node current] returns [Node exit]
 @init {
 }
-   : block
-   | assignment
-   | print
-   | read
-   | conditional
-   | loop
-   | delete
-   | ret
-   | invocation
+   : ^(BLOCK statement_list[current])
+   {
+      $exit = $statement_list.exit;
+   }
    ;
 
-block
+assignment[Node current]
 @init {
 }
-   : ^(BLOCK statement_list)
+   : ^(ASSIGN expression[current] lvalue)
    ;
 
-assignment
+lvalue returns [Register r]
 @init {
 }
-   : ^(ASSIGN expression lvalue)
+   :  ID { 
+      /* store in local/global/parameter */
+
+   }
+   | ^(DOT lvalue_h ID) {
+    /**
+     * Store in heap:
+     * lvalue_h rules gets register with memory address.
+     * ID is offset to store at 
+     */
+
+   }
    ;
 
-lvalue
+lvalue_h returns [Register r]
 @init {
 }
-   :  ID
-   | ^(DOT lvalue_h ID)
+   :  ID {
+      /* Load from global/local */
+   }
+   | ^(DOT lvalue_h ID) {
+     /* lvalue_h rule gets register with memory address.
+      * ID is offset to store at 
+      */
+   }
    ;
 
-lvalue_h
+print[Node current]
 @init {
 }
-   :  ID
-   | ^(DOT lvalue_h ID)
+   :  ^(PRINT expression[current] (ENDL)?)
    ;
 
-print
-@init {
-}
-   :  ^(PRINT expression (ENDL)?)
-   ;
-
-read
+read[Node current]
 @init {
 }
    :  ^(READ lvalue)
    ;
 
-conditional
+conditional[Node current] returns [Node exit]
 @init {
+   String ifLabel = Node.nextLabel("if");
+
+   Node tStart = new Node();
+   Node fStart = new Node();
+   $exit = new Node();
+
+   tStart.setLabel(ifLabel + "_then");
+   fStart.setLabel(ifLabel + "_else");
+   $exit.setLabel(ifLabel + "_final");
 }
-   :  ^(IF expression block (block)?)
+   :  ^(IF 
+      expression[current] { 
+         /* put expression code in current block */ 
+         
+      }
+      tb=block[tStart] 
+      (fb=block[fStart = new Node()])?)
+      {
+         /* Add code for looking at expression and jumping */
+         /* Link then block path */ 
+         current.addChild(tStart);
+         $exit.addParent($tb.exit);
+
+         if (fStart != null) {
+            /* Link else block path */
+            current.addChild(fStart);
+            $exit.addParent($fb.exit);
+         }
+
+      }
    ;
 
-loop
+loop[Node current] returns [Node exit]
 @init {
+   Node loopNode = new Node("loop");
+
+   $exit = new Node();
+   $exit.setLabel(loopNode.getLabel() + "_done");
+
+   // Link the nodes.
+   $exit.addParent(current);
+   $exit.addParent(loopNode);
+
+   current.addChild($exit);
+   current.addChild(loopNode);
+   
+   loopNode.addChild($exit);
 }
-   : ^(WHILE expression block expression)
+   : ^(WHILE expression[current] { 
+      // Add code to check if we should start looping or not.
+
+   } block[loopNode] expression[loopNode]) 
+   {
+      // Add code to loopNode that checks if we should loop again.
+   }
    ;
 
-delete
+delete[Node current]
 @init {
 }
-   : ^(DELETE expression)
+   : ^(DELETE expression[current])
    ;
 
-ret
+ret[Node current] returns [Node exit]
 @init {
 }
-   : ^(RETURN (expression)?)
+   : ^(RETURN (expression[current])?)
+   {
+      // Put value in return register if expression is not null.
+
+      // Link current block.
+      current.addChild(finalNode);
+      finalNode.addParent(current);
+
+      $exit = new Node("after_ret"); // this node won't connect to anything.
+   }
    ;
 
-invocation
+invocation[Node current]
 @init {
 }
-   : ^(INVOKE ID arguments)
+   : ^(INVOKE ID arguments[current]) 
    ;
 
-arguments
+arguments[Node current]
 @init {
 }
-   : ^(ARGS (expression)*)
+   : ^(ARGS (expression[current])*)
    ;
 
-expression
+expression[Node current]
 @init {
 }
-   : factor
-   | ^(unop factor)
-   | ^(binop factor factor)
+   : factor[current]
+   | ^(unop[current] factor[current])
+   | ^(binop[current] factor[current] factor[current])
    ;
 
-binop
+binop[Node current]
    : (AND | OR | EQ | LT | GT | NE | LE | GE | PLUS | MINUS | TIMES | DIVIDE)
    ;
 
-unop
+unop[Node current]
    : (NOT | NEG)
    ;
 
-factor
+factor[Node current]
 @init {
 }
    : INTEGER
@@ -224,6 +314,6 @@ factor
    | ^(NEW ID)
    | NULL
    | ID
-   | ^(DOT factor ID)
-   | invocation
+   | ^(DOT factor[current] ID)
+   | invocation[current]
    ;
