@@ -50,7 +50,9 @@ run: all
 	java Evil ${RUNFLAGS} tests/4.ev
 
 typetest: all
-	./typetest.sh
+	@./typetest.sh
+
+test: run
 
 debug:
 	@make -s -B -e DEBUGFLAGS=-trace
