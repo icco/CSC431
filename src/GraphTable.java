@@ -1,6 +1,4 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
+import java.util.*;
 
 /**
  * Extends a HashMap, only rewriting the toString function.
@@ -15,5 +13,7 @@ public class GraphTable extends HashMap<String, Node> {
       for (String s : keys) {
          ret += get(s) + "\n";
       }
+
+      return ret;
    }
 }
