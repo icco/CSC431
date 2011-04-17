@@ -49,8 +49,8 @@ antlr.generated.cfg: ${SOURCEDIR}/CFG.g
 run: all
 	java Evil ${RUNFLAGS} tests/4.ev
 
-test: all
-	@./test.sh
+typetest: all
+	./typetest.sh
 
 debug:
 	@make -s -B -e DEBUGFLAGS=-trace
