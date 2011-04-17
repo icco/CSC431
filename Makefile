@@ -3,6 +3,8 @@
 # @author Ben Sweedler
 # @author Nat Welch
 
+SHELL := /bin/bash
+
 SOURCEDIR=src
 CLASSDIR=classes
 
@@ -17,12 +19,13 @@ export CLASSPATH=.:./${SOURCEDIR}:./${CLASSDIR}:./antlr-3.3-complete.jar:./commo
 JAVAC=javac ${JAVAFLAGS}
 
 sources = $(wildcard ${SOURCEDIR}/*.java)
-classes = $(sources:.java=.class)
+iclasses = $(sources:.java=.class)
+classes = $(subst ${SOURCEDIR},${CLASSDIR},$(iclasses))
 
 all: ${CLASSDIR} antlr.generated $(classes)
 
-%.class : %.java
-	$(JAVAC) $<
+%.class: $(subst ${CLASSDIR},${SOURCEDIR},$(subst .class,.java,$@))
+	$(JAVAC) $(subst ${CLASSDIR},${SOURCEDIR},$(subst .class,.java,$@))
 
 ${CLASSDIR}:
 	mkdir ${CLASSDIR} -p
