@@ -31,6 +31,9 @@ ${CLASSDIR}:
 	mkdir ${CLASSDIR} -p
 	@touch ${CLASSDIR}
 
+star:
+	${JAVAC} src/*.java
+
 antlr.generated: antlr.generated.evil antlr.generated.type antlr.generated.cfg
 	@touch antlr.generated
 

@@ -15,14 +15,24 @@ public class Node {
    protected ArrayList<Node> children;
    private String label;
 
-   public void addParent(Node parent) { parents.add(parent); }
+   public void addParent(Node parent) { 
+      if (parents == null) {
+         System.out.println(this);
+      }
+      parents.add(parent); }
    public void addChild(Node child) { children.add(child); }
 
    public String getLabel() { return label; }
    public void setLabel(String label) { this.label = label; }
 
-   public Node() { }
+   public Node() { 
+      instructions = new ArrayList<Instruction>(); 
+      parents = new ArrayList<Node>(); 
+      children = new ArrayList<Node>();
+   }
+
    public Node(String label) { 
+      super();
       setLabel(nextLabel(label)); // label
    }
 
