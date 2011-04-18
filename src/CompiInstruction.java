@@ -1,8 +1,21 @@
 
-public class CompiInstruction extends MathInstruction {
+/**
+ * Generated automatically by generate_instructions.py
+ */
+public class CompiInstruction extends Instruction {
+   Immediate src0 = null;
+   Register src1 = null;
+
+   ConditionCodeRegister dest0 = null;
+
    public CompiInstruction() {
-      super();
-      this.instr = "compi";
-      this.reg3 = "cc";
+   }
+
+   public String toString() {
+      return this.toILOC();
+   }
+
+   public String toILOC() {
+      return "compi ";
    }
 }

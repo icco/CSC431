@@ -1,7 +1,21 @@
 
-public class CbrgtInstruction extends CompareInstruction {
+/**
+ * Generated automatically by generate_instructions.py
+ */
+public class CbrgtInstruction extends Instruction {
+   ConditionCodeRegister src0 = null;
+   Label src1 = null;
+   Label src2 = null;
+
+
    public CbrgtInstruction() {
-      super();
-      this.instr = "cbrgt";
+   }
+
+   public String toString() {
+      return this.toILOC();
+   }
+
+   public String toILOC() {
+      return "cbrgt ";
    }
 }

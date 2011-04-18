@@ -2,13 +2,13 @@
 /**
  * Generated automatically by generate_instructions.py
  */
-public class MultInstruction extends Instruction {
-   Register src0 = null;
+public class AddiInstruction extends Instruction {
+   Immediate src0 = null;
    Register src1 = null;
 
    Register dest0 = null;
 
-   public MultInstruction() {
+   public AddiInstruction() {
    }
 
    public String toString() {
@@ -16,6 +16,6 @@ public class MultInstruction extends Instruction {
    }
 
    public String toILOC() {
-      return "mult ";
+      return "addi ";
    }
 }

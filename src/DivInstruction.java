@@ -1,7 +1,21 @@
 
-public class DivInstruction extends MathInstruction {
+/**
+ * Generated automatically by generate_instructions.py
+ */
+public class DivInstruction extends Instruction {
+   Register src0 = null;
+   Register src1 = null;
+
+   Register dest0 = null;
+
    public DivInstruction() {
-      super();
-      this.instr = "div";
+   }
+
+   public String toString() {
+      return this.toILOC();
+   }
+
+   public String toILOC() {
+      return "div ";
    }
 }

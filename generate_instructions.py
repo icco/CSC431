@@ -7,62 +7,147 @@
 
 from datetime import datetime, date, time
 
-# First we generate the Math instructions.
-mathi = [ 'add', 'div', 'mult', 'sub', 'and', 'or' ]
+instructions = [
+   {
+      'name': 'add',
+      'sources': [ 'Register', 'Register' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'addi',
+      'sources': [ 'Immediate', 'Register' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'div',
+      'sources': [ 'Register', 'Register' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'mult',
+      'sources': [ 'Register', 'Register' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'sub',
+      'sources': [ 'Register', 'Register' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'rsubi',
+      'sources': [ 'Immediate', 'Register' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'and',
+      'sources': [ 'Register', 'Register' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'or',
+      'sources': [ 'Register', 'Register' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'xori',
+      'sources': [ 'Immediate', 'Register' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'compi',
+      'sources': [ 'Immediate', 'Register' ],
+      'dest': [ 'ConditionCodeRegister' ],
+   },
+   {
+      'name': 'comp',
+      'sources': [ 'Register', 'Register' ],
+      'dest': [ 'ConditionCodeRegister' ],
+   },
+   {
+      'name': 'comp',
+      'sources': [ 'Register', 'Register' ],
+      'dest': [ 'ConditionCodeRegister' ],
+   },
+   {
+      'name': 'cbreq',
+      'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
+      'dest': [ ],
+   },
+   {
+      'name': 'cbrge',
+      'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
+      'dest': [ ],
+   },
+   {
+      'name': 'cbrgt',
+      'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
+      'dest': [ ],
+   },
+   {
+      'name': 'cbrle',
+      'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
+      'dest': [ ],
+   },
+   {
+      'name': 'cbrlt',
+      'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
+      'dest': [ ],
+   },
+   {
+      'name': 'cbrne',
+      'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
+      'dest': [ ],
+   },
+]
 
-for instr in mathi:
-   classname = instr.capitalize() + "Instruction"
+# Now that the instructions are defined, apply them to the template.
+for instr in instructions:
+   classname = instr['name'].capitalize() + "Instruction"
    filename = "src/" + classname + ".java"
 
+   sources = ""
+   counter = 0;
+   for src in instr['sources']:
+      var = "src%(c)d" % {'c':counter}
+      counter += 1
+      sources += "   %(classname)s %(varname)s = null;\n" % {'classname': src, 'varname': var}
+
+   counter = 0;
+   dests = ""
+   for dest in instr['dest']:
+      var = "dest%(c)d" % {'c':counter}
+      counter += 1
+      dests += "   %(classname)s %(varname)s = null;\n" % {'classname': dest, 'varname': var}
+
+   data = {
+      'date': datetime.now().isoformat(' '),
+      'classname': classname,
+      'instr': instr['name'],
+      'sources': sources,
+      'dests': dests,
+      'toILOC': '"%(i)s "' % {'i': instr['name']}
+   }
+
+   # Take the data we built, and apply it to the template below.
    txt = """
-public class %(classname)s extends MathInstruction {
+/**
+ * Generated automatically by generate_instructions.py
+ */
+public class %(classname)s extends Instruction {
+%(sources)s
+%(dests)s
    public %(classname)s() {
-      super();
-      this.instr = "%(instr)s";
+   }
+
+   public String toString() {
+      return this.toILOC();
+   }
+
+   public String toILOC() {
+      return %(toILOC)s;
    }
 }
-""" % {'date': datetime.now().isoformat(' '), 'classname': classname, 'instr': instr}
-
-   f = open(filename, 'w')
-   f.write(txt)
-   f.close()
-
-# The base comparators (write to cc).
-compi = [ 'comp', 'compi' ]
-
-for instr in compi:
-   classname = instr.capitalize() + "Instruction"
-   filename = "src/" + classname + ".java"
-
-   txt = """
-public class %(classname)s extends MathInstruction {
-   public %(classname)s() {
-      super();
-      this.instr = "%(instr)s";
-      this.reg3 = "cc";
-   }
-}
-""" % {'date': datetime.now().isoformat(' '), 'classname': classname, 'instr': instr}
-
-   f = open(filename, 'w')
-   f.write(txt)
-   f.close()
-
-# The classes using cc
-
-compi = [ 'cbreq', 'cbrge', 'cbrgt', 'cbrle', 'cbrlt', 'cbrne' ]
-for instr in compi:
-   classname = instr.capitalize() + "Instruction"
-   filename = "src/" + classname + ".java"
-
-   txt = """
-public class %(classname)s extends CompareInstruction {
-   public %(classname)s() {
-      super();
-      this.instr = "%(instr)s";
-   }
-}
-""" % {'date': datetime.now().isoformat(' '), 'classname': classname, 'instr': instr}
+""" % data
 
    f = open(filename, 'w')
    f.write(txt)
