@@ -19,12 +19,11 @@ export CLASSPATH=.:./${SOURCEDIR}:./${CLASSDIR}:./antlr-3.3-complete.jar:./commo
 JAVAC=javac ${JAVAFLAGS}
 
 sources = $(wildcard ${SOURCEDIR}/*.java)
-iclasses = $(sources:.java=.class)
-classes = $(subst ${SOURCEDIR},${CLASSDIR},$(iclasses))
+classes = $(subst ${SOURCEDIR},${CLASSDIR},$(sources:.java=.class))
 
 all: ${CLASSDIR} antlr.generated instructions $(classes)
 
-%.class: $(subst ${CLASSDIR},${SOURCEDIR},$(subst .class,.java,$@))
+%.class:
 	$(JAVAC) $(subst ${CLASSDIR},${SOURCEDIR},$(subst .class,.java,$@))
 
 ${CLASSDIR}:
