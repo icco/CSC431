@@ -1,4 +1,4 @@
-public class Register {
+public class Register implements Operand {
    public static int regCounter = 0;
    public int id;
 

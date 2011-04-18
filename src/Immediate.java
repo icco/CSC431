@@ -1,1 +1,1 @@
-public class Immediate { }
+public class Immediate implements Operand { }

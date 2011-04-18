@@ -1,1 +1,1 @@
-public class Label { }
+public class Label implements Operand { }
