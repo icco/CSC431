@@ -9,20 +9,16 @@ public class GraphTable extends HashMap<String, Node> {
    public String toString() { 
       String ret = "";
       Set<String> keys = keySet();
+      List<Node> nodes = new LinkedList<Node>();
 
       for (String s : keys) {
-         ret += get(s) + "\n";
+         nodes.addAll(TopoSort.sort(get(s)));
       }
 
-      ret += "-------";
+      for (Node n : nodes) {
+         ret += n;
+      }
 
       return ret;
-   }
-
-   public List<Node> topoSort() {
-      List sorted = new LinkedList<Node>();
-      HashMap<String, Integer> positions = new HashMap<String, Integer>();
-
-      return sorted;
    }
 }

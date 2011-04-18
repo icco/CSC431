@@ -3,11 +3,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * A box representing a block I guess.
  */
-public class Node {
+public class Node implements Iterable<Node> {
    private static int labelCount = 0;
 
    protected ArrayList<Instruction> instructions;
@@ -20,6 +21,7 @@ public class Node {
 
    public String getLabel() { return label; }
    public void setLabel(String label) { this.label = label; }
+   public List<Node> getChildren() { return children; }
 
    public Node() { 
       instructions = new ArrayList<Instruction>(); 
@@ -52,5 +54,9 @@ public class Node {
       }
 
       return ret;
+   }
+
+   public Iterator<Node> iterator() {
+      return children.iterator();
    }
 }
