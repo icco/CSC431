@@ -21,8 +21,14 @@ public class Node {
    public String getLabel() { return label; }
    public void setLabel(String label) { this.label = label; }
 
-   public Node() { }
+   public Node() { 
+      instructions = new ArrayList<Instruction>(); 
+      parents = new ArrayList<Node>(); 
+      children = new ArrayList<Node>();
+   }
+
    public Node(String label) { 
+      this();
       setLabel(nextLabel(label)); // label
    }
 
@@ -35,6 +41,15 @@ public class Node {
    }
 
    public String toString() {
-      return getLabel();
+      String ret = getLabel();
+
+      ret += children;
+      /*
+      for (Node n : children) {
+         ret += children;
+      }
+      */
+
+      return ret;
    }
 }
