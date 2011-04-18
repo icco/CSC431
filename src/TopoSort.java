@@ -28,7 +28,7 @@ public class TopoSort {
    public static int markWithDFS(Node current, int pos) {
       if (visited.add(current)) {
          for (Node child : current) {
-            pos = markWithDFS(child, pos);      
+            pos = markWithDFS(child, pos);
          }
 
          positions.put(pos, current); // done with children, mark node

@@ -43,7 +43,7 @@ public class Node implements Iterable<Node> {
    }
 
    public String toString() {
-      String ret = getLabel() + "\n";
+      String ret = getLabel() + ":\n";
 
       for (Instruction i : getInstr()) {
          ret += "\t" + i + "\n";
