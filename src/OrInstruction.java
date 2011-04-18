@@ -6,22 +6,10 @@ import java.lang.*;
  * Generated automatically by generate_instructions.py
  */
 public class OrInstruction extends Instruction {
-   ArrayList<Operand> sources = new ArrayList<Operand>();
-   ArrayList<Operand> dests   = new ArrayList<Operand>();
-
-   public OrInstruction() {
-   }
+   public OrInstruction() { }
 
    public String toString() {
       return this.toILOC();
-   }
-
-   public void addSource(Operand in) {
-      this.sources.add(in);
-   }
-
-   public void addDest(Operand in) {
-      this.dests.add(in);
    }
 
    public String toILOC() {

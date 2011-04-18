@@ -98,6 +98,11 @@ instructions = [
       'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
       'dest': [ ],
    },
+   {
+      'name': 'loadret',
+      'sources': [ ],
+      'dest': [ 'Register' ],
+   },
 ]
 
 # Now that the instructions are defined, apply them to the template.
@@ -120,22 +125,10 @@ import java.lang.*;
  * Generated automatically by generate_instructions.py
  */
 public class %(classname)s extends Instruction {
-   ArrayList<Operand> sources = new ArrayList<Operand>();
-   ArrayList<Operand> dests   = new ArrayList<Operand>();
-
-   public %(classname)s() {
-   }
+   public %(classname)s() { }
 
    public String toString() {
       return this.toILOC();
-   }
-
-   public void addSource(Operand in) {
-      this.sources.add(in);
-   }
-
-   public void addDest(Operand in) {
-      this.dests.add(in);
    }
 
    public String toILOC() {

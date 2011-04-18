@@ -1,16 +1,19 @@
+import java.util.*;
+import java.lang.*;
+
 public class Instruction {
-   static Integer r_counter = 1;
-   String instr = "null";
-
-   public static String getNextRegister() {
-      String ret = "r" + r_counter;
-
-      r_counter = r_counter + 1;
-
-      return ret;
-   }
+   ArrayList<Operand> sources = new ArrayList<Operand>();
+   ArrayList<Operand> dests   = new ArrayList<Operand>();
 
    public String toString() {
-      return this.instr;
+      return "NULL INSTRUCTION.";
+   }
+
+   public void addSource(Operand in) {
+      this.sources.add(in);
+   }
+
+   public void addDest(Operand in) {
+      this.dests.add(in);
    }
 }

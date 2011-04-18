@@ -1,20 +1,31 @@
 
+import java.util.*;
+import java.lang.*;
+
+/**
+ * Generated automatically by generate_instructions.py
+ */
 public class LoadretInstruction extends Instruction {
-   public String reg1 = "r1";
-
-   public LoadretInstruction(String r1) {
-      super();
-      this.instr = "loadret";
-
-      if (r1 != null)
-         this.reg1 = r1;
-   }
-
-   public LoadretInstruction() {
-      this(Instruction.getNextRegister());
-   }
+   public LoadretInstruction() { }
 
    public String toString() {
-      return this.instr + " " + this.reg1;
+      return this.toILOC();
+   }
+
+   public String toILOC() {
+      String ret = "loadret ";
+      for (Operand r : sources) {
+         ret = ret + r + ", ";
+      }
+
+      for (Operand r : dests) {
+         ret = ret + r + ", ";
+      }
+
+      ret = ret.trim();
+      if (ret.lastIndexOf(",") == ret.length()-1)
+         ret = ret.substring(0, ret.length()-2);
+
+      return ret;
    }
 }

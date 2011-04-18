@@ -6,22 +6,10 @@ import java.lang.*;
  * Generated automatically by generate_instructions.py
  */
 public class SubInstruction extends Instruction {
-   ArrayList<Operand> sources = new ArrayList<Operand>();
-   ArrayList<Operand> dests   = new ArrayList<Operand>();
-
-   public SubInstruction() {
-   }
+   public SubInstruction() { }
 
    public String toString() {
       return this.toILOC();
-   }
-
-   public void addSource(Operand in) {
-      this.sources.add(in);
-   }
-
-   public void addDest(Operand in) {
-      this.dests.add(in);
    }
 
    public String toILOC() {
