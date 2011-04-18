@@ -18,4 +18,11 @@ public class GraphTable extends HashMap<String, Node> {
 
       return ret;
    }
+
+   public List<Node> topoSort() {
+      List sorted = new LinkedList<Node>();
+      HashMap<String, Integer> positions = new HashMap<String, Integer>();
+
+      return sorted;
+   }
 }
