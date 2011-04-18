@@ -16,6 +16,14 @@ public class AddiInstruction extends Instruction {
       return this.toILOC();
    }
 
+   public void addSource(Operand in) {
+      this.sources.add(in);
+   }
+
+   public void addDest(Operand in) {
+      this.dests.add(in);
+   }
+
    public String toILOC() {
       String ret = "addi ";
       for (Operand r : sources) {

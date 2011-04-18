@@ -16,6 +16,14 @@ public class CbreqInstruction extends Instruction {
       return this.toILOC();
    }
 
+   public void addSource(Operand in) {
+      this.sources.add(in);
+   }
+
+   public void addDest(Operand in) {
+      this.dests.add(in);
+   }
+
    public String toILOC() {
       String ret = "cbreq ";
       for (Operand r : sources) {
