@@ -1,12 +1,13 @@
 
+import java.util.*;
+import java.lang.*;
+
 /**
  * Generated automatically by generate_instructions.py
  */
 public class CbrgeInstruction extends Instruction {
-   ConditionCodeRegister src0 = null;
-   Label src1 = null;
-   Label src2 = null;
-
+   ArrayList<Operand> sources = new ArrayList<Operand>();
+   ArrayList<Operand> dests   = new ArrayList<Operand>();
 
    public CbrgeInstruction() {
    }
@@ -16,6 +17,19 @@ public class CbrgeInstruction extends Instruction {
    }
 
    public String toILOC() {
-      return "cbrge ";
+      String ret = "cbrge ";
+      for (Operand r : sources) {
+         ret = ret + r + ", ";
+      }
+
+      for (Operand r : dests) {
+         ret = ret + r + ", ";
+      }
+
+      ret = ret.trim();
+      if (ret.lastIndexOf(",") == ret.length()-1)
+         ret = ret.substring(0, ret.length()-2);
+
+      return ret;
    }
 }

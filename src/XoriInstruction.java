@@ -1,12 +1,13 @@
 
+import java.util.*;
+import java.lang.*;
+
 /**
  * Generated automatically by generate_instructions.py
  */
 public class XoriInstruction extends Instruction {
-   Immediate src0 = null;
-   Register src1 = null;
-
-   Register dest0 = null;
+   ArrayList<Operand> sources = new ArrayList<Operand>();
+   ArrayList<Operand> dests   = new ArrayList<Operand>();
 
    public XoriInstruction() {
    }
@@ -16,6 +17,19 @@ public class XoriInstruction extends Instruction {
    }
 
    public String toILOC() {
-      return "xori ";
+      String ret = "xori ";
+      for (Operand r : sources) {
+         ret = ret + r + ", ";
+      }
+
+      for (Operand r : dests) {
+         ret = ret + r + ", ";
+      }
+
+      ret = ret.trim();
+      if (ret.lastIndexOf(",") == ret.length()-1)
+         ret = ret.substring(0, ret.length()-2);
+
+      return ret;
    }
 }
