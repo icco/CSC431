@@ -22,7 +22,6 @@ public class Node implements Iterable<Node> {
    public String getLabel() { return this.label; }
 
    public void setLabel(String label) { this.label = label; }
-   public List<Node> getChildren() { return children; }
 
    public Node() {
       instructions = new ArrayList<Instruction>();
@@ -43,12 +42,14 @@ public class Node implements Iterable<Node> {
       this.instructions.add(i);
    }
 
-   public ArrayList<Node> getChildren() {
-      return this.children;
-   }
-
    public String toString() {
-      return this.label;
+      String ret = getLabel() + "\n";
+
+      for (Instruction i : getInstr()) {
+         ret += "\t" + i + "\n";
+      }
+
+      return ret;
    }
 
    public static String nextLabel() {
