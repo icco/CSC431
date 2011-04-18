@@ -311,8 +311,12 @@ expression[Node current]
    ;
 
 binop[Node current]
-   : AND
-   | OR
+   : AND {
+      current.addInstr(new AndInstruction());
+   }
+   | OR {
+      current.addInstr(new OrInstruction());
+   }
    | EQ
    | LT
    | GT

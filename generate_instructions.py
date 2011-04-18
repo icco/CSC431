@@ -8,7 +8,7 @@
 from datetime import datetime, date, time
 
 # First we generate the Math instructions.
-mathi = [ 'add', 'div', 'mult', 'sub' ]
+mathi = [ 'add', 'div', 'mult', 'sub', 'and', 'or' ]
 
 for instr in mathi:
    classname = instr.capitalize() + "Instruction"
@@ -26,3 +26,5 @@ public class %(classname)s extends MathInstruction {
    f = open(filename, 'w')
    f.write(txt)
    f.close()
+
+
