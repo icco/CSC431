@@ -48,8 +48,10 @@ antlr.generated.cfg: ${SOURCEDIR}/CFG.g
 instructions: generate_instructions.py
 	./generate_instructions.py
 
-run: all
-	java Evil -i ${RUNFLAGS} tests/4.ev
+run: tests/4.ev
+
+%.ev: all
+	java Evil -i ${RUNFLAGS} $@
 
 typetest: all
 	@./typetest.sh
