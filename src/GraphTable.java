@@ -14,6 +14,8 @@ public class GraphTable extends HashMap<String, Node> {
          ret += get(s) + "\n";
       }
 
+      ret += "-------";
+
       return ret;
    }
 }
