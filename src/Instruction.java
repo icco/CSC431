@@ -9,4 +9,8 @@ public class Instruction {
 
       return ret;
    }
+
+   public String toString() {
+      return this.instr;
+   }
 }

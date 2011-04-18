@@ -16,11 +16,7 @@ public class MathInstruction extends Instruction {
    }
 
    public MathInstruction() {
-      this.reg1 = Instruction.getNextRegister();
-      this.reg2 = Instruction.getNextRegister();
-      this.reg3 = Instruction.getNextRegister();
-
-      instr = "maths";
+      this(Instruction.getNextRegister(), Instruction.getNextRegister(), Instruction.getNextRegister());
    }
 
    public String toString() {

@@ -278,8 +278,9 @@ delete[Node current]
 ret[Node current] returns [Node exit]
 @init {
 }
-   : ^(RETURN (expression[current])?)
-   {
+   : ^(RETURN (expression[current])?) {
+      current.addInstr(new LoadretInstruction());
+
       // Put value in return register if expression is not null.
 
       // Link current block.
@@ -335,7 +336,6 @@ binop[Node current]
    | GE {
       current.addInstr(new CbrgeInstruction());
    }
-
    | PLUS {
       current.addInstr(new AddInstruction());
    }
@@ -351,7 +351,8 @@ binop[Node current]
    ;
 
 unop[Node current]
-   : (NOT | NEG)
+   : NOT
+   | NEG
    ;
 
 factor[Node current]
