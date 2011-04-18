@@ -90,7 +90,8 @@ function
       start.setLabel($ID.getText());
 
       /* All paths from start end with the function's final node */
-      finalNode = new Node($ID.getText() + "_final"); 
+      finalNode = new Node();
+      finalNode.setLabel(($ID.getText() + "_final")); 
       
    } parameters ^(RETTYPE return_type) declarations statement_list[start]) 
    {
@@ -122,7 +123,7 @@ parameters
 statement_list[Node current] returns [Node exit]
 @init {
 }
-   : ^(STMTS (statement[current] { current = $statement.exit;   })*)
+   : ^(STMTS (statement[current] { $exit = current = $statement.exit;  })*)
    ;
 
 statement[Node current] returns [Node exit]
@@ -215,17 +216,20 @@ conditional[Node current] returns [Node exit]
          
       }
       tb=block[tStart] 
-      (fb=block[fStart = new Node()])?)
+      (fb=block[fStart])?)
       {
          /* Add code for looking at expression and jumping */
          /* Link then block path */ 
          current.addChild(tStart);
          $exit.addParent($tb.exit);
 
-         if (fStart != null) {
+         if ($fb.exit != null) {
             /* Link else block path */
             current.addChild(fStart);
             $exit.addParent($fb.exit);
+         } else {
+            current.addChild($exit);
+            $exit.addParent(current);
          }
 
       }
@@ -273,7 +277,7 @@ ret[Node current] returns [Node exit]
       current.addChild(finalNode);
       finalNode.addParent(current);
 
-      $exit = new Node("after_ret"); // this node won't connect to anything.
+      $exit = new Node("after_ret"); // this node doesn't have a parent.
    }
    ;
 
