@@ -28,6 +28,7 @@ options {
       // Verify that build has already been run?
 
       // Print out Graph.
+      System.out.println(cfg);
    }
 }
 
@@ -90,8 +91,8 @@ function
 
       /* All paths from start end with the function's final node */
       finalNode = new Node();
-      finalNode.setLabel(("." + $ID.getText() + "_final")); 
-      
+      finalNode.setLabel(("." + $ID.getText() + "_final"));
+
    } parameters ^(RETTYPE return_type) declarations statement_list[start]) {
       // Store the function...
 
@@ -256,7 +257,7 @@ loop[Node current] returns [Node exit]
 
    current.addChild(loopNode);
    current.addChild($exit);
-   
+
    loopNode.addChild($exit);
 }
    : ^(WHILE expression[current] {
@@ -310,14 +311,14 @@ expression[Node current]
    ;
 
 binop[Node current]
-   : AND 
-   | OR 
-   | EQ 
-   | LT 
-   | GT 
-   | NE 
-   | LE 
-   | GE 
+   : AND
+   | OR
+   | EQ
+   | LT
+   | GT
+   | NE
+   | LE
+   | GE
    | PLUS {
       current.addInstr(new AddInstruction());
    }
