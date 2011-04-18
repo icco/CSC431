@@ -6,23 +6,29 @@ import java.util.*;
 public class GraphTable extends HashMap<String, Node> {
    // Eventually we want to write a topological sort based toString.
 
-   public String toString() { 
+   public String toString() {
       String ret = "";
-      Set<String> keys = keySet();
+      ArrayList<String> printed = new ArrayList<String>();
 
-      for (String s : keys) {
-         ret += get(s) + "\n";
+      for (String s : this.keySet()) {
+         Node n = this.get(s);
+         ret += s + ":\n";
+         for (Instruction i : n.getInstr()) {
+            ret += "\t" + i + "\n";
+         }
+
+         for (Node nc : n.getChildren()) {
+            if (printed.indexOf(nc.getLabel()) < 0) {
+               ret += nc + ":\n";
+               for (Instruction i : nc.getInstr()) {
+                  ret += "\t" + i + "\n";
+               }
+
+               printed.add(nc.getLabel());
+            }
+         }
       }
 
-      ret += "-------";
-
       return ret;
-   }
-
-   public List<Node> topoSort() {
-      List sorted = new LinkedList<Node>();
-      HashMap<String, Integer> positions = new HashMap<String, Integer>();
-
-      return sorted;
    }
 }
