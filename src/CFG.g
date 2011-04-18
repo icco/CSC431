@@ -101,6 +101,11 @@ function
 
       // Statement list code.
 
+      // Link last current block to final block. 
+      // (this only makes a difference for void funtions)
+      $statement_list.exit.addChild(finalNode);
+      finalNode.addParent($statement_list.exit);
+
       // Exiting code.
       cfg.put($ID.getText(), start);
    }
@@ -122,6 +127,7 @@ parameters
 
 statement_list[Node current] returns [Node exit]
 @init {
+   $exit = current; /* In case of any empty statement_list. */
 }
    : ^(STMTS (statement[current] { $exit = current = $statement.exit;  })*)
    ;
@@ -208,7 +214,7 @@ conditional[Node current] returns [Node exit]
 
    tStart.setLabel(ifLabel + "_then");
    fStart.setLabel(ifLabel + "_else");
-   $exit.setLabel(ifLabel + "_final");
+   $exit.setLabel(ifLabel + "_after");
 }
    :  ^(IF 
       expression[current] { 
@@ -221,12 +227,16 @@ conditional[Node current] returns [Node exit]
          /* Add code for looking at expression and jumping */
          /* Link then block path */ 
          current.addChild(tStart);
+         tStart.addParent(current);
+         $tb.exit.addChild($exit);
          $exit.addParent($tb.exit);
 
          if ($fb.exit != null) {
             /* Link else block path */
             current.addChild(fStart);
+            fStart.addParent(current);
             $exit.addParent($fb.exit);
+            $fb.exit.addChild($exit);
          } else {
             current.addChild($exit);
             $exit.addParent(current);

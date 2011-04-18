@@ -43,12 +43,9 @@ public class Node {
    public String toString() {
       String ret = getLabel();
 
-      ret += children;
-      /*
       for (Node n : children) {
          ret += children;
       }
-      */
 
       return ret;
    }
