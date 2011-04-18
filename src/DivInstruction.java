@@ -1,5 +1,7 @@
 
 public class DivInstruction extends MathInstruction {
-   public static String instr = "div";
+   public DivInstruction() {
+      super();
+      this.instr = "div";
+   }
 }
-   

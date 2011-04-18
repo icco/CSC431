@@ -1,4 +1,3 @@
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -16,22 +15,40 @@ public class Node implements Iterable<Node> {
    protected ArrayList<Node> children;
    private String label;
 
-   public void addParent(Node parent) { parents.add(parent); }
-   public void addChild(Node child) { children.add(child); }
+   public void addParent(Node parent) { this.parents.add(parent); }
 
-   public String getLabel() { return label; }
+   public void addChild(Node child) { this.children.add(child); }
+
+   public String getLabel() { return this.label; }
+
    public void setLabel(String label) { this.label = label; }
    public List<Node> getChildren() { return children; }
 
-   public Node() { 
-      instructions = new ArrayList<Instruction>(); 
-      parents = new ArrayList<Node>(); 
+   public Node() {
+      instructions = new ArrayList<Instruction>();
+      parents = new ArrayList<Node>();
       children = new ArrayList<Node>();
    }
 
-   public Node(String label) { 
+   public Node(String label) {
       this();
-      setLabel(nextLabel(label)); // label
+      this.setLabel(Node.nextLabel(label)); // label
+   }
+
+   public ArrayList<Instruction> getInstr() {
+      return this.instructions;
+   }
+
+   public void addInstr(Instruction i) {
+      this.instructions.add(i);
+   }
+
+   public ArrayList<Node> getChildren() {
+      return this.children;
+   }
+
+   public String toString() {
+      return this.label;
    }
 
    public static String nextLabel() {
@@ -40,20 +57,6 @@ public class Node implements Iterable<Node> {
 
    public static String nextLabel(String id) {
       return "." + id + labelCount++;
-   }
-
-   public String toString() {
-      String ret = getLabel() + "\n";
-
-      if (children.isEmpty()) {
-         ret += "----\n";
-      } else {
-         for (Node n : children) {
-            ret += n;
-         }
-      }
-
-      return ret;
    }
 
    public Iterator<Node> iterator() {

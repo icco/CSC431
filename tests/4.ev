@@ -35,7 +35,7 @@ fun foo(int n) int
 fun f(int i, struct B j) struct A
 {
    int f, l, k;
-   b.a.a.a.i = 7;
+   b.a.a.a.i = 4 + 3;
    return b.a.a.a.a;
 }
 fun bar(struct B j, int i) void

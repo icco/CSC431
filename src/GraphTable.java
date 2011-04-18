@@ -6,7 +6,7 @@ import java.util.*;
 public class GraphTable extends HashMap<String, Node> {
    // Eventually we want to write a topological sort based toString.
 
-   public String toString() { 
+   public String toString() {
       String ret = "";
       Set<String> keys = keySet();
       List<Node> nodes = new LinkedList<Node>();
