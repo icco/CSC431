@@ -23,15 +23,12 @@ classes = $(subst ${SOURCEDIR},${CLASSDIR},$(sources:.java=.class))
 
 all: ${CLASSDIR} antlr.generated instructions $(classes)
 
-%.class:
-	$(JAVAC) $(subst ${CLASSDIR},${SOURCEDIR},$(subst .class,.java,$@))
+%.class: $(sources)
+	$(JAVAC) $^
 
 ${CLASSDIR}:
 	mkdir ${CLASSDIR} -p
 	@touch ${CLASSDIR}
-
-star:
-	${JAVAC} src/*.java
 
 antlr.generated: antlr.generated.evil antlr.generated.type antlr.generated.cfg
 	@touch antlr.generated
