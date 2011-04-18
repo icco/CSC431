@@ -17,12 +17,17 @@ options {
    import java.util.HashMap;
    import java.util.Vector;
    import java.util.Iterator;
+   import java.util.LinkedList;
+   import java.util.List;
 }
 
 @members {
    // Creates a CFG mapping label names to boxes
    private static GraphTable cfg = new GraphTable();
    private static Node finalNode; // final node for the current function.
+   private static Map<String, Register> localRegisters = new HashMap<String, Register>();
+   private static Map<String, Integer> paramOffsets = new HashMap<String, Integer>();
+   private static Map<String, Register> globalRegisters = new HashMap<String, Register>();
 
    public void dump() {
       // Verify that build has already been run?
@@ -35,7 +40,13 @@ options {
 build
 @init {
 }
-   : ^(PROGRAM types declarations functions)
+   : ^(PROGRAM types declarations {
+      globalRegisters.clear();
+
+      for (String s : $declarations.names) {
+         globalRegisters.put(s, new Register()); /* TODO: where do we put globals?? */
+      }
+   } functions)
    ;
 
 types
@@ -50,10 +61,10 @@ types_declaration
    : ^(STRUCT ID (var_decl)+)
    ;
 
-var_decl
+var_decl returns [String name]
 @init {
 }
-   : ^(DECL ^(TYPE type) ID)
+   : ^(DECL ^(TYPE type) ID) { $name = $ID.getText(); }
    ;
 
 type
@@ -64,16 +75,18 @@ type
    | ^(STRUCT ID)
    ;
 
-declarations
+declarations returns [List<String> names]
 @init {
+   $names = new LinkedList<String>();
 }
-   : ^(DECLS declaration*)
+   : ^(DECLS (declaration { $names.addAll($declaration.names); })*)
    ;
 
-declaration
+declaration returns [List<String> names]
 @init {
+   $names = new LinkedList<String>();
 }
-   : ^(DECLLIST ^(TYPE type) (ID)+)
+   : ^(DECLLIST ^(TYPE type) (ID { $names.add($ID.getText()); })+)
    ;
 
 functions
@@ -93,10 +106,24 @@ function
       finalNode = new Node();
       finalNode.setLabel(("." + $ID.getText() + "_final"));
 
-   } parameters ^(RETTYPE return_type) declarations statement_list[start]) {
-      // Store the function...
+   } 
+   parameters {
+      paramOffsets.clear();
+      int offset = 0;
 
-      // Loading paraters code.
+      for (String s : $parameters.names) {
+         paramOffsets.put(s, offset++);
+      }
+   }
+   ^(RETTYPE return_type) declarations {
+      localRegisters.clear();
+
+      for (String s : $declarations.names) {
+         localRegisters.put(s, new Register());
+      }
+   }
+   statement_list[start]) {
+      // Loading parameters code.
 
       // Statement list code.
 
@@ -117,11 +144,11 @@ return_type
    | VOID
    ;
 
-parameters
+parameters returns [List<String> names]
 @init {
-   // Code for getting stored arguments?
+   $names = new LinkedList<String>();
 }
-   : ^(PARAMS var_decl*)
+   : ^(PARAMS (var_decl { $names.add($var_decl.name); } )*)
    ;
 
 statement_list[Node current] returns [Node exit]
@@ -158,13 +185,13 @@ block[Node current] returns [Node exit]
 assignment[Node current]
 @init {
 }
-   : ^(ASSIGN expression[current] lvalue)
+   : ^(ASSIGN expression[current] lvalue[$expression.r])
    ;
 
-lvalue returns [Register r]
+lvalue[Register store] returns [Register r]
 @init {
 }
-   :  ID {
+   : ID {
       /* store in local/global/parameter */
 
    }
@@ -174,7 +201,6 @@ lvalue returns [Register r]
      * lvalue_h rules gets register with memory address.
      * ID is offset to store at
      */
-
    }
    ;
 
@@ -199,8 +225,11 @@ print[Node current]
 
 read[Node current]
 @init {
+   // Scanf into global.
+   // move global into new register.
+   Register readValue = new Register();
 }
-   :  ^(READ lvalue)
+   :  ^(READ lvalue[readValue])
    ;
 
 conditional[Node current] returns [Node exit]
@@ -291,10 +320,13 @@ ret[Node current] returns [Node exit]
    }
    ;
 
-invocation[Node current]
+invocation[Node current] returns [Register r]
 @init {
 }
-   : ^(INVOKE ID arguments[current])
+   : ^(INVOKE ID arguments[current]) 
+   {
+      /* Do a jump to ID, then load from return adress into r */
+   }
    ;
 
 arguments[Node current]
@@ -303,67 +335,85 @@ arguments[Node current]
    : ^(ARGS (expression[current])*)
    ;
 
-expression[Node current]
+expression[Node current] returns [Register r]
 @init {
 }
-   : factor[current]
-   | ^(unop[current] factor[current])
-   | ^(binop[current] factor[current] factor[current])
-   ;
-
-binop[Node current]
-   : AND {
-      current.addInstr(new AndInstruction());
+   : factor[current] { $r = $factor.r; }
+   | ^(unop[current] factor[current]) { 
+      $unop.inst.addSource($factor.r);
+      $unop.inst.addDest($r = new Register());
+      current.addInstr($unop.inst);
    }
-   | OR {
-      current.addInstr(new OrInstruction());
-   }
-   | EQ {
-      current.addInstr(new CbreqInstruction());
-   }
-   | LT {
-      current.addInstr(new CbrltInstruction());
-   }
-   | GT {
-      current.addInstr(new CbrgtInstruction());
-   }
-   | NE {
-      current.addInstr(new CbrneInstruction());
-   }
-   | LE {
-      current.addInstr(new CbrleInstruction());
-   }
-   | GE {
-      current.addInstr(new CbrgeInstruction());
-   }
-   | PLUS {
-      current.addInstr(new AddInstruction());
-   }
-   | MINUS {
-      current.addInstr(new SubInstruction());
-   }
-   | TIMES {
-      current.addInstr(new MultInstruction());
-   }
-   | DIVIDE {
-      current.addInstr(new DivInstruction());
+   | ^(binop[current] f1=factor[current] f2=factor[current]) {
+      $binop.inst.addSource($f1.r);
+      $binop.inst.addSource($f2.r);
+      $binop.inst.addDest($r = new Register());
+      current.addInstr($binop.inst);
    }
    ;
 
-unop[Node current]
-   : NOT
-   | NEG
+binop[Node current] returns [Instruction inst]
+   : AND { $inst = new AndInstruction(); }
+   | OR { $inst = new OrInstruction(); }
+   | EQ { $inst = new CbreqInstruction(); }
+   | LT { $inst = new CbrltInstruction(); }
+   | GT { $inst = new CbrgtInstruction(); }
+   | NE { $inst = new CbrneInstruction(); }
+   | LE { $inst = new CbrleInstruction(); }
+   | GE { $inst = new CbrgeInstruction(); }
+   | PLUS { $inst = new AddInstruction(); }
+   | MINUS { $inst = new SubInstruction(); }
+   | TIMES { $inst = new MultInstruction(); }
+   | DIVIDE { $inst = new DivInstruction(); }
    ;
 
-factor[Node current]
+unop[Node current] returns [Instruction inst]
+   : NOT /* TODO */
+   | NEG /* TODO */
+   ;
+
+factor[Node current] returns [Register r]
 @init {
 }
-   : INTEGER
-   | TRUE
-   | FALSE
-   | ^(NEW ID)
-   | NULL
-   | ID
-   | ^(DOT factor[current] ID)
-   | invocation[current]
+   : INTEGER {
+      $r = new Register();
+      // Load immediate into register.
+   }
+   | TRUE {
+      $r = new Register();
+      // Load immediate 1 into register. 
+   }
+   | FALSE {
+      $r = new Register();
+     // Load immediate 0 into register.
+   }
+   | ^(NEW ID) {
+      $r = new Register();
+      // How do we malloc?
+   }
+   | NULL {
+      $r = new Register();
+      // Load immediate 0 into register.
+   }
+   | ID {
+      String name = $ID.getText();
+      Integer offset;
+
+      // Figure out if ID is local, parameter, or global.
+      $r = localRegisters.get(name);
+      if ($r != null) {
+         offset = paramOffsets.get(name);
+
+         if ($r != null) {
+            $r = new Register();
+            // TODO: load from stack, use r as destination register.
+         } else {
+            $r = globalRegisters.get(name);
+         }
+      }
+   }
+   | ^(DOT factor[current] ID) {
+      /* TODO */
+   }
+   | invocation[current] { $r = $invocation.r; }
    ;
