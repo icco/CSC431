@@ -5,4 +5,3 @@ public class SubInstruction extends MathInstruction {
       this.instr = "sub";
    }
 }
-   

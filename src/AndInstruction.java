@@ -5,4 +5,3 @@ public class AndInstruction extends MathInstruction {
       this.instr = "and";
    }
 }
-   

@@ -5,4 +5,3 @@ public class DivInstruction extends MathInstruction {
       this.instr = "div";
    }
 }
-   

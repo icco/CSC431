@@ -5,4 +5,3 @@ public class OrInstruction extends MathInstruction {
       this.instr = "or";
    }
 }
-   

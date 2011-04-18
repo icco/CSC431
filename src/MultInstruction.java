@@ -5,4 +5,3 @@ public class MultInstruction extends MathInstruction {
       this.instr = "mult";
    }
 }
-   

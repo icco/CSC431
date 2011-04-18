@@ -317,12 +317,25 @@ binop[Node current]
    | OR {
       current.addInstr(new OrInstruction());
    }
-   | EQ
-   | LT
-   | GT
-   | NE
-   | LE
-   | GE
+   | EQ {
+      current.addInstr(new CbreqInstruction());
+   }
+   | LT {
+      current.addInstr(new CbrltInstruction());
+   }
+   | GT {
+      current.addInstr(new CbrgtInstruction());
+   }
+   | NE {
+      current.addInstr(new CbrneInstruction());
+   }
+   | LE {
+      current.addInstr(new CbrleInstruction());
+   }
+   | GE {
+      current.addInstr(new CbrgeInstruction());
+   }
+
    | PLUS {
       current.addInstr(new AddInstruction());
    }
