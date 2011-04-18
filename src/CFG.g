@@ -28,7 +28,6 @@ options {
       // Verify that build has already been run?
 
       // Print out Graph.
-      System.out.println(cfg);
    }
 }
 
@@ -86,22 +85,21 @@ function
 @init {
    Node start = new Node();
 }
-   : ^(FUN ID { 
+   : ^(FUN ID {
       start.setLabel($ID.getText());
 
       /* All paths from start end with the function's final node */
       finalNode = new Node();
-      finalNode.setLabel(($ID.getText() + "_final")); 
-      
-   } parameters ^(RETTYPE return_type) declarations statement_list[start]) 
-   {
+      finalNode.setLabel(($ID.getText() + "_final"));
+
+   } parameters ^(RETTYPE return_type) declarations statement_list[start]) {
       // Store the function...
 
-      // Loading paraters code. 
+      // Loading paraters code.
 
       // Statement list code.
 
-      // Link last current block to final block. 
+      // Link last current block to final block.
       // (this only makes a difference for void funtions)
       $statement_list.exit.addChild(finalNode);
       finalNode.addParent($statement_list.exit);
@@ -165,7 +163,7 @@ assignment[Node current]
 lvalue returns [Register r]
 @init {
 }
-   :  ID { 
+   :  ID {
       /* store in local/global/parameter */
 
    }
@@ -173,7 +171,7 @@ lvalue returns [Register r]
     /**
      * Store in heap:
      * lvalue_h rules gets register with memory address.
-     * ID is offset to store at 
+     * ID is offset to store at
      */
 
    }
@@ -187,7 +185,7 @@ lvalue_h returns [Register r]
    }
    | ^(DOT lvalue_h ID) {
      /* lvalue_h rule gets register with memory address.
-      * ID is offset to store at 
+      * ID is offset to store at
       */
    }
    ;
@@ -216,16 +214,16 @@ conditional[Node current] returns [Node exit]
    fStart.setLabel(ifLabel + "_else");
    $exit.setLabel(ifLabel + "_after");
 }
-   :  ^(IF 
-      expression[current] { 
-         /* put expression code in current block */ 
-         
+   :  ^(IF
+      expression[current] {
+         /* put expression code in current block */
+
       }
-      tb=block[tStart] 
+      tb=block[tStart]
       (fb=block[fStart])?)
       {
          /* Add code for looking at expression and jumping */
-         /* Link then block path */ 
+         /* Link then block path */
          current.addChild(tStart);
          tStart.addParent(current);
          $tb.exit.addChild($exit);
@@ -258,13 +256,13 @@ loop[Node current] returns [Node exit]
 
    current.addChild($exit);
    current.addChild(loopNode);
-   
+
    loopNode.addChild($exit);
 }
-   : ^(WHILE expression[current] { 
+   : ^(WHILE expression[current] {
       // Add code to check if we should start looping or not.
 
-   } block[loopNode] expression[loopNode]) 
+   } block[loopNode] expression[loopNode])
    {
       // Add code to loopNode that checks if we should loop again.
    }
@@ -294,7 +292,7 @@ ret[Node current] returns [Node exit]
 invocation[Node current]
 @init {
 }
-   : ^(INVOKE ID arguments[current]) 
+   : ^(INVOKE ID arguments[current])
    ;
 
 arguments[Node current]
@@ -312,7 +310,26 @@ expression[Node current]
    ;
 
 binop[Node current]
-   : (AND | OR | EQ | LT | GT | NE | LE | GE | PLUS | MINUS | TIMES | DIVIDE)
+   : AND 
+   | OR 
+   | EQ 
+   | LT 
+   | GT 
+   | NE 
+   | LE 
+   | GE 
+   | PLUS {
+      current.addInstr(new AddInstruction());
+   }
+   | MINUS {
+      current.addInstr(new SubInstruction());
+   }
+   | TIMES {
+      current.addInstr(new MultInstruction());
+   }
+   | DIVIDE {
+      current.addInstr(new DivInstruction());
+   }
    ;
 
 unop[Node current]

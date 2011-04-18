@@ -29,7 +29,15 @@ public class Node {
 
    public Node(String label) { 
       this();
-      setLabel(nextLabel(label)); // label
+      this.setLabel(Node.nextLabel(label)); // label
+   }
+
+   public ArrayList<Instruction> getInst() {
+      return this.instructions;
+   }
+
+   public void addInstr(Instruction i) {
+      this.instructions.add(i);
    }
 
    public static String nextLabel() {

@@ -16,7 +16,10 @@ for instr in mathi:
 
    txt = """
 public class %(classname)s extends MathInstruction {
-   public static String instr = "%(instr)s";
+   public %(classname)s() {
+      super();
+      this.instr = "%(instr)s";
+   }
 }
    """ % {'date': datetime.now().isoformat(' '), 'classname': classname, 'instr': instr}
 

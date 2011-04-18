@@ -1,5 +1,8 @@
 
 public class SubInstruction extends MathInstruction {
-   public static String instr = "sub";
+   public SubInstruction() {
+      super();
+      this.instr = "sub";
+   }
 }
    

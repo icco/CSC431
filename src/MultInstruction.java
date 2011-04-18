@@ -1,5 +1,8 @@
 
 public class MultInstruction extends MathInstruction {
-   public static String instr = "mult";
+   public MultInstruction() {
+      super();
+      this.instr = "mult";
+   }
 }
    
