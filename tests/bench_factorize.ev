@@ -1,0 +1,37 @@
+fun mod (int num, int i) int
+{
+   int temp, temp1, temp2;
+   temp = num / i;
+   temp1 = temp * i;
+   temp2 = num - temp1;
+   return temp2;
+}
+
+fun factorize (int num) void
+{
+   int i, flag;
+   i = 2;
+   flag = 0;
+   while ((i <= num) && (flag == 0))
+   {
+      if ((mod (num, i)) == 0)
+      {
+         print i;
+         factorize (num / i);
+         flag = 1;
+      }
+      else 
+      {
+         i = i + 1;
+      }
+   }
+}
+
+fun main () int
+{
+   int num;
+   read num;
+   factorize (num);
+   print 0 endl;
+   return 1;
+}
