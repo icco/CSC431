@@ -41,10 +41,14 @@ public class Node {
    }
 
    public String toString() {
-      String ret = getLabel();
+      String ret = getLabel() + "\n";
 
-      for (Node n : children) {
-         ret += children;
+      if (children.isEmpty()) {
+         ret += "----\n";
+      } else {
+         for (Node n : children) {
+            ret += n;
+         }
       }
 
       return ret;

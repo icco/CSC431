@@ -91,7 +91,7 @@ function
 
       /* All paths from start end with the function's final node */
       finalNode = new Node();
-      finalNode.setLabel(($ID.getText() + "_final")); 
+      finalNode.setLabel(("." + $ID.getText() + "_final")); 
       
    } parameters ^(RETTYPE return_type) declarations statement_list[start]) 
    {
@@ -256,8 +256,8 @@ loop[Node current] returns [Node exit]
    $exit.addParent(current);
    $exit.addParent(loopNode);
 
-   current.addChild($exit);
    current.addChild(loopNode);
+   current.addChild($exit);
    
    loopNode.addChild($exit);
 }
