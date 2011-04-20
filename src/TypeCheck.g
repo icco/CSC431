@@ -382,25 +382,25 @@ expression returns [Type t]
          Evil.error("Reference to undeclared variable " + $ID.getText(), $ID.getLine());
 
       $t = s;
-      }
+   }
    | ^(DOT f=expression ID) {
-         if ($f.t.is_struct()) {
-            StructType struct = (StructType)$f.t;
-            String field = $ID.getText();
+      if ($f.t.is_struct()) {
+         StructType struct = (StructType)$f.t;
+         String field = $ID.getText();
 
-            $t = struct.getField(field);
-            if ($t == null) {
-               Evil.error("Trying to access undeclared field " + field
-                + " in struct " + struct.getName(), $DOT.getLine());
-            }
-         } else {
-            Evil.error("Trying to access field of a " + $f.t + ".", $ID.getLine());
+         $t = struct.getField(field);
+         if ($t == null) {
+            Evil.error("Trying to access undeclared field " + field
+             + " in struct " + struct.getName(), $DOT.getLine());
          }
+      } else {
+         Evil.error("Trying to access field of a " + $f.t + ".", $ID.getLine());
       }
+   }
    | i=invocation { $t = $i.t; }
    | ^(u=unop f1=expression) {
       if ($f1.t != null) {
-         if (!$u.t.checkValid($f1.t)) { Evil.error($u.t.toString()); }
+         if (!$u.t.checkValid($f1.t)) { Evil.error($u.t.toString(), $u.t.getLine()); }
       }
 
       $t = u.out();
@@ -408,8 +408,8 @@ expression returns [Type t]
    | ^(u=binop f1=expression f2=expression) {
       // These must be the same, and the correct type for their operation.
       if ($f1.t != null && $f2.t != null) {
-         if (!$u.t.checkValid($f1.t, $f2.t)) { Evil.error($u.t.toString()); }
-         if (!$f1.t.equals($f2.t)) { Evil.error("Both objects in a boolean operation must be the same type."); }
+         if (!$u.t.checkValid($f1.t, $f2.t)) { Evil.error($u.t.toString(), $u.t.getLine()); }
+         if (!$f1.t.equals($f2.t)) { Evil.error("Both objects in a boolean operation must be the same type.", $u.t.getLine()); }
       }
 
       $t = u.out();
@@ -419,23 +419,26 @@ expression returns [Type t]
 binop returns [OperatorType t]
 @init {
 }
-   : (AND | OR) {
+   : e=(AND | OR) {
       t = new OperatorType();
       t.setBinary();
       t.setType("BoolType");
       t.setOutType("BoolType");
+      t.setLine($e.getLine());
    }
-   | (EQ | LT | GT | NE | LE | GE) {
+   | e=(EQ | LT | GT | NE | LE | GE) {
       t = new OperatorType();
       t.setBinary();
       t.setType("IntType");
       t.setOutType("BoolType");
+      t.setLine($e.getLine());
    }
-   | (PLUS | MINUS | TIMES | DIVIDE) {
+   | e=(PLUS | MINUS | TIMES | DIVIDE) {
       t = new OperatorType();
       t.setBinary();
       t.setType("IntType");
       t.setOutType("IntType");
+      t.setLine($e.getLine());
    }
    ;
 
@@ -445,11 +448,13 @@ unop returns [OperatorType t]
       t.setUnary();
       t.setType("BoolType");
       t.setOutType("BoolType");
+      t.setLine($NOT.getLine());
    }
    | NEG {
       t = new OperatorType();
       t.setUnary();
       t.setType("IntType");
       t.setOutType("IntType");
+      t.setLine($NEG.getLine());
    }
    ;
