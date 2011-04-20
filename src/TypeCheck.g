@@ -426,7 +426,14 @@ binop returns [OperatorType t]
       t.setOutType("BoolType");
       t.setLine($e.getLine());
    }
-   | e=(EQ | LT | GT | NE | LE | GE) {
+   | e=(EQ | NE) {
+      t = new OperatorType();
+      t.setBinary();
+      t.setType("Type");
+      t.setOutType("BoolType");
+      t.setLine($e.getLine());
+   }
+   | e=(LT | GT | LE | GE) {
       t = new OperatorType();
       t.setBinary();
       t.setType("IntType");

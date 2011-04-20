@@ -29,11 +29,17 @@ public class OperatorType extends Type {
    }
 
    public boolean checkValid(Type a) {
+      if (takes_type.equals("Type"))
+         return true;
+
       String aType = a.getClass().getName();
       return (number_of_args == 1) && (aType.equals(takes_type));
    }
 
    public boolean checkValid(Type a, Type b) {
+      if (takes_type.equals("Type"))
+         return true;
+
       String aType = a.getClass().getName();
       String bType = b.getClass().getName();
       return (number_of_args == 2)
