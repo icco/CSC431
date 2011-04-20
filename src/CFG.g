@@ -107,7 +107,7 @@ function
       finalNode = new Node();
       finalNode.setLabel(("." + $ID.getText() + "_final"));
 
-   } 
+   }
    parameters {
       paramOffsets.clear();
       int offset = 0;
@@ -326,7 +326,7 @@ ret[Node current] returns [Node exit]
 invocation[Node current] returns [Register r]
 @init {
 }
-   : ^(INVOKE ID arguments[current]) 
+   : ^(INVOKE ID arguments[current])
    {
       /* Do a jump to ID, then load from return adress into r */
    }
@@ -341,50 +341,13 @@ arguments[Node current]
 expression[Node current] returns [Register r]
 @init {
 }
-   : factor[current] { $r = $factor.r; }
-   | ^(unop[current] factor[current]) { 
-      $unop.inst.addSource($factor.r);
-      $unop.inst.addDest($r = new Register());
-      current.addInstr($unop.inst);
-   }
-   | ^(binop[current] f1=factor[current] f2=factor[current]) {
-      $binop.inst.addSource($f1.r);
-      $binop.inst.addSource($f2.r);
-      $binop.inst.addDest($r = new Register());
-      current.addInstr($binop.inst);
-   }
-   ;
-
-binop[Node current] returns [Instruction inst]
-   : AND { $inst = new AndInstruction(); }
-   | OR { $inst = new OrInstruction(); }
-   | EQ { $inst = new CbreqInstruction(); }
-   | LT { $inst = new CbrltInstruction(); }
-   | GT { $inst = new CbrgtInstruction(); }
-   | NE { $inst = new CbrneInstruction(); }
-   | LE { $inst = new CbrleInstruction(); }
-   | GE { $inst = new CbrgeInstruction(); }
-   | PLUS { $inst = new AddInstruction(); }
-   | MINUS { $inst = new SubInstruction(); }
-   | TIMES { $inst = new MultInstruction(); }
-   | DIVIDE { $inst = new DivInstruction(); }
-   ;
-
-unop[Node current] returns [Instruction inst]
-   : NOT /* TODO */
-   | NEG /* TODO */
-   ;
-
-factor[Node current] returns [Register r]
-@init {
-}
    : INTEGER {
       $r = new Register();
       // Load immediate into register.
    }
    | TRUE {
       $r = new Register();
-      // Load immediate 1 into register. 
+      // Load immediate 1 into register.
    }
    | FALSE {
       $r = new Register();
@@ -415,8 +378,39 @@ factor[Node current] returns [Register r]
          }
       }
    }
-   | ^(DOT factor[current] ID) {
+   | ^(DOT expression[current] ID) {
       /* TODO */
    }
    | invocation[current] { $r = $invocation.r; }
+   | ^(unop[current] e=expression[current]) {
+      $unop.inst.addSource($e.r);
+      $unop.inst.addDest($r = new Register());
+      current.addInstr($unop.inst);
+   }
+   | ^(binop[current] f1=expression[current] f2=expression[current]) {
+      $binop.inst.addSource($f1.r);
+      $binop.inst.addSource($f2.r);
+      $binop.inst.addDest($r = new Register());
+      current.addInstr($binop.inst);
+   }
+   ;
+
+binop[Node current] returns [Instruction inst]
+   : AND { $inst = new AndInstruction(); }
+   | OR { $inst = new OrInstruction(); }
+   | EQ { $inst = new CbreqInstruction(); }
+   | LT { $inst = new CbrltInstruction(); }
+   | GT { $inst = new CbrgtInstruction(); }
+   | NE { $inst = new CbrneInstruction(); }
+   | LE { $inst = new CbrleInstruction(); }
+   | GE { $inst = new CbrgeInstruction(); }
+   | PLUS { $inst = new AddInstruction(); }
+   | MINUS { $inst = new SubInstruction(); }
+   | TIMES { $inst = new MultInstruction(); }
+   | DIVIDE { $inst = new DivInstruction(); }
+   ;
+
+unop[Node current] returns [Instruction inst]
+   : NOT /* TODO */
+   | NEG /* TODO */
    ;
