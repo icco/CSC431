@@ -384,6 +384,8 @@ expression returns [Type t]
    ;
 
 binop returns [OperatorType t]
+@init {
+}
    : (AND | OR) {
       t = new OperatorType();
       t.setBinary();
