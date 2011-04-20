@@ -33,6 +33,7 @@ options {
       // Verify that build has already been run?
 
       // Print out Graph.
+      // TODO: We are supposed to write to a file, not stdout.
       System.out.println(cfg);
    }
 }
@@ -308,7 +309,9 @@ ret[Node current] returns [Node exit]
 @init {
 }
    : ^(RETURN (expression[current])?) {
-      current.addInstr(new LoadretInstruction());
+      Instruction lr = new LoadretInstruction();
+      lr.addSource(new Register());
+      current.addInstr(lr);
 
       // Put value in return register if expression is not null.
 
