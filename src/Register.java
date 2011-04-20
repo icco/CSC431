@@ -5,4 +5,8 @@ public class Register implements Operand {
    public Register() {
       id = regCounter++;
    }
+
+   public String toString() {
+      return "r" + id;
+   }
 }

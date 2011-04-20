@@ -122,12 +122,12 @@ instructions = [
    },
    {
       'name': 'loadglobal',
-      'sources': [ 'Symbol' ],
+      'sources': [ 'ID' ],
       'dest': [ 'Register' ],
    },
    {
       'name': 'loadinargument',
-      'sources': [ 'Symbol', 'Immediate' ],
+      'sources': [ 'ID', 'Immediate' ],
       'dest': [ 'Register' ],
    },
    {
@@ -137,17 +137,17 @@ instructions = [
    },
    {
       'name': 'computeformaladdress',
-      'sources': [ 'Symbol', 'Immediate' ],
+      'sources': [ 'ID', 'Immediate' ],
       'dest': [ 'Register' ],
    },
    {
       'name': 'restoreformal',
-      'sources': [ 'Symbol', 'Immediate' ],
+      'sources': [ 'ID', 'Immediate' ],
       'dest': [ ],
    },
    {
       'name': 'computeglobaladdress',
-      'sources': [ 'Symbol' ],
+      'sources': [ 'ID' ],
       'dest': [ 'Register' ],
    },
 ]
