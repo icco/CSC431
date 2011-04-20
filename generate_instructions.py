@@ -8,6 +8,9 @@
 from datetime import datetime, date, time
 
 instructions = [
+
+# Arithmetic
+
    {
       'name': 'add',
       'sources': [ 'Register', 'Register' ],
@@ -38,6 +41,9 @@ instructions = [
       'sources': [ 'Immediate', 'Register' ],
       'dest': [ 'Register' ],
    },
+
+# Boolean
+
    {
       'name': 'and',
       'sources': [ 'Register', 'Register' ],
@@ -53,6 +59,9 @@ instructions = [
       'sources': [ 'Immediate', 'Register' ],
       'dest': [ 'Register' ],
    },
+
+# Comparison and Branching
+
    {
       'name': 'compi',
       'sources': [ 'Immediate', 'Register' ],
@@ -98,9 +107,47 @@ instructions = [
       'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
       'dest': [ ],
    },
+
+# Loads
+
+   {
+      'name': 'loadi',
+      'sources': [ 'Immediate' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'loadai',
+      'sources': [ 'Register', 'Immediate' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'loadglobal',
+      'sources': [ 'Symbol' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'loadinargument',
+      'sources': [ 'Symbol', 'Immediate' ],
+      'dest': [ 'Register' ],
+   },
    {
       'name': 'loadret',
       'sources': [ ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'computeformaladdress',
+      'sources': [ 'Symbol', 'Immediate' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'restoreformal',
+      'sources': [ 'Symbol', 'Immediate' ],
+      'dest': [ ],
+   },
+   {
+      'name': 'computeglobaladdress',
+      'sources': [ 'Symbol' ],
       'dest': [ 'Register' ],
    },
 ]
