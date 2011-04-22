@@ -9,7 +9,7 @@ from datetime import datetime, date, time
 
 instructions = [
 
-# Arithmetic
+# Arithmetic (MATHS)
 
    {
       'name': 'add',
@@ -60,7 +60,7 @@ instructions = [
       'dest': [ 'Register' ],
    },
 
-# Comparison and Branching
+# Comparison and Branching (Forks in the road)
 
    {
       'name': 'compi',
@@ -108,7 +108,7 @@ instructions = [
       'dest': [ ],
    },
 
-# Loads
+# Loads (Not the kind for her face)
 
    {
       'name': 'loadi',
@@ -148,6 +148,115 @@ instructions = [
    {
       'name': 'computeglobaladdress',
       'sources': [ 'ID' ],
+      'dest': [ 'Register' ],
+   },
+
+# Stores (Target, 7-11, etc.)
+
+   {
+      'name': 'storeai',
+      'sources': [ 'Register' ],
+      'dest': [ 'Register', 'Immediate' ],
+   },
+   {
+      'name': 'storeglobal',
+      'sources': [ 'Register' ],
+      'dest': [ 'ID' ],
+   },
+   {
+      'name': 'storeinargument',
+      'sources': [ 'Register' ],
+      'dest': [ 'ID', 'Immediate' ],
+   },
+   {
+      'name': 'storeoutargument',
+      'sources': [ 'Register' ],
+      'dest': [ 'ID', 'Immediate' ],
+   },
+   {
+      'name': 'storeret',
+      'sources': [ 'Register' ],
+      'dest': [ ],
+   },
+
+# Invocation (Casting spells, raising demons)
+
+   {
+      'name': 'call',
+      'sources': [ 'Label' ],
+      'dest': [ ],
+   },
+   {
+      'name': 'ret',
+      'sources': [ ],
+      'dest': [ ],
+   },
+
+# Allocation (Too serious to joke about)
+
+   {
+      'name': 'new',
+      'sources': [ 'Immediate' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'del',
+      'sources': [ 'Register' ],
+      'dest': [ ],
+   },
+
+# I/0 (That's a planet right?)
+
+   {
+      'name': 'print',
+      'sources': [ 'Register' ],
+      'dest': [ ],
+   },
+   {
+      'name': 'println',
+      'sources': [ 'Register' ],
+      'dest': [ ],
+   },
+   {
+      'name': 'read',
+      'sources': [ 'Register' ],
+      'dest': [ ],
+   },
+
+# Moves (for the dance floor)
+   {
+      'name': 'mov',
+      'sources': [ 'Register' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'moveq',
+      'sources': [ 'Immediate' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'movge',
+      'sources': [ 'Immediate' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'movgt',
+      'sources': [ 'Immediate' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'movle',
+      'sources': [ 'Immediate' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'movlt',
+      'sources': [ 'Immediate' ],
+      'dest': [ 'Register' ],
+   },
+   {
+      'name': 'movne',
+      'sources': [ 'Immediate' ],
       'dest': [ 'Register' ],
    },
 ]

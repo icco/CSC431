@@ -1,14 +1,12 @@
 tree grammar Walker;
 
-options
-{
+options {
    tokenVocab=Evil;
    ASTLabelType=CommonTree;
    backtrack=true;
 }
 
-@header
-{
+@header {
    import java.util.Map;
    import java.util.HashMap;
    import java.util.Vector;
@@ -119,15 +117,15 @@ assignment
 lvalue
 @init {
 }
-   :  ID 
+   :  ID
    | ^(DOT lvalue_h ID)
    ;
 
 lvalue_h
 @init {
 }
-   :  ID 
-   | ^(DOT lvalue_h ID) 
+   :  ID
+   | ^(DOT lvalue_h ID)
    ;
 
 print
@@ -181,28 +179,22 @@ arguments
 expression
 @init {
 }
-   : factor
-   | ^(unop factor)
-   | ^(binop factor factor)
-   ;
-
-binop 
-   : (AND | OR | EQ | LT | GT | NE | LE | GE | PLUS | MINUS | TIMES | DIVIDE)
-   ;
-
-unop
-   : (NOT | NEG)
-   ;
-
-factor
-@init {
-}
    : INTEGER
    | TRUE
    | FALSE
    | ^(NEW ID)
    | NULL
    | ID
-   | ^(DOT factor ID)
+   | ^(DOT expression ID)
    | invocation
+   | ^(unop expression)
+   | ^(binop expression expression)
+   ;
+
+binop
+   : (AND | OR | EQ | LT | GT | NE | LE | GE | PLUS | MINUS | TIMES | DIVIDE)
+   ;
+
+unop
+   : (NOT | NEG)
    ;

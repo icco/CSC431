@@ -45,6 +45,10 @@ antlr.generated.cfg: ${SOURCEDIR}/CFG.g
 	java org.antlr.Tool ${ANTLRFLAGS} ${DEBUGFLAGS} src/CFG.g
 	@touch antlr.generated.cfg
 
+antlr.generated.walker : ${SOURCEDIR}/Walker.g
+	java org.antlr.Tool ${ANTLRFLAGS} ${DEBUGFLAGS} src/Walker.g
+	@touch antlr.generated.walker
+
 instructions: generate_instructions.py
 	./generate_instructions.py
 
@@ -77,4 +81,4 @@ clean:
 	@rm -rfv classes
 	@rm -fv *.tokens
 	@rm -fv antlr.generated*
-	@rm -fv src/EvilLexer.java src/EvilParser.java src/TypeCheck.java src/CFG.java
+	@rm -fv src/EvilLexer.java src/EvilParser.java src/TypeCheck.java src/CFG.java src/Walker.java

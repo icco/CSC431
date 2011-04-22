@@ -5,4 +5,5 @@ antlr.generated*
 src/EvilLexer.java
 src/EvilParser.java
 src/TypeCheck.java
+src/Walker.java
 src/CFG.java
