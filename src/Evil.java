@@ -56,8 +56,11 @@ public class Evil {
          cfg.symTable = tparser.symTable;
 
          cfg.build();
+         String iloc = cfg.dump();
+
+         // TODO: Write to file instead of stdout.
          if (dumpFlag)
-            cfg.dump();
+            System.out.println(iloc);
 
       } catch (org.antlr.runtime.RecognitionException e) {
          error(e.toString());

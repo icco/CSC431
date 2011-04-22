@@ -27,12 +27,8 @@ options {
    private Node finalNode; // final node for the current function.
    public SymbolTable symTable;
 
-   public void dump() {
-      // Verify that build has already been run?
-
-      // Print out Graph.
-      // TODO: We are supposed to write to a file, not stdout.
-      System.out.println(cfg);
+   public String dump() {
+      return cfg.toString();
    }
 }
 
