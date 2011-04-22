@@ -22,8 +22,8 @@ options {
 }
 
 @members {
-   private static SymbolTable symTable = new SymbolTable();
-   private static String currentFunc;
+   public SymbolTable symTable = new SymbolTable();
+   private FuncType currentFunc;
 }
 
 verify
@@ -32,6 +32,9 @@ verify
    : ^(PROGRAM types
 
    declarations {
+      for (Symbol s : $declarations.symbols) {
+         s.setScope(Symbol.Scope.GLOBAL);
+      }
       symTable.bindDeclarations($declarations.symbols, true);
    }
 
@@ -42,10 +45,7 @@ verify
    }
    )
    ;
-
-types
-@init {
-}
+types @init { }
    : ^(TYPES (types_declaration)*)
    ;
 
@@ -115,22 +115,27 @@ functions returns [List<Symbol> symbols]
 
 function returns [Symbol s]
 @init {
-   FuncType fun = new FuncType();
+   currentFunc = new FuncType();
 }
    : ^(FUN ID parameters ^(RETTYPE return_type) declarations {
-       fun.setParams($parameters.params);
-       fun.setReturn($return_type.t);
+       for (Symbol param : $parameters.params) {
+          param.setScope(Symbol.Scope.PARAM);
+       }
+       currentFunc.setParams($parameters.params);
+       currentFunc.setReturn($return_type.t);
 
        // Bind parameters and locals.
-       symTable.clearLocals();
-       symTable.bindParameters(fun);
+       symTable.bindParameters(currentFunc);
+
+       for (Symbol local : $declarations.symbols) {
+          local.setScope(Symbol.Scope.LOCAL);
+       }
        symTable.bindDeclarations($declarations.symbols);
 
        // Bind function itself to allow for recursion.
        $s = new Symbol();
        $s.setName($ID.getText());
-       currentFunc = $ID.getText();
-       $s.setType(fun);
+       $s.setType(currentFunc);
        $s.setLine($ID.getLine());
        symTable.bindFunction($s);
     }
@@ -138,9 +143,12 @@ function returns [Symbol s]
     statement_list {
        Boolean foundReturn = $statement_list.ret;
 
-       if (!(fun.getReturn() instanceof VoidType) && !foundReturn) {
+       if (!(currentFunc.getReturn() instanceof VoidType) && !foundReturn) {
           Evil.error("Missing return statment for function.", $ID.getLine());
        }
+
+       // Save local/parameter symbols into function (for use during compiling).
+       symTable.saveLocals(currentFunc);
     }
     )
    ;
@@ -204,7 +212,7 @@ lvalue returns [Type t]
 @init {
 }
    : ID {
-      Type s = symTable.get($ID.getText());
+      Type s = symTable.getType($ID.getText());
       if (s == null)
          Evil.error("Reference to undeclared variable " + $ID.getText(), $ID.getLine());
 
@@ -230,7 +238,7 @@ lvalue_h returns [Type t]
 @init {
 }
    : ID {
-      Type s = symTable.get($ID.getText());
+      Type s = symTable.getType($ID.getText());
       if (s == null)
          Evil.error("Reference to undeclared variable " + $ID.getText(), $ID.getLine());
 
@@ -300,14 +308,7 @@ ret
 }
    : ^(RETURN (expression)?) {
       Type ret = new VoidType();
-      FuncType f = symTable.getFunction(currentFunc);
-      Type funcRetType = null;
-
-      if (f == null) {
-         Evil.error("Function " + currentFunc + "is undeclared", $RETURN.getLine());
-      } else {
-         funcRetType = f.getReturn();
-      }
+      Type funcRetType = currentFunc.getReturn();
 
       if ($expression.t != null) {
          ret = $expression.t;
@@ -377,7 +378,7 @@ expression returns [Type t]
     }
    | NULL { $t = new NullType(); }
    | ID {
-      Type s = symTable.get($ID.getText());
+      Type s = symTable.getType($ID.getText());
       if (s == null)
          Evil.error("Reference to undeclared variable " + $ID.getText(), $ID.getLine());
 

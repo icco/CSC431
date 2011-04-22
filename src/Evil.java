@@ -53,6 +53,7 @@ public class Evil {
 
          nodes.reset();
          CFG cfg = new CFG(nodes);
+         cfg.symTable = tparser.symTable;
 
          cfg.build();
          if (dumpFlag)

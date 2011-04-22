@@ -3,16 +3,18 @@ import java.util.Map;
 import java.util.List;
 
 public class SymbolTable {
-   protected Map<String, Type> globals;
-   protected Map<String, Type> locals;
-   protected Map<String, Type> structs;
-   protected Map<String, Type> functions;
+   protected Map<String, Symbol> globals;
+   protected Map<String, Symbol> locals;
+   protected Map<String, Symbol> structs;
+   protected Map<String, Symbol> functions;
+   protected Map<String, Symbol> parameters;
 
    public SymbolTable() {
-      globals = new HashMap<String, Type>();
-      locals = new HashMap<String, Type>();
-      structs = new HashMap<String, Type>();
-      functions = new HashMap<String, Type>();
+      globals = new HashMap<String, Symbol>();
+      locals = new HashMap<String, Symbol>();
+      structs = new HashMap<String, Symbol>();
+      functions = new HashMap<String, Symbol>();
+      parameters = new HashMap<String, Symbol>();
    }
 
    public String getTableName(Map table) {
@@ -20,6 +22,7 @@ public class SymbolTable {
       if (table == locals) return "local";
       if (table == structs) return "structs";
       if (table == functions) return "functions";
+      if (table == parameters) return "parameters";
       return "";
    }
 
@@ -43,10 +46,10 @@ public class SymbolTable {
       bind(fun, functions);
    }
 
-   public void bind(Symbol s, Map<String, Type> table) {
+   public void bind(Symbol s, Map<String, Symbol> table) {
       if (table.get(s.getName()) == null) {
 
-         table.put(s.getName(), s.getType());
+         table.put(s.getName(), s);
          Evil.debug("Bound " + s + " in " + getTableName(table) + " table");
 
       } else {
@@ -54,9 +57,22 @@ public class SymbolTable {
       }
    }
 
-   public Type get(String name) {
+   public Type getType(String name) {
+      Symbol s = get(name);
+
+      if (s != null)
+         return s.getType();
+      else 
+         return null;
+   }
+
+   public Symbol get(String name) {
       if (locals.get(name) != null) {
          return locals.get(name);
+      }
+
+      if (parameters.get(name) != null) {
+         return parameters.get(name);
       }
 
       if (globals.get(name) != null) {
@@ -67,28 +83,48 @@ public class SymbolTable {
    }
 
    public StructType getStruct(String name) {
-      StructType s = (StructType)structs.get(name);
-      return s;
+      Symbol s = structs.get(name);
+      StructType sType = null;
+
+      if (s != null) {
+         sType = (StructType)s.getType();
+      }
+
+      return sType;
    }
 
    public FuncType getFunction(String name) {
-      FuncType fun = (FuncType)functions.get(name);
+      Symbol s = functions.get(name);
+      FuncType fun = null;
 
-      if (fun == null) {
-         return null;
+      if (s != null) {
+         fun = (FuncType)s.getType();
       }
 
       return fun;
    }
 
-   public void clearLocals() {
-      locals.clear();
+   public void saveLocals(FuncType fun) {
+      fun.bindLocalMap(locals);
+      fun.bindParamMap(parameters);
+
+      locals = new HashMap<String, Symbol>();
+      parameters = new HashMap<String, Symbol>();
+   }
+
+   public void loadLocals(FuncType fun) {
+      locals = fun.getLocalMap();
+      parameters = fun.getParamMap();
    }
 
    public void bindParameters(FuncType func) {
       for (Symbol s : func.getParams()) {
-         bind(s);
+         bindParam(s);
       }
+   }
+
+   public void bindParam(Symbol s) {
+      bind(s, parameters);
    }
 
    public void bindDeclarations(List<Symbol> symbols) {

@@ -23,11 +23,9 @@ options {
 
 @members {
    // Creates a CFG mapping label names to boxes
-   private static GraphTable cfg = new GraphTable();
-   private static Node finalNode; // final node for the current function.
-   private static Map<String, Register> localRegisters = new HashMap<String, Register>();
-   private static Map<String, Integer> paramOffsets = new HashMap<String, Integer>();
-   private static Map<String, Register> globalRegisters = new HashMap<String, Register>();
+   private GraphTable cfg = new GraphTable();
+   private Node finalNode; // final node for the current function.
+   public SymbolTable symTable;
 
    public void dump() {
       // Verify that build has already been run?
@@ -41,13 +39,7 @@ options {
 build
 @init {
 }
-   : ^(PROGRAM types declarations {
-      globalRegisters.clear();
-
-      for (String s : $declarations.names) {
-         globalRegisters.put(s, new Register()); /* TODO: where do we put globals?? */
-      }
-   } functions)
+   : ^(PROGRAM types declarations functions)
    ;
 
 types
@@ -62,10 +54,10 @@ types_declaration
    : ^(STRUCT ID (var_decl)+)
    ;
 
-var_decl returns [String name]
+var_decl
 @init {
 }
-   : ^(DECL ^(TYPE type) ID) { $name = $ID.getText(); }
+   : ^(DECL ^(TYPE type) ID) 
    ;
 
 type
@@ -76,18 +68,12 @@ type
    | ^(STRUCT ID)
    ;
 
-declarations returns [List<String> names]
-@init {
-   $names = new LinkedList<String>();
-}
-   : ^(DECLS (declaration { $names.addAll($declaration.names); })*)
+declarations 
+   : ^(DECLS (declaration)*)
    ;
 
-declaration returns [List<String> names]
-@init {
-   $names = new LinkedList<String>();
-}
-   : ^(DECLLIST ^(TYPE type) (ID { $names.add($ID.getText()); })+)
+declaration
+   : ^(DECLLIST ^(TYPE type) (ID)+)
    ;
 
 functions
@@ -101,29 +87,18 @@ function
    Node start = new Node();
 }
    : ^(FUN ID {
-      start.setLabel($ID.getText());
+      String name = $ID.getText();
+      FuncType currentFunc = symTable.getFunction(name);
+      symTable.loadLocals(currentFunc);
+
+      start.setLabel(name);
 
       /* All paths from start end with the function's final node */
       finalNode = new Node();
       finalNode.setLabel(("." + $ID.getText() + "_final"));
 
    }
-   parameters {
-      paramOffsets.clear();
-      int offset = 0;
-
-      for (String s : $parameters.names) {
-         paramOffsets.put(s, offset++);
-      }
-   }
-   ^(RETTYPE return_type) declarations {
-      localRegisters.clear();
-
-      for (String s : $declarations.names) {
-         localRegisters.put(s, new Register());
-      }
-   }
-   statement_list[start]) {
+   parameters ^(RETTYPE return_type) declarations statement_list[start]) {
       // Loading parameters code.
 
       // Statement list code.
@@ -145,11 +120,8 @@ return_type
    | VOID
    ;
 
-parameters returns [List<String> names]
-@init {
-   $names = new LinkedList<String>();
-}
-   : ^(PARAMS (var_decl { $names.add($var_decl.name); } )*)
+parameters 
+   : ^(PARAMS (var_decl)*)
    ;
 
 statement_list[Node current] returns [Node exit]
@@ -364,18 +336,16 @@ expression[Node current] returns [Register r]
    | ID {
       String name = $ID.getText();
       Integer offset;
+      Symbol s = symTable.get(name);
+      $r = null; // TODO
 
       // Figure out if ID is local, parameter, or global.
-      $r = localRegisters.get(name);
-      if ($r != null) {
-         offset = paramOffsets.get(name);
+      if (s.isLocal()) {
 
-         if ($r != null) {
-            $r = new Register();
-            // TODO: load from stack, use r as destination register.
-         } else {
-            $r = globalRegisters.get(name);
-         }
+      } else if (s.isParam()) {
+
+      } else if (s.isGlobal()) {
+
       }
    }
    | ^(DOT expression[current] ID) {
