@@ -18,10 +18,6 @@ public class CbrleInstruction extends Instruction {
          ret = ret + r + ", ";
       }
 
-      for (Operand r : dests) {
-         ret = ret + r + ", ";
-      }
-
       ret = ret.trim();
       if (ret.lastIndexOf(",") == ret.length()-1)
          ret = ret.substring(0, ret.length()-2);
