@@ -384,13 +384,13 @@ expression[Node current] returns [Register r]
    | invocation[current] { $r = $invocation.r; }
    | ^(unop[current] e=expression[current]) {
       $unop.inst.addSource($e.r);
-      $unop.inst.addDest($r = new Register());
+      $unop.inst.addRegister($r = new Register());
       current.addInstr($unop.inst);
    }
    | ^(binop[current] f1=expression[current] f2=expression[current]) {
       $binop.inst.addSource($f1.r);
       $binop.inst.addSource($f2.r);
-      $binop.inst.addDest($r = new Register());
+      $binop.inst.addRegister($r = new Register());
       current.addInstr($binop.inst);
    }
    ;
