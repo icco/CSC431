@@ -426,21 +426,16 @@ expression[Node current] returns [Register r]
       current.addInstr(inst);
    }
    | ^(EQ f1=expression[current] f2=expression[current]) {
-      Instruction inst = new CbreqInstruction();
+      Instruction inst = new CompInstruction();
    }
    | ^(LT f1=expression[current] f2=expression[current]) {
-      Instruction inst = new CbrltInstruction();
    }
    | ^(GT f1=expression[current] f2=expression[current]) {
-      Instruction inst = new CbrgtInstruction();
    }
    | ^(NE f1=expression[current] f2=expression[current]) {
-      Instruction inst = new CbrneInstruction();
    }
    | ^(LE f1=expression[current] f2=expression[current]) {
-      Instruction inst = new CbrleInstruction();
    }
    | ^(GE f1=expression[current] f2=expression[current]) {
-      Instruction inst = new CbrgeInstruction();
    }
    ;
