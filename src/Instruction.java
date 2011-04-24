@@ -3,14 +3,38 @@ import java.lang.*;
 
 public class Instruction {
    public static Integer operandCount = 0;
-   ArrayList<Operand> sources = new ArrayList<Operand>();
+   private ArrayList<Operand> operands = new ArrayList<Operand>();
+   private ArrayList<Register> dests = new ArrayList<Register>();
 
    public String toString() {
       return "NULL INSTRUCTION.";
    }
 
+   public ArrayList<Register> getSources() {
+      ArrayList<Register> ret = new ArrayList<Register>();
+
+      for (Operand o : this.operands) {
+         if (o instanceof Register)
+            ret.add((Register)o);
+      }
+
+      return ret;
+   }
+
+   public ArrayList<Register> getDestinations() {
+      return this.dests;
+   }
+
+   public ArrayList<Operand> getOperands() {
+      ArrayList<Operand> ret = new ArrayList<Operand>();
+      ret.addAll(this.operands);
+      ret.addAll(this.dests);
+
+      return ret;
+   }
+
    void addSource(Operand in) {
-      this.sources.add(in);
+      this.operands.add(in);
    }
 
    public void addLabel(Label in) {
@@ -22,7 +46,7 @@ public class Instruction {
    }
 
    public void addDest(Register in) {
-      this.sources.set(operandCount-1, in);
+      this.dests.add(in);
    }
 
    public void addImmediate(Immediate in) {
