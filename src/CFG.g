@@ -359,12 +359,18 @@ expression[Node current] returns [Register r]
    | ^(NOT e=expression[current]) {
       // xor with 1 to flop a boolean
       Instruction x = new XoriInstruction();
+      Register rt = new Register();
       x.addImmediate(new Immediate(1));
+      x.addRegister($e.r);
+      x.addRegister(rt);
+
       current.addInstr(x);
+      $r = rt;
    }
    | ^(NEG e=expression[current]) {
       // load -1 into a register and mult by register.
       Instruction l = new LoadaiInstruction();
+      Register rt = new Register();
       Register ri = new Register();
       l.addImmediate(-1);
       l.addRegister(ri);
@@ -373,8 +379,9 @@ expression[Node current] returns [Register r]
       Instruction m = new MultInstruction();
       m.addRegister($e.r);
       m.addRegister(ri);
-      m.addRegister(new Register());
+      m.addRegister(rt);
       current.addInstr(m);
+      $r = rt;
    }
    | ^(binop[current] f1=expression[current] f2=expression[current]) {
       $binop.inst.addRegister($f1.r);
