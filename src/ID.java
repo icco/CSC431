@@ -5,6 +5,10 @@ public class ID implements Operand {
       id = "sym";
    }
 
+   public ID(String name) {
+      id = name;
+   }
+
    public String toString() {
       return id;
    }

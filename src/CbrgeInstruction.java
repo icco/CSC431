@@ -16,9 +16,11 @@ public class CbrgeInstruction extends Instruction {
       String classPattern = new String("ConditionCodeRegister Label Label");
       String[] pattern = classPattern.split(" ");
       String ret = "cbrge ";
+      int operandCount = this.getOperands().size();
 
-      if (this.getOperands().size() != pattern.length) {
-         Evil.error(ret + ": ILOC expecting " + pattern.length + " operators.");
+      if (operandCount != pattern.length) {
+         Evil.error(ret + ": Found " + operandCount 
+          + " operands, ILOC expecting " + pattern.length);
       }
 
       for (Operand r : this.getOperands()) {

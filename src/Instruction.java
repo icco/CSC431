@@ -45,6 +45,10 @@ public class Instruction {
       this.addLabel(new Label(in));
    }
 
+   public void addField(Field in) {
+      this.addSource(in);
+   }
+
    public void addRegister(Register in) {
       this.addSource(in);
    }

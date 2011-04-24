@@ -16,9 +16,11 @@ public class CallInstruction extends Instruction {
       String classPattern = new String("Label");
       String[] pattern = classPattern.split(" ");
       String ret = "call ";
+      int operandCount = this.getOperands().size();
 
-      if (this.getOperands().size() != pattern.length) {
-         Evil.error(ret + ": ILOC expecting " + pattern.length + " operators.");
+      if (operandCount != pattern.length) {
+         Evil.error(ret + ": Found " + operandCount 
+          + " operands, ILOC expecting " + pattern.length);
       }
 
       for (Operand r : this.getOperands()) {

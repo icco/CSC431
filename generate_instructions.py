@@ -294,9 +294,11 @@ public class %(classname)s extends Instruction {
       String classPattern = new String("%(pattern)s");
       String[] pattern = classPattern.split(" ");
       String ret = "%(instr)s ";
+      int operandCount = this.getOperands().size();
 
-      if (this.getOperands().size() != pattern.length) {
-         Evil.error(ret + ": ILOC expecting " + pattern.length + " operators.");
+      if (operandCount != pattern.length) {
+         Evil.error(ret + ": Found " + operandCount 
+          + " operands, ILOC expecting " + pattern.length);
       }
 
       for (Operand r : this.getOperands()) {

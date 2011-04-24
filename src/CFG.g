@@ -224,6 +224,7 @@ lvalue_h[Node current] returns [Register addressRegister]
          $addressRegister = new Register();
 
          mov = new LoadinargumentInstruction();
+         mov.addLabel(var.getName());
          mov.addImmediate(var.getOffset());
          mov.addDest($addressRegister);
          current.addInstr(mov);
@@ -231,8 +232,8 @@ lvalue_h[Node current] returns [Register addressRegister]
       } else if (var.isGlobal()) {
          $addressRegister = new Register();
 
-         mov = new LoadinargumentInstruction();
-         mov.addLabel(new Label(var.getName()));
+         mov = new LoadglobalInstruction();
+         mov.addSource(new ID(var.getName()));
          mov.addDest($addressRegister);
          current.addInstr(mov);
       }

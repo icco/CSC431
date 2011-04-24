@@ -16,9 +16,11 @@ public class RestoreformalInstruction extends Instruction {
       String classPattern = new String("ID Immediate");
       String[] pattern = classPattern.split(" ");
       String ret = "restoreformal ";
+      int operandCount = this.getOperands().size();
 
-      if (this.getOperands().size() != pattern.length) {
-         Evil.error(ret + ": ILOC expecting " + pattern.length + " operators.");
+      if (operandCount != pattern.length) {
+         Evil.error(ret + ": Found " + operandCount 
+          + " operands, ILOC expecting " + pattern.length);
       }
 
       for (Operand r : this.getOperands()) {
