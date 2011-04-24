@@ -5,6 +5,7 @@ import java.lang.*;
  * Generated automatically by generate_instructions.py
  */
 public class RetInstruction extends Instruction {
+   public static Integer operandCount = 0;
    public RetInstruction() { }
 
    public String toString() {

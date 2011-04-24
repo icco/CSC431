@@ -5,6 +5,7 @@ import java.lang.*;
  * Generated automatically by generate_instructions.py
  */
 public class CbrltInstruction extends Instruction {
+   public static Integer operandCount = 3;
    public CbrltInstruction() { }
 
    public String toString() {

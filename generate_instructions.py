@@ -271,7 +271,8 @@ for instr in instructions:
       'date': datetime.now().isoformat(' '),
       'classname': classname,
       'instr': instr['name'],
-      'pattern': ' '.join(data)
+      'pattern': ' '.join(data),
+      'count': len(data)
    }
 
    # Take the data we built, and apply it to the template below.
@@ -282,6 +283,7 @@ import java.lang.*;
  * Generated automatically by generate_instructions.py
  */
 public class %(classname)s extends Instruction {
+   public static Integer operandCount = %(count)d;
    public %(classname)s() { }
 
    public String toString() {

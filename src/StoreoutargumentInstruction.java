@@ -5,6 +5,7 @@ import java.lang.*;
  * Generated automatically by generate_instructions.py
  */
 public class StoreoutargumentInstruction extends Instruction {
+   public static Integer operandCount = 3;
    public StoreoutargumentInstruction() { }
 
    public String toString() {

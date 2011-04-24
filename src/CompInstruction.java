@@ -5,6 +5,7 @@ import java.lang.*;
  * Generated automatically by generate_instructions.py
  */
 public class CompInstruction extends Instruction {
+   public static Integer operandCount = 3;
    public CompInstruction() { }
 
    public String toString() {

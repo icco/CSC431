@@ -5,6 +5,7 @@ import java.lang.*;
  * Generated automatically by generate_instructions.py
  */
 public class MovleInstruction extends Instruction {
+   public static Integer operandCount = 2;
    public MovleInstruction() { }
 
    public String toString() {

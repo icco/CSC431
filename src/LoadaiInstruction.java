@@ -5,6 +5,7 @@ import java.lang.*;
  * Generated automatically by generate_instructions.py
  */
 public class LoadaiInstruction extends Instruction {
+   public static Integer operandCount = 3;
    public LoadaiInstruction() { }
 
    public String toString() {
