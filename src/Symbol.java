@@ -6,6 +6,9 @@ public class Symbol {
    private int lineNumber;
    private Scope scopeLevel;
 
+   private Register r;  // used for locals.
+   private Integer offset; // used for globals and parameters.
+
    public Symbol() { }
    public Symbol(String name, Type t) {
       this.name = name;
@@ -33,4 +36,7 @@ public class Symbol {
    public boolean isLocal() { return this.scopeLevel == Scope.LOCAL; }
    public boolean isParam() { return this.scopeLevel == Scope.PARAM; }
    public boolean isGlobal() { return this.scopeLevel == Scope.GLOBAL; }
+
+   public void setRegister(Register reg) { this.r = reg; }
+   public Register getRegister() { return this.r; }
 }

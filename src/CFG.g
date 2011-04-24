@@ -19,6 +19,7 @@ options {
    import java.util.Iterator;
    import java.util.LinkedList;
    import java.util.List;
+   import java.util.Set;
 }
 
 @members {
@@ -89,6 +90,11 @@ function
    : ^(FUN ID {
       String name = $ID.getText();
       FuncType currentFunc = symTable.getFunction(name);
+
+      for (Symbol local : currentFunc.getLocals()) {
+         local.setRegister(new Register());
+      }
+
       symTable.loadLocals(currentFunc);
 
       start.setLabel(name);
@@ -337,7 +343,7 @@ expression[Node current] returns [Register r]
       String name = $ID.getText();
       Integer offset;
       Symbol s = symTable.get(name);
-      $r = null; // TODO
+      $r = new Register(); // TODO
 
       // Figure out if ID is local, parameter, or global.
       if (s.isLocal()) {
