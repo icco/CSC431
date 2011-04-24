@@ -60,7 +60,7 @@ run: tests/4.ev
 typetest: all
 	@./typetest.sh
 
-test: run
+test: tests/compat.ev
 
 debug:
 	@make -s -B -e DEBUGFLAGS=-trace

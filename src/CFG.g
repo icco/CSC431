@@ -28,12 +28,8 @@ options {
    private Node finalNode; // final node for the current function.
    public SymbolTable symTable;
 
-   public void dump() {
-      // Verify that build has already been run?
-
-      // Print out Graph.
-      // TODO: We are supposed to write to a file, not stdout.
-      System.out.println(cfg);
+   public String dump() {
+      return cfg.toString();
    }
 }
 
@@ -58,7 +54,7 @@ types_declaration
 var_decl
 @init {
 }
-   : ^(DECL ^(TYPE type) ID) 
+   : ^(DECL ^(TYPE type) ID)
    ;
 
 type
@@ -69,7 +65,7 @@ type
    | ^(STRUCT ID)
    ;
 
-declarations 
+declarations
    : ^(DECLS (declaration)*)
    ;
 
@@ -126,7 +122,7 @@ return_type
    | VOID
    ;
 
-parameters 
+parameters
    : ^(PARAMS (var_decl)*)
    ;
 
@@ -288,7 +284,7 @@ ret[Node current] returns [Node exit]
 }
    : ^(RETURN (expression[current])?) {
       Instruction lr = new LoadretInstruction();
-      lr.addSource(new Register());
+      lr.addRegister(new Register());
       current.addInstr(lr);
 
       // Put value in return register if expression is not null.
@@ -359,13 +355,13 @@ expression[Node current] returns [Register r]
    }
    | invocation[current] { $r = $invocation.r; }
    | ^(unop[current] e=expression[current]) {
-      $unop.inst.addSource($e.r);
-      $unop.inst.addRegister($r = new Register());
-      current.addInstr($unop.inst);
+      // TODO
+      // if not xori with 1
+      // else if load -1 into a register and mult by register.
    }
    | ^(binop[current] f1=expression[current] f2=expression[current]) {
-      $binop.inst.addSource($f1.r);
-      $binop.inst.addSource($f2.r);
+      $binop.inst.addRegister($f1.r);
+      $binop.inst.addRegister($f2.r);
       $binop.inst.addRegister($r = new Register());
       current.addInstr($binop.inst);
    }
@@ -387,6 +383,6 @@ binop[Node current] returns [Instruction inst]
    ;
 
 unop[Node current] returns [Instruction inst]
-   : NOT /* TODO */
-   | NEG /* TODO */
+   : NOT
+   | NEG
    ;
