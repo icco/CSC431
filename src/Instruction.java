@@ -27,4 +27,8 @@ public class Instruction {
    public void addImmediate(Immediate in) {
       this.addSource(in);
    }
+
+   public void addImmediate(Integer in) {
+      this.addSource(new Immediate(in));
+   }
 }

@@ -1,12 +1,21 @@
 public class Immediate implements Operand {
-   public static int counter = 0;
-   public int id;
+   public Integer value = null;
 
-   public Immediate() {
-      id = counter++;
+   public Immediate() { }
+
+   public Immediate(Integer in) {
+      this.setValue(in);
+   }
+
+   public Integer getValue() {
+      return this.value;
+   }
+
+   public void setValue(Integer in) {
+      this.value = in;
    }
 
    public String toString() {
-      return "i" + id;
+      return this.getValue().toString();
    }
 }

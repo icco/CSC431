@@ -1,4 +1,3 @@
-
 import java.util.*;
 import java.lang.*;
 
@@ -14,7 +13,7 @@ public class MovltInstruction extends Instruction {
 
    public String toILOC() {
       String ret = "movlt ";
-      for (Operand r : sources) {
+      for (Operand r : this.sources) {
          ret = ret + r + ", ";
       }
 
