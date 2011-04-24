@@ -19,6 +19,7 @@ options {
    import java.util.Iterator;
    import java.util.LinkedList;
    import java.util.List;
+   import java.util.Set;
 }
 
 @members {
@@ -85,6 +86,11 @@ function
    : ^(FUN ID {
       String name = $ID.getText();
       FuncType currentFunc = symTable.getFunction(name);
+
+      for (Symbol local : currentFunc.getLocals()) {
+         local.setRegister(new Register());
+      }
+
       symTable.loadLocals(currentFunc);
 
       start.setLabel(name);
