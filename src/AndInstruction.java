@@ -17,7 +17,7 @@ public class AndInstruction extends Instruction {
       String[] pattern = classPattern.split(" ");
       String ret = "and ";
 
-      for (Operand r : this.sources) {
+      for (Operand r : this.getOperands()) {
          ret = ret + r + ", ";
       }
 
@@ -25,8 +25,8 @@ public class AndInstruction extends Instruction {
       if (ret.lastIndexOf(",") == ret.length()-1)
          ret = ret.substring(0, ret.length()-2);
 
-      for (int i = 0; i < this.sources.size(); i++) {
-         if (this.sources.get(i).getClass().getName() != pattern[i]) {
+      for (int i = 0; i < this.getOperands().size(); i++) {
+         if (this.getOperands().get(i).getClass().getName() != pattern[i]) {
             Evil.error(ret + ": ILOC expecting " + classPattern);
          }
       }
