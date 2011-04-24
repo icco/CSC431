@@ -435,25 +435,64 @@ expression[Node current] returns [Register r]
       current.addInstr(m);
       $r = rt;
    }
-   | ^(binop[current] f1=expression[current] f2=expression[current]) {
-      $binop.inst.addRegister($f1.r);
-      $binop.inst.addRegister($f2.r);
-      $binop.inst.addRegister($r = new Register());
-      current.addInstr($binop.inst);
+   | ^(AND f1=expression[current] f2=expression[current]) {
+      Instruction inst = new AndInstruction();
+      inst.addRegister($f1.r);
+      inst.addRegister($f2.r);
+      inst.addRegister($r = new Register());
+      current.addInstr(inst);
    }
-   ;
-
-binop[Node current] returns [Instruction inst]
-   : AND { $inst = new AndInstruction(); }
-   | OR { $inst = new OrInstruction(); }
-   | EQ { $inst = new CbreqInstruction(); }
-   | LT { $inst = new CbrltInstruction(); }
-   | GT { $inst = new CbrgtInstruction(); }
-   | NE { $inst = new CbrneInstruction(); }
-   | LE { $inst = new CbrleInstruction(); }
-   | GE { $inst = new CbrgeInstruction(); }
-   | PLUS { $inst = new AddInstruction(); }
-   | MINUS { $inst = new SubInstruction(); }
-   | TIMES { $inst = new MultInstruction(); }
-   | DIVIDE { $inst = new DivInstruction(); }
+   | ^(OR f1=expression[current] f2=expression[current]) {
+      Instruction inst = new OrInstruction();
+      inst.addRegister($f1.r);
+      inst.addRegister($f2.r);
+      inst.addRegister($r = new Register());
+      current.addInstr(inst);
+   }
+   | ^(PLUS f1=expression[current] f2=expression[current]) {
+      Instruction inst = new AddInstruction();
+      inst.addRegister($f1.r);
+      inst.addRegister($f2.r);
+      inst.addRegister($r = new Register());
+      current.addInstr(inst);
+   }
+   | ^(MINUS f1=expression[current] f2=expression[current]) {
+      Instruction inst = new SubInstruction();
+      inst.addRegister($f1.r);
+      inst.addRegister($f2.r);
+      inst.addRegister($r = new Register());
+      current.addInstr(inst);
+   }
+   | ^(TIMES f1=expression[current] f2=expression[current]) {
+      Instruction inst = new MultInstruction();
+      inst.addRegister($f1.r);
+      inst.addRegister($f2.r);
+      inst.addRegister($r = new Register());
+      current.addInstr(inst);
+   }
+   | ^(DIVIDE f1=expression[current] f2=expression[current]) {
+      Instruction inst = new DivInstruction();
+      inst.addRegister($f1.r);
+      inst.addRegister($f2.r);
+      inst.addRegister($r = new Register());
+      current.addInstr(inst);
+   }
+   | ^(EQ f1=expression[current] f2=expression[current]) {
+      Instruction inst = new CbreqInstruction();
+   }
+   | ^(LT f1=expression[current] f2=expression[current]) {
+      Instruction inst = new CbrltInstruction();
+   }
+   | ^(GT f1=expression[current] f2=expression[current]) {
+      Instruction inst = new CbrgtInstruction();
+   }
+   | ^(NE f1=expression[current] f2=expression[current]) {
+      Instruction inst = new CbrneInstruction();
+   }
+   | ^(LE f1=expression[current] f2=expression[current]) {
+      Instruction inst = new CbrleInstruction();
+   }
+   | ^(GE f1=expression[current] f2=expression[current]) {
+      Instruction inst = new CbrgeInstruction();
+   }
    ;
