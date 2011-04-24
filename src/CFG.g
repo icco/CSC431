@@ -422,7 +422,7 @@ expression[Node current] returns [Register r]
    }
    | ^(NEG e=expression[current]) {
       // load -1 into a register and mult by register.
-      Instruction l = new LoadaiInstruction();
+      Instruction l = new LoadiInstruction();
       Register rt = new Register();
       Register ri = new Register();
       l.addImmediate(-1);
@@ -479,21 +479,32 @@ expression[Node current] returns [Register r]
       current.addInstr(inst);
    }
    | ^(EQ f1=expression[current] f2=expression[current]) {
-      Instruction inst = new CbreqInstruction();
+      Instruction inst = new CompInstruction();
+      inst.addRegister($f1.r);
+      inst.addRegister($f2.r);
+      inst.addRegister(new ConditionCodeRegister());
+      current.addInstr(inst);
+
+      $r = new Register();
+
+      inst = new LoadiInstruction();
+      inst.addImmediate(0);
+      inst.addRegister($r);
+      current.addInstr(inst);
+
+      inst = new MoveqInstruction();
+      inst.addImmediate(1);
+      inst.addRegister($r);
+      current.addInstr(inst);
    }
    | ^(LT f1=expression[current] f2=expression[current]) {
-      Instruction inst = new CbrltInstruction();
    }
    | ^(GT f1=expression[current] f2=expression[current]) {
-      Instruction inst = new CbrgtInstruction();
    }
    | ^(NE f1=expression[current] f2=expression[current]) {
-      Instruction inst = new CbrneInstruction();
    }
    | ^(LE f1=expression[current] f2=expression[current]) {
-      Instruction inst = new CbrleInstruction();
    }
    | ^(GE f1=expression[current] f2=expression[current]) {
-      Instruction inst = new CbrgeInstruction();
    }
    ;

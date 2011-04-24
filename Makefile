@@ -50,6 +50,7 @@ antlr.generated.walker : ${SOURCEDIR}/Walker.g
 	@touch antlr.generated.walker
 
 instructions: generate_instructions.py
+	bash -c "rm src/[A-Z]*Instruction.java"
 	./generate_instructions.py
 
 run: tests/4.ev
