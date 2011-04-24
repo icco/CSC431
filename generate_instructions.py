@@ -265,11 +265,13 @@ instructions = [
 for instr in instructions:
    classname = instr['name'].capitalize() + "Instruction"
    filename = "src/" + classname + ".java"
+   data = instr['sources'] + instr['dest']
 
    data = {
       'date': datetime.now().isoformat(' '),
       'classname': classname,
       'instr': instr['name'],
+      'pattern': ' '.join(data)
    }
 
    # Take the data we built, and apply it to the template below.
@@ -287,7 +289,10 @@ public class %(classname)s extends Instruction {
    }
 
    public String toILOC() {
+      String classPattern = new String("%(pattern)s");
+      String[] pattern = classPattern.split(" ");
       String ret = "%(instr)s ";
+
       for (Operand r : this.sources) {
          ret = ret + r + ", ";
       }
@@ -295,6 +300,12 @@ public class %(classname)s extends Instruction {
       ret = ret.trim();
       if (ret.lastIndexOf(",") == ret.length()-1)
          ret = ret.substring(0, ret.length()-2);
+
+      for (int i = 0; i < this.sources.size(); i++) {
+         if (this.sources.get(i).getClass().getName() != pattern[i]) {
+            Evil.error(ret + ": ILOC expecting " + classPattern);
+         }
+      }
 
       return ret;
    }
