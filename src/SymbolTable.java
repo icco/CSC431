@@ -148,4 +148,9 @@ public class SymbolTable {
          bindFunction(s);
       }
    }
+
+   // The only table that needs a getter.
+   public Map<String, Symbol> getGlobals() {
+      return globals;
+   }
 }

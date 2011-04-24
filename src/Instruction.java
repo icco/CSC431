@@ -12,6 +12,10 @@ public class Instruction {
       this.sources.add(in);
    }
 
+   void addDest(Register in) {
+      this.sources.add(in);
+   }
+
    public void addLabel(Label in) {
       this.addSource(in);
    }
