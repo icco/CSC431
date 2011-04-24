@@ -41,6 +41,10 @@ public class Instruction {
       this.addSource(in);
    }
 
+   public void addLabel(String in) {
+      this.addLabel(new Label(in));
+   }
+
    public void addRegister(Register in) {
       this.addSource(in);
    }

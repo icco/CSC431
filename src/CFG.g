@@ -75,6 +75,14 @@ declaration
 
 functions
 @init {
+   // Set global offsets.
+   Map<String, Symbol> globals = symTable.getGlobals();
+   Set<String> globalNames = globals.keySet();
+   int offset = 0;
+
+   for (String name : globalNames) {
+      globals.get(name).setOffset(offset++);
+   }
 }
    : ^(FUNCS function*)
    ;
@@ -86,19 +94,24 @@ function
    : ^(FUN ID {
       String name = $ID.getText();
       FuncType currentFunc = symTable.getFunction(name);
+      int offset = 0;
 
+      symTable.loadLocals(currentFunc);
+      // Set up locals.
       for (Symbol local : currentFunc.getLocals()) {
          local.setRegister(new Register());
       }
 
-      symTable.loadLocals(currentFunc);
-
+      // Set up parameters.
+      for (Symbol param : currentFunc.getParams()) {
+         param.setOffset(offset++);
+      }
+      
       start.setLabel(name);
 
       /* All paths from start end with the function's final node */
       finalNode = new Node();
       finalNode.setLabel(("." + $ID.getText() + "_final"));
-
    }
    parameters ^(RETTYPE return_type) declarations statement_list[start]) {
       // Loading parameters code.
@@ -160,17 +173,35 @@ block[Node current] returns [Node exit]
 assignment[Node current]
 @init {
 }
-   : ^(ASSIGN expression[current] lvalue[$expression.r])
+   : ^(ASSIGN expression[current] lvalue[current, $expression.r])
    ;
 
-lvalue[Register store] returns [Register r]
+lvalue[Node current, Register storeThis]
 @init {
 }
    : ID {
-      /* store in local/global/parameter */
+      /* Store in local/global/parameter */
+      Symbol var = symTable.get($ID.getText());
+      Instruction mov = null;
 
+      if (var.isLocal()) {
+         mov = new MovInstruction();  
+         mov.addSource(storeThis);
+         mov.addDest(var.getRegister());
+      } else if (var.isParam()) {
+         mov = new StoreinargumentInstruction();
+         mov.addSource(storeThis);
+         mov.addImmediate(var.getOffset());
+
+      } else if (var.isGlobal()) {
+         mov = new StoreglobalInstruction();
+         mov.addSource(storeThis);
+         mov.addLabel(var.getName());
+      }
+
+      current.addInstr(mov);
    }
-   | ^(DOT lvalue_h ID) {
+   | ^(DOT lvalue_h[current] ID) {
     /**
      * Store in heap:
      * lvalue_h rules gets register with memory address.
@@ -179,13 +210,34 @@ lvalue[Register store] returns [Register r]
    }
    ;
 
-lvalue_h returns [Register r]
+lvalue_h[Node current] returns [Register addressRegister]
 @init {
 }
    :  ID {
-      /* Load from global/local */
+      Symbol var = symTable.get($ID.getText());
+      Instruction mov;
+
+      if (var.isLocal()) {
+         $addressRegister = var.getRegister();
+
+      } else if (var.isParam()) {
+         $addressRegister = new Register();
+
+         mov = new LoadinargumentInstruction();
+         mov.addImmediate(var.getOffset());
+         mov.addDest($addressRegister);
+         current.addInstr(mov);
+
+      } else if (var.isGlobal()) {
+         $addressRegister = new Register();
+
+         mov = new LoadinargumentInstruction();
+         mov.addLabel(new Label(var.getName()));
+         mov.addDest($addressRegister);
+         current.addInstr(mov);
+      }
    }
-   | ^(DOT lvalue_h ID) {
+   | ^(DOT lvalue_h[current] ID) {
      /* lvalue_h rule gets register with memory address.
       * ID is offset to store at
       */
@@ -204,7 +256,7 @@ read[Node current]
    // move global into new register.
    Register readValue = new Register();
 }
-   :  ^(READ lvalue[readValue])
+   :  ^(READ lvalue[current, readValue])
    ;
 
 conditional[Node current] returns [Node exit]

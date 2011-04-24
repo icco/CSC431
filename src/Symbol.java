@@ -39,4 +39,6 @@ public class Symbol {
 
    public void setRegister(Register reg) { this.r = reg; }
    public Register getRegister() { return this.r; }
+   public void setOffset(Integer offset) { this.offset = offset; }
+   public Integer getOffset() { return this.offset; }
 }
