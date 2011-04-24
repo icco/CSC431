@@ -273,8 +273,7 @@ for instr in instructions:
    }
 
    # Take the data we built, and apply it to the template below.
-   txt = """
-import java.util.*;
+   txt = """import java.util.*;
 import java.lang.*;
 
 /**
@@ -289,7 +288,7 @@ public class %(classname)s extends Instruction {
 
    public String toILOC() {
       String ret = "%(instr)s ";
-      for (Operand r : sources) {
+      for (Operand r : this.sources) {
          ret = ret + r + ", ";
       }
 
@@ -299,8 +298,7 @@ public class %(classname)s extends Instruction {
 
       return ret;
    }
-}
-""" % data
+}""" % data
 
    f = open(filename, 'w')
    f.write(txt)
