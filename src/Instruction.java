@@ -37,12 +37,12 @@ public class Instruction {
       this.operands.add(in);
    }
 
-   void addDest(Register in) {
-      this.sources.add(in);
-   }
-
    public void addLabel(Label in) {
       this.addSource(in);
+   }
+
+   public void addLabel(String in) {
+      this.addLabel(new Label(in));
    }
 
    public void addRegister(Register in) {

@@ -173,16 +173,16 @@ block[Node current] returns [Node exit]
 assignment[Node current]
 @init {
 }
-   : ^(ASSIGN expression[current] lvalue[$expression.r])
+   : ^(ASSIGN expression[current] lvalue[current, $expression.r])
    ;
 
-lvalue[Register storeThis]
+lvalue[Node current, Register storeThis]
 @init {
 }
    : ID {
-      /* store in local/global/parameter */
+      /* Store in local/global/parameter */
       Symbol var = symTable.get($ID.getText());
-      Instruction mov;
+      Instruction mov = null;
 
       if (var.isLocal()) {
          mov = new MovInstruction();  
@@ -191,17 +191,17 @@ lvalue[Register storeThis]
       } else if (var.isParam()) {
          mov = new StoreinargumentInstruction();
          mov.addSource(storeThis);
-         mov.addDest(var.getOffset());
+         mov.addImmediate(var.getOffset());
 
-      } else if (var.isGloba()) {
+      } else if (var.isGlobal()) {
          mov = new StoreglobalInstruction();
          mov.addSource(storeThis);
          mov.addLabel(var.getName());
       }
-         // Move 
 
+      current.addInstr(mov);
    }
-   | ^(DOT lvalue_h ID) {
+   | ^(DOT lvalue_h[current] ID) {
     /**
      * Store in heap:
      * lvalue_h rules gets register with memory address.
@@ -210,13 +210,34 @@ lvalue[Register storeThis]
    }
    ;
 
-lvalue_h returns [Register r]
+lvalue_h[Node current] returns [Register addressRegister]
 @init {
 }
    :  ID {
-      /* Load from global/local */
+      Symbol var = symTable.get($ID.getText());
+      Instruction mov;
+
+      if (var.isLocal()) {
+         $addressRegister = var.getRegister();
+
+      } else if (var.isParam()) {
+         $addressRegister = new Register();
+
+         mov = new LoadinargumentInstruction();
+         mov.addImmediate(var.getOffset());
+         mov.addDest($addressRegister);
+         current.addInstr(mov);
+
+      } else if (var.isGlobal()) {
+         $addressRegister = new Register();
+
+         mov = new LoadinargumentInstruction();
+         mov.addLabel(new Label(var.getName()));
+         mov.addDest($addressRegister);
+         current.addInstr(mov);
+      }
    }
-   | ^(DOT lvalue_h ID) {
+   | ^(DOT lvalue_h[current] ID) {
      /* lvalue_h rule gets register with memory address.
       * ID is offset to store at
       */
@@ -235,7 +256,7 @@ read[Node current]
    // move global into new register.
    Register readValue = new Register();
 }
-   :  ^(READ lvalue[readValue])
+   :  ^(READ lvalue[current, readValue])
    ;
 
 conditional[Node current] returns [Node exit]
