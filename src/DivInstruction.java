@@ -17,6 +17,10 @@ public class DivInstruction extends Instruction {
       String[] pattern = classPattern.split(" ");
       String ret = "div ";
 
+      if (this.getOperands().size() != pattern.length) {
+         Evil.error(ret + ": ILOC expecting " + pattern.length + " operators.");
+      }
+
       for (Operand r : this.getOperands()) {
          ret = ret + r + ", ";
       }
@@ -26,8 +30,14 @@ public class DivInstruction extends Instruction {
          ret = ret.substring(0, ret.length()-2);
 
       for (int i = 0; i < this.getOperands().size(); i++) {
-         if (this.getOperands().get(i).getClass().getName() != pattern[i]) {
-            Evil.error(ret + ": ILOC expecting " + classPattern);
+         Operand o = this.getOperands().get(i);
+         String oper = "null";
+
+         if (o != null) {
+            oper = o.getClass().getName();
+         }
+         if (!oper.equals(pattern[i])) {
+            Evil.error(ret + ": ILOC expecting " + classPattern + ". Found " + oper);
          }
       }
 
