@@ -492,19 +492,110 @@ expression[Node current] returns [Register r]
       inst.addRegister($r);
       current.addInstr(inst);
 
+      // If true toggle $r to 1.
       inst = new MoveqInstruction();
       inst.addImmediate(1);
       inst.addRegister($r);
       current.addInstr(inst);
    }
    | ^(LT f1=expression[current] f2=expression[current]) {
+      Instruction inst = new CompInstruction();
+      inst.addRegister($f1.r);
+      inst.addRegister($f2.r);
+      inst.addRegister(new ConditionCodeRegister());
+      current.addInstr(inst);
+
+      $r = new Register();
+
+      inst = new LoadiInstruction();
+      inst.addImmediate(0);
+      inst.addRegister($r);
+      current.addInstr(inst);
+
+      // If true toggle $r to 1.
+      inst = new MovltInstruction();
+      inst.addImmediate(1);
+      inst.addRegister($r);
+      current.addInstr(inst);
    }
    | ^(GT f1=expression[current] f2=expression[current]) {
+      Instruction inst = new CompInstruction();
+      inst.addRegister($f1.r);
+      inst.addRegister($f2.r);
+      inst.addRegister(new ConditionCodeRegister());
+      current.addInstr(inst);
+
+      $r = new Register();
+
+      inst = new LoadiInstruction();
+      inst.addImmediate(0);
+      inst.addRegister($r);
+      current.addInstr(inst);
+
+      // If true toggle $r to 1.
+      inst = new MovgtInstruction();
+      inst.addImmediate(1);
+      inst.addRegister($r);
+      current.addInstr(inst);
    }
    | ^(NE f1=expression[current] f2=expression[current]) {
+      Instruction inst = new CompInstruction();
+      inst.addRegister($f1.r);
+      inst.addRegister($f2.r);
+      inst.addRegister(new ConditionCodeRegister());
+      current.addInstr(inst);
+
+      $r = new Register();
+
+      inst = new LoadiInstruction();
+      inst.addImmediate(0);
+      inst.addRegister($r);
+      current.addInstr(inst);
+
+      // If true toggle $r to 1.
+      inst = new MovneInstruction();
+      inst.addImmediate(1);
+      inst.addRegister($r);
+      current.addInstr(inst);
    }
    | ^(LE f1=expression[current] f2=expression[current]) {
+      Instruction inst = new CompInstruction();
+      inst.addRegister($f1.r);
+      inst.addRegister($f2.r);
+      inst.addRegister(new ConditionCodeRegister());
+      current.addInstr(inst);
+
+      $r = new Register();
+
+      inst = new LoadiInstruction();
+      inst.addImmediate(0);
+      inst.addRegister($r);
+      current.addInstr(inst);
+
+      // If true toggle $r to 1.
+      inst = new MovleInstruction();
+      inst.addImmediate(1);
+      inst.addRegister($r);
+      current.addInstr(inst);
    }
    | ^(GE f1=expression[current] f2=expression[current]) {
+      Instruction inst = new CompInstruction();
+      inst.addRegister($f1.r);
+      inst.addRegister($f2.r);
+      inst.addRegister(new ConditionCodeRegister());
+      current.addInstr(inst);
+
+      $r = new Register();
+
+      inst = new LoadiInstruction();
+      inst.addImmediate(0);
+      inst.addRegister($r);
+      current.addInstr(inst);
+
+      // If true toggle $r to 1.
+      inst = new MovgeInstruction();
+      inst.addImmediate(1);
+      inst.addRegister($r);
+      current.addInstr(inst);
    }
    ;
