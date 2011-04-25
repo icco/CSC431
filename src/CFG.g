@@ -373,7 +373,7 @@ ret[Node current] returns [Node exit]
 }
    : ^(RETURN (expression[current])?) {
       Instruction lr = new LoadretInstruction();
-      lr.addRegister(new Register());
+      lr.addDest(new Register()); // Might need to be addRegister instead
       current.addInstr(lr);
 
       // Put value in return register if expression is not null.
@@ -478,13 +478,13 @@ expression[Node current] returns [Register r]
       Register rt = new Register();
       Register ri = new Register();
       l.addImmediate(-1);
-      l.addRegister(ri);
+      l.addDest(ri);
       current.addInstr(l);
 
       Instruction m = new MultInstruction();
       m.addRegister($e.r);
       m.addRegister(ri);
-      m.addRegister(rt);
+      m.addDest(rt);
       current.addInstr(m);
       $r = rt;
    }
@@ -513,141 +513,141 @@ expression[Node current] returns [Register r]
       Instruction inst = new SubInstruction();
       inst.addRegister($f1.r);
       inst.addRegister($f2.r);
-      inst.addRegister($r = new Register());
+      inst.addDest($r = new Register());
       current.addInstr(inst);
    }
    | ^(TIMES f1=expression[current] f2=expression[current]) {
       Instruction inst = new MultInstruction();
       inst.addRegister($f1.r);
       inst.addRegister($f2.r);
-      inst.addRegister($r = new Register());
+      inst.addDest($r = new Register());
       current.addInstr(inst);
    }
    | ^(DIVIDE f1=expression[current] f2=expression[current]) {
       Instruction inst = new DivInstruction();
       inst.addRegister($f1.r);
       inst.addRegister($f2.r);
-      inst.addRegister($r = new Register());
+      inst.addDest($r = new Register());
       current.addInstr(inst);
    }
    | ^(EQ f1=expression[current] f2=expression[current]) {
       Instruction inst = new CompInstruction();
       inst.addRegister($f1.r);
       inst.addRegister($f2.r);
-      inst.addRegister(new ConditionCodeRegister());
+      inst.addDest(new ConditionCodeRegister());
       current.addInstr(inst);
 
       $r = new Register();
 
       inst = new LoadiInstruction();
       inst.addImmediate(0);
-      inst.addRegister($r);
+      inst.addDest($r);
       current.addInstr(inst);
 
       // If true toggle $r to 1.
       inst = new MoveqInstruction();
       inst.addImmediate(1);
-      inst.addRegister($r);
+      inst.addDest($r);
       current.addInstr(inst);
    }
    | ^(LT f1=expression[current] f2=expression[current]) {
       Instruction inst = new CompInstruction();
       inst.addRegister($f1.r);
       inst.addRegister($f2.r);
-      inst.addRegister(new ConditionCodeRegister());
+      inst.addDest(new ConditionCodeRegister());
       current.addInstr(inst);
 
       $r = new Register();
 
       inst = new LoadiInstruction();
       inst.addImmediate(0);
-      inst.addRegister($r);
+      inst.addDest($r);
       current.addInstr(inst);
 
       // If true toggle $r to 1.
       inst = new MovltInstruction();
       inst.addImmediate(1);
-      inst.addRegister($r);
+      inst.addDest($r);
       current.addInstr(inst);
    }
    | ^(GT f1=expression[current] f2=expression[current]) {
       Instruction inst = new CompInstruction();
       inst.addRegister($f1.r);
       inst.addRegister($f2.r);
-      inst.addRegister(new ConditionCodeRegister());
+      inst.addDest(new ConditionCodeRegister());
       current.addInstr(inst);
 
       $r = new Register();
 
       inst = new LoadiInstruction();
       inst.addImmediate(0);
-      inst.addRegister($r);
+      inst.addDest($r);
       current.addInstr(inst);
 
       // If true toggle $r to 1.
       inst = new MovgtInstruction();
       inst.addImmediate(1);
-      inst.addRegister($r);
+      inst.addDest($r);
       current.addInstr(inst);
    }
    | ^(NE f1=expression[current] f2=expression[current]) {
       Instruction inst = new CompInstruction();
       inst.addRegister($f1.r);
       inst.addRegister($f2.r);
-      inst.addRegister(new ConditionCodeRegister());
+      inst.addDest(new ConditionCodeRegister());
       current.addInstr(inst);
 
       $r = new Register();
 
       inst = new LoadiInstruction();
       inst.addImmediate(0);
-      inst.addRegister($r);
+      inst.addDest($r);
       current.addInstr(inst);
 
       // If true toggle $r to 1.
       inst = new MovneInstruction();
       inst.addImmediate(1);
-      inst.addRegister($r);
+      inst.addDest($r);
       current.addInstr(inst);
    }
    | ^(LE f1=expression[current] f2=expression[current]) {
       Instruction inst = new CompInstruction();
       inst.addRegister($f1.r);
       inst.addRegister($f2.r);
-      inst.addRegister(new ConditionCodeRegister());
+      inst.addDest(new ConditionCodeRegister());
       current.addInstr(inst);
 
       $r = new Register();
 
       inst = new LoadiInstruction();
       inst.addImmediate(0);
-      inst.addRegister($r);
+      inst.addDest($r);
       current.addInstr(inst);
 
       // If true toggle $r to 1.
       inst = new MovleInstruction();
       inst.addImmediate(1);
-      inst.addRegister($r);
+      inst.addDest($r);
       current.addInstr(inst);
    }
    | ^(GE f1=expression[current] f2=expression[current]) {
       Instruction inst = new CompInstruction();
       inst.addRegister($f1.r);
       inst.addRegister($f2.r);
-      inst.addRegister(new ConditionCodeRegister());
+      inst.addDest(new ConditionCodeRegister());
       current.addInstr(inst);
 
       $r = new Register();
 
       inst = new LoadiInstruction();
       inst.addImmediate(0);
-      inst.addRegister($r);
+      inst.addDest($r);
       current.addInstr(inst);
 
       // If true toggle $r to 1.
       inst = new MovgeInstruction();
       inst.addImmediate(1);
-      inst.addRegister($r);
+      inst.addDest($r);
       current.addInstr(inst);
    }
    ;
