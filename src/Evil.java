@@ -1,12 +1,13 @@
+import java.io.*;
+import java.util.*;
+
+// For Antlr
 import org.antlr.runtime.*;
 import org.antlr.runtime.tree.*;
 import org.antlr.stringtemplate.*;
 
+// For cli argument parsing
 import org.apache.commons.cli.*;
-
-import java.io.*;
-import java.util.Vector;
-import java.util.HashMap;
 
 /**
  * This is the base of our compiler.
@@ -58,10 +59,20 @@ public class Evil {
          cfg.build();
          String iloc = cfg.dump();
 
-         // TODO: Write to file instead of stdout.
-         if (dumpFlag)
-            System.out.println(iloc);
+         if (dumpFlag) {
+            //System.out.println(iloc);
 
+            try {
+               String outFile = new String(inputFile);
+               outFile = outFile.replaceFirst(".ev", ".iloc");
+               FileWriter fstream = new FileWriter(outFile);
+               BufferedWriter out = new BufferedWriter(fstream);
+               out.write(iloc);
+               out.close();
+            } catch (Exception e) {
+               System.err.println("File Write Error: " + e.getMessage());
+            }
+         }
       } catch (org.antlr.runtime.RecognitionException e) {
          error(e.toString());
       }
