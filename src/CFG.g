@@ -391,8 +391,7 @@ ret[Node current] returns [Node exit]
 invocation[Node current] returns [Register r]
 @init {
 }
-   : ^(INVOKE ID arguments[current])
-   {
+   : ^(INVOKE ID arguments[current]) {
       $r = new Register();
       /* Do a jump to ID, then load from return adress into r */
    }
