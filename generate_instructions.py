@@ -292,8 +292,7 @@ public class %(classname)s extends Instruction {
       int operandCount = this.getOperands().size();
 
       if (operandCount != pattern.length) {
-         Evil.error(ret + ": Found " + operandCount 
-          + " operands, ILOC expecting " + pattern.length);
+         Evil.error(ret + ": Found " + operandCount + " operands, ILOC expecting " + pattern.length);
       }
 
       for (Operand r : this.getOperands()) {
@@ -311,6 +310,7 @@ public class %(classname)s extends Instruction {
          if (o != null) {
             oper = o.getClass().getName();
          }
+
          if (!oper.equals(pattern[i])) {
             Evil.error(ret + ": ILOC expecting " + classPattern + ". Found " + oper);
          }

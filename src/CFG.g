@@ -406,24 +406,40 @@ expression[Node current] returns [Register r]
 @init {
 }
    : INTEGER {
-      $r = new Register();
       // Load immediate into register.
+      $r = new Register();
+      Instruction l = new LoadiInstruction();
+      l.addImmediate(new Integer($INTEGER.getText()));
+      l.addRegister($r);
+      current.addInstr(l);
    }
    | TRUE {
-      $r = new Register();
       // Load immediate 1 into register.
+      $r = new Register();
+      Instruction l = new LoadiInstruction();
+      l.addImmediate(1);
+      l.addRegister($r);
+      current.addInstr(l);
    }
    | FALSE {
-      $r = new Register();
      // Load immediate 0 into register.
+      $r = new Register();
+      Instruction l = new LoadiInstruction();
+      l.addImmediate(0);
+      l.addRegister($r);
+      current.addInstr(l);
    }
    | ^(NEW ID) {
       $r = new Register();
       // How do we malloc?
    }
    | NULL {
-      $r = new Register();
       // Load immediate 0 into register.
+      $r = new Register();
+      Instruction l = new LoadiInstruction();
+      l.addImmediate(0);
+      l.addRegister($r);
+      current.addInstr(l);
    }
    | ID {
       String name = $ID.getText();
