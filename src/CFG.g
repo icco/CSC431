@@ -44,7 +44,7 @@ options {
          tempReg = new Register();
 
          mov = new LoadinargumentInstruction();
-         mov.addLabel(var.getName());
+         mov.addID(var.getName());
          mov.addImmediate(var.getOffset());
          mov.addDest(tempReg);
 
