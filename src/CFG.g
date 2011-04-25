@@ -312,10 +312,7 @@ conditional[Node current] returns [Node exit]
       expression[current] {
          /* TODO put expression code in current block */
 
-      }
-      tb=block[tStart]
-      (fb=block[fStart])?)
-      {
+      } tb=block[tStart] (fb=block[fStart])?) {
          /* Add code for looking at expression and jumping */
          /* Link then block path */
          current.addChild(tStart);
@@ -357,8 +354,7 @@ loop[Node current] returns [Node exit]
    : ^(WHILE expression[current] {
       // Add code to check if we should start looping or not.
 
-   } block[loopNode] expression[loopNode])
-   {
+   } block[loopNode] expression[loopNode]) {
       // Add code to loopNode that checks if we should loop again.
    }
    ;
@@ -366,7 +362,12 @@ loop[Node current] returns [Node exit]
 delete[Node current]
 @init {
 }
-   : ^(DELETE expression[current])
+   // TODO Figure out what register to actually delete.
+   : ^(DELETE expression[current]) {
+      Instruction l = new DelInstruction();
+      l.addRegister(new Register());
+      current.addInstr(l);
+   }
    ;
 
 ret[Node current] returns [Node exit]
