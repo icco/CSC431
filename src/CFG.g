@@ -196,7 +196,7 @@ lvalue[Node current, Register storeThis]
       } else if (var.isGlobal()) {
          mov = new StoreglobalInstruction();
          mov.addSource(storeThis);
-         mov.addLabel(var.getName());
+         mov.addID(var.getName());
       }
 
       current.addInstr(mov);
