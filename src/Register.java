@@ -3,10 +3,11 @@ public class Register implements Operand {
    public int id = 0;
 
    public Register() {
-      id = regCounter++;
+      regCounter = regCounter + 1;
+      this.id = regCounter;
    }
 
    public String toString() {
-      return "r" + id;
+      return "r" + this.id;
    }
 }

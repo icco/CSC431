@@ -418,7 +418,7 @@ expression[Node current] returns [Register r]
       $r = new Register();
       Instruction l = new LoadiInstruction();
       l.addImmediate(new Integer($INTEGER.getText()));
-      l.addRegister($r);
+      l.addDest($r);
       current.addInstr(l);
    }
    | TRUE {
@@ -426,7 +426,7 @@ expression[Node current] returns [Register r]
       $r = new Register();
       Instruction l = new LoadiInstruction();
       l.addImmediate(1);
-      l.addRegister($r);
+      l.addDest($r);
       current.addInstr(l);
    }
    | FALSE {
@@ -434,7 +434,7 @@ expression[Node current] returns [Register r]
       $r = new Register();
       Instruction l = new LoadiInstruction();
       l.addImmediate(0);
-      l.addRegister($r);
+      l.addDest($r);
       current.addInstr(l);
    }
    | ^(NEW ID) {
@@ -446,7 +446,7 @@ expression[Node current] returns [Register r]
       $r = new Register();
       Instruction l = new LoadiInstruction();
       l.addImmediate(0);
-      l.addRegister($r);
+      l.addDest($r);
       current.addInstr(l);
    }
    | ID {
@@ -463,13 +463,12 @@ expression[Node current] returns [Register r]
    | ^(NOT e=expression[current]) {
       // xor with 1 to flop a boolean
       Instruction x = new XoriInstruction();
-      Register rt = new Register();
+      $r = new Register();
       x.addImmediate(new Immediate(1));
       x.addRegister($e.r);
-      x.addRegister(rt);
+      x.addDest($r);
 
       current.addInstr(x);
-      $r = rt;
    }
    | ^(NEG e=expression[current]) {
       // load -1 into a register and mult by register.
@@ -491,21 +490,21 @@ expression[Node current] returns [Register r]
       Instruction inst = new AndInstruction();
       inst.addRegister($f1.r);
       inst.addRegister($f2.r);
-      inst.addRegister($r = new Register());
+      inst.addDest($r = new Register());
       current.addInstr(inst);
    }
    | ^(OR f1=expression[current] f2=expression[current]) {
       Instruction inst = new OrInstruction();
       inst.addRegister($f1.r);
       inst.addRegister($f2.r);
-      inst.addRegister($r = new Register());
+      inst.addDest($r = new Register());
       current.addInstr(inst);
    }
    | ^(PLUS f1=expression[current] f2=expression[current]) {
       Instruction inst = new AddInstruction();
       inst.addRegister($f1.r);
       inst.addRegister($f2.r);
-      inst.addRegister($r = new Register());
+      inst.addDest($r = new Register());
       current.addInstr(inst);
    }
    | ^(MINUS f1=expression[current] f2=expression[current]) {

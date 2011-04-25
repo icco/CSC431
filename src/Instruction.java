@@ -22,7 +22,7 @@ public class Instruction {
    }
 
    public ArrayList<Register> getDestinations() {
-      return this.dests;
+      return new ArrayList<Register>(this.dests);
    }
 
    public ArrayList<Operand> getOperands() {
