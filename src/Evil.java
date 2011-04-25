@@ -69,6 +69,8 @@ public class Evil {
                BufferedWriter out = new BufferedWriter(fstream);
                out.write(iloc);
                out.close();
+
+               System.out.println("ILOC written to: " + outFile);
             } catch (Exception e) {
                System.err.println("File Write Error: " + e.getMessage());
             }
