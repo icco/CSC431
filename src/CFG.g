@@ -106,7 +106,7 @@ function
       for (Symbol param : currentFunc.getParams()) {
          param.setOffset(offset++);
       }
-      
+
       start.setLabel(name);
 
       /* All paths from start end with the function's final node */
@@ -114,9 +114,9 @@ function
       finalNode.setLabel(("." + $ID.getText() + "_final"));
    }
    parameters ^(RETTYPE return_type) declarations statement_list[start]) {
-      // Loading parameters code.
+      // TODO Loading parameters code.
 
-      // Statement list code.
+      // TODO Statement list code.
 
       // Link last current block to final block.
       // (this only makes a difference for void funtions)
@@ -164,8 +164,7 @@ statement[Node current] returns [Node exit]
 block[Node current] returns [Node exit]
 @init {
 }
-   : ^(BLOCK statement_list[current])
-   {
+   : ^(BLOCK statement_list[current]) {
       $exit = $statement_list.exit;
    }
    ;
@@ -185,7 +184,7 @@ lvalue[Node current, Register storeThis]
       Instruction mov = null;
 
       if (var.isLocal()) {
-         mov = new MovInstruction();  
+         mov = new MovInstruction();
          mov.addSource(storeThis);
          mov.addDest(var.getRegister());
       } else if (var.isParam()) {
@@ -205,7 +204,7 @@ lvalue[Node current, Register storeThis]
       Instruction mov = new StoreaiInstruction();
       Symbol source = $lvalue_h.location;
       Field accessedField = new Field($ID.getText());
-      
+
       accessedField.setType((StructType)source.getType());
 
       mov.addSource(storeThis);
@@ -218,8 +217,8 @@ lvalue[Node current, Register storeThis]
 
 lvalue_h[Node current] returns [Symbol location]
 @init {
-   /** 
-    * Returning a symbol is kind of a hack. 
+   /**
+    * Returning a symbol is kind of a hack.
     * The only information we need to return is a register and a type.
     */
 }
@@ -288,7 +287,7 @@ print[Node current]
 
 read[Node current]
 @init {
-   // Scanf into global.
+   // TODO Scanf into global.
    // move global into new register.
    Register readValue = new Register();
 }
@@ -309,7 +308,7 @@ conditional[Node current] returns [Node exit]
 }
    :  ^(IF
       expression[current] {
-         /* put expression code in current block */
+         /* TODO put expression code in current block */
 
       }
       tb=block[tStart]
@@ -350,7 +349,7 @@ loop[Node current] returns [Node exit]
    current.addChild(loopNode);
    current.addChild($exit);
 
-   loopNode.addChild(loopNode); // Is this right?
+   loopNode.addChild(loopNode); // TODO Is this right?
    loopNode.addChild($exit);
 }
    : ^(WHILE expression[current] {
@@ -376,7 +375,7 @@ ret[Node current] returns [Node exit]
       lr.addDest(new Register()); // Might need to be addRegister instead
       current.addInstr(lr);
 
-      // Put value in return register if expression is not null.
+      // TODO Put value in return register if expression is not null.
 
       // Link current block.
       current.addChild(finalNode);
