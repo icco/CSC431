@@ -287,9 +287,11 @@ print[Node current]
 
 read[Node current]
 @init {
-   // TODO Scanf into global.
-   // move global into new register.
+   // Scanf into global. Lvalue deals with actual storage.
    Register readValue = new Register();
+   Instruction l = new ReadInstruction();
+   l.addDest(readValue);
+   current.addInstr(l);
 }
    :  ^(READ lvalue[current, readValue])
    ;
