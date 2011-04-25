@@ -1,9 +1,10 @@
 # Math test.
 fun main() int {
-   #int a;
-   #a = (2 + 3);
-	#if ((3) == 5) { print 1 endl; }
+   int a;
+   a = (2 + 3);
+	if ((3) == 5) { print a endl; }
 
 	if ((2 + 3) == 5) { print 1 endl; }
+
    return 0;
 }

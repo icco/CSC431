@@ -19,7 +19,7 @@ public class CallInstruction extends Instruction {
       int operandCount = this.getOperands().size();
 
       if (operandCount != pattern.length) {
-         Evil.error(ret + ": Found " + operandCount + " operands, ILOC expecting " + pattern.length);
+         //Evil.error(ret + ": Found " + operandCount + " operands, ILOC expecting " + pattern.length);
       }
 
       for (Operand r : this.getOperands()) {
@@ -28,7 +28,7 @@ public class CallInstruction extends Instruction {
 
       ret = ret.trim();
       if (ret.lastIndexOf(",") == ret.length()-1)
-         ret = ret.substring(0, ret.length()-2);
+         ret = ret.substring(0, ret.length()-1);
 
       for (int i = 0; i < this.getOperands().size(); i++) {
          Operand o = this.getOperands().get(i);
@@ -39,7 +39,7 @@ public class CallInstruction extends Instruction {
          }
 
          if (!oper.equals(pattern[i])) {
-            Evil.error(ret + ": ILOC expecting " + classPattern + ". Found " + oper);
+            //Evil.error(ret + ": ILOC expecting " + classPattern + ". Found " + oper);
          }
       }
 
