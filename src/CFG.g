@@ -430,8 +430,11 @@ expression[Node current] returns [Register r]
       current.addInstr(l);
    }
    | ^(NEW ID) {
+      // TODO: Figure out to use field names, or how much data to use.
       $r = new Register();
-      // How do we malloc?
+      Instruction l = new NewInstruction();
+      l.addDest($r);
+      l.addImmediate(9001); // TODO: CHANGE ME!
    }
    | NULL {
       // Load immediate 0 into register.
