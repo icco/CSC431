@@ -31,6 +31,63 @@ options {
    public String dump() {
       return cfg.toString();
    }
+
+   private Symbol loadVar(String name, Node current) {
+      Symbol var = symTable.get(name);
+      Register tempReg;
+      Instruction mov;
+
+      if (var.isLocal()) {
+         // This space intentionally left blank.
+
+      } else if (var.isParam()) {
+         tempReg = new Register();
+
+         mov = new LoadinargumentInstruction();
+         mov.addLabel(var.getName());
+         mov.addImmediate(var.getOffset());
+         mov.addDest(tempReg);
+
+         var.setRegister(tempReg);
+         current.addInstr(mov);
+
+      } else if (var.isGlobal()) {
+         tempReg = new Register();
+
+         mov = new LoadglobalInstruction();
+         mov.addSource(new ID(var.getName()));
+         mov.addDest(tempReg);
+
+         var.setRegister(tempReg);
+         current.addInstr(mov);
+      }
+
+      return var;
+   }
+
+   private Symbol loadFromMem(Symbol source, String field, Node current) {
+      Instruction mov = new LoadaiInstruction();
+      Symbol dest;
+      StructType sourceType, destType;
+      Field accessedField;
+
+      sourceType = (StructType) source.getType();
+
+      dest = new Symbol();
+      destType = (StructType) sourceType.getField(field);
+      dest.setType(destType);
+      dest.setRegister(new Register());
+
+      accessedField = new Field(field, sourceType);
+
+      mov.addSource(source.getRegister());
+      mov.addField(accessedField);
+      mov.addDest(dest.getRegister());
+
+      current.addInstr(mov);
+
+      return dest;
+   }
 }
 
 build
@@ -224,59 +281,10 @@ lvalue_h[Node current] returns [Symbol location]
     */
 }
    :  ID {
-      Symbol var = symTable.get($ID.getText());
-      Register tempReg;
-      Instruction mov;
-
-      if (var.isLocal()) {
-         // This space intentionally left blank.
-
-      } else if (var.isParam()) {
-         tempReg = new Register();
-
-         mov = new LoadinargumentInstruction();
-         mov.addLabel(var.getName());
-         mov.addImmediate(var.getOffset());
-         mov.addDest(tempReg);
-
-         var.setRegister(tempReg);
-         current.addInstr(mov);
-
-      } else if (var.isGlobal()) {
-         tempReg = new Register();
-
-         mov = new LoadglobalInstruction();
-         mov.addSource(new ID(var.getName()));
-         mov.addDest(tempReg);
-
-         var.setRegister(tempReg);
-         current.addInstr(mov);
-      }
-
-      $location = var;
+      $location = loadVar($ID.getText(), current);
    }
    | ^(DOT src=lvalue_h[current] ID) {
-      Instruction mov = new LoadaiInstruction();
-      Symbol source, dest;
-      StructType sourceType, destType;
-      Field accessedField;
-
-      source = $src.location;
-      sourceType = (StructType) source.getType();
-
-      dest = new Symbol();
-      destType = (StructType) sourceType.getField($ID.getText());
-      dest.setType(destType);
-      dest.setRegister(new Register());
-
-      accessedField = new Field($ID.getText(), sourceType);
-
-      mov.addSource(source.getRegister());
-      mov.addField(accessedField);
-      mov.addDest(dest.getRegister());
-
-      current.addInstr(mov);
-      $location = dest;
+      $location = loadFromMem($src.location, $ID.getText(), current);
    }
    ;
 
@@ -442,24 +450,14 @@ expression[Node current] returns [Register r]
       current.addInstr(l);
    }
    | ID {
-      String name = $ID.getText();
-      Integer offset;
-      Symbol s = symTable.get(name);
-      $r = new Register(); // TODO
+      Symbol source = loadVar($ID.getText(), current);
 
-      // Figure out if ID is local, parameter, or global.
-      if (s.isLocal()) {
-
-      } else if (s.isParam()) {
-
-      } else if (s.isGlobal()) {
-
-      } else {
-         // error?
-      }
+      $r = source.getRegister();
    }
    | ^(DOT expression[current] ID) {
-      /* TODO */
+      //Symbol source = loadFromMem($ID.getText());
+
+      //$r = source.getRegister();
    }
    | invocation[current] { $r = $invocation.r; }
    | ^(NOT e=expression[current]) {
