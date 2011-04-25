@@ -112,7 +112,7 @@ instructions = [
    },
    {
       'name': 'loadai',
-      'sources': [ 'Register', 'Immediate' ],
+      'sources': [ 'Register', 'Field' ],
       'dest': [ 'Register' ],
    },
    {
@@ -151,7 +151,7 @@ instructions = [
    {
       'name': 'storeai',
       'sources': [ 'Register' ],
-      'dest': [ 'Register', 'Immediate' ],
+      'dest': [ 'Register', 'Field' ],
    },
    {
       'name': 'storeglobal',

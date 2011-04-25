@@ -13,7 +13,7 @@ public class StoreaiInstruction extends Instruction {
    }
 
    public String toILOC() {
-      String classPattern = new String("Register Register Immediate");
+      String classPattern = new String("Register Register Field");
       String[] pattern = classPattern.split(" ");
       String ret = "storeai ";
       int operandCount = this.getOperands().size();

@@ -1,25 +1,24 @@
-public class Field implements Operand {
+public class Field extends ID {
    private StructType type;
-   protected String name;
 
    public Field() { }
-   public Field(String name) { 
-      this.name = name; 
+   public Field(String id) { 
+      this.id = id; 
    }
 
-   public Field(String name, StructType type) { 
-      this.name = name; 
+   public Field(String id, StructType type) { 
+      this.id = id; 
       this.type = type;
    }
 
    public void setType(StructType type) { this.type = type; }
    public StructType getType() { return this.type; }
 
-   public String toString() { 
-      return this.toILOC();
+   public Integer getOffset() {
+      return type.getOffset(id);
    }
 
-   public String toILOC() {
-      return "@" + name; 
+   public String toString() { 
+      return this.toILOC();
    }
 }

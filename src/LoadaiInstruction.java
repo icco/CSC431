@@ -13,7 +13,7 @@ public class LoadaiInstruction extends Instruction {
    }
 
    public String toILOC() {
-      String classPattern = new String("Register Immediate Register");
+      String classPattern = new String("Register Field Register");
       String[] pattern = classPattern.split(" ");
       String ret = "loadai ";
       int operandCount = this.getOperands().size();

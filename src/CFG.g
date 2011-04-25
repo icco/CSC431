@@ -203,14 +203,16 @@ lvalue[Node current, Register storeThis]
    }
    | ^(DOT lvalue_h[current] ID) {
       Instruction mov = new StoreaiInstruction();
-      Symbol location;
+      Symbol source = $lvalue_h.location;
       Field accessedField = new Field($ID.getText());
       
-      accessedField.setType((StructType)location.getType());
+      accessedField.setType((StructType)source.getType());
 
       mov.addSource(storeThis);
-      mov.addSource(location.getRegister());
+      mov.addSource(source.getRegister());
       mov.addField(accessedField);
+
+      current.addInstr(mov);
    }
    ;
 
@@ -254,16 +256,16 @@ lvalue_h[Node current] returns [Symbol location]
       $location = var;
    }
    | ^(DOT src=lvalue_h[current] ID) {
-      Instruction mov = new LoadeaiInstruction();
+      Instruction mov = new LoadaiInstruction();
       Symbol source, dest;
       StructType sourceType, destType;
       Field accessedField;
 
       source = $src.location;
-      sourceType = (StructType)source.getType();
+      sourceType = (StructType) source.getType();
 
       dest = new Symbol();
-      destType = (StructType)source.getField($ID.getText());
+      destType = (StructType) sourceType.getField($ID.getText());
       dest.setType(destType);
       dest.setRegister(new Register());
 
@@ -273,6 +275,7 @@ lvalue_h[Node current] returns [Symbol location]
       mov.addField(accessedField);
       mov.addDest(dest.getRegister());
 
+      current.addInstr(mov);
       $location = dest;
    }
    ;
@@ -347,6 +350,7 @@ loop[Node current] returns [Node exit]
    current.addChild(loopNode);
    current.addChild($exit);
 
+   loopNode.addChild(loopNode); // Is this right?
    loopNode.addChild($exit);
 }
    : ^(WHILE expression[current] {

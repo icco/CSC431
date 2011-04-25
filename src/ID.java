@@ -10,6 +10,10 @@ public class ID implements Operand {
    }
 
    public String toString() {
+      return toILOC();
+   }
+
+   public String toILOC() {
       return id;
    }
 }
