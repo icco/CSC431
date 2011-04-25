@@ -202,46 +202,78 @@ lvalue[Node current, Register storeThis]
       current.addInstr(mov);
    }
    | ^(DOT lvalue_h[current] ID) {
-    /**
-     * Store in heap:
-     * lvalue_h rules gets register with memory address.
-     * ID is offset to store at
-     */
+      Instruction mov = new StoreaiInstruction();
+      Symbol location;
+      Field accessedField = new Field($ID.getText());
+      
+      accessedField.setType((StructType)location.getType());
+
+      mov.addSource(storeThis);
+      mov.addSource(location.getRegister());
+      mov.addField(accessedField);
    }
    ;
 
-lvalue_h[Node current] returns [Register addressRegister]
+lvalue_h[Node current] returns [Symbol location]
 @init {
+   /** 
+    * Returning a symbol is kind of a hack. 
+    * The only information we need to return is a register and a type.
+    */
 }
    :  ID {
       Symbol var = symTable.get($ID.getText());
+      Register tempReg;
       Instruction mov;
 
       if (var.isLocal()) {
-         $addressRegister = var.getRegister();
+         // This space intentionally left blank.
 
       } else if (var.isParam()) {
-         $addressRegister = new Register();
+         tempReg = new Register();
 
          mov = new LoadinargumentInstruction();
          mov.addLabel(var.getName());
          mov.addImmediate(var.getOffset());
-         mov.addDest($addressRegister);
+         mov.addDest(tempReg);
+
+         var.setRegister(tempReg);
          current.addInstr(mov);
 
       } else if (var.isGlobal()) {
-         $addressRegister = new Register();
+         tempReg = new Register();
 
          mov = new LoadglobalInstruction();
          mov.addSource(new ID(var.getName()));
-         mov.addDest($addressRegister);
+         mov.addDest(tempReg);
+
+         var.setRegister(tempReg);
          current.addInstr(mov);
       }
+
+      $location = var;
    }
-   | ^(DOT lvalue_h[current] ID) {
-     /* lvalue_h rule gets register with memory address.
-      * ID is offset to store at
-      */
+   | ^(DOT src=lvalue_h[current] ID) {
+      Instruction mov = new LoadeaiInstruction();
+      Symbol source, dest;
+      StructType sourceType, destType;
+      Field accessedField;
+
+      source = $src.location;
+      sourceType = (StructType)source.getType();
+
+      dest = new Symbol();
+      destType = (StructType)source.getField($ID.getText());
+      dest.setType(destType);
+      dest.setRegister(new Register());
+
+      accessedField = new Field($ID.getText(), sourceType);
+
+      mov.addSource(source.getRegister());
+      mov.addField(accessedField);
+      mov.addDest(dest.getRegister());
+
+      $location = dest;
    }
    ;
 
@@ -355,6 +387,7 @@ invocation[Node current] returns [Register r]
 }
    : ^(INVOKE ID arguments[current])
    {
+      $r = new Register();
       /* Do a jump to ID, then load from return adress into r */
    }
    ;

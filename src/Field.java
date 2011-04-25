@@ -7,6 +7,11 @@ public class Field implements Operand {
       this.name = name; 
    }
 
+   public Field(String name, StructType type) { 
+      this.name = name; 
+      this.type = type;
+   }
+
    public void setType(StructType type) { this.type = type; }
    public StructType getType() { return this.type; }
 
