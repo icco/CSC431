@@ -32,13 +32,13 @@ options {
       return cfg.toString();
    }
 
-   private Symbol loadVar(String name, Node current) {
+   private Register loadVar(String name, Node current) {
       Symbol var = symTable.get(name);
-      Register tempReg;
+      Register tempReg = null;
       Instruction mov;
 
       if (var.isLocal()) {
-         // This space intentionally left blank.
+         tempReg = var.getRegister();
 
       } else if (var.isParam()) {
          tempReg = new Register();
@@ -48,7 +48,6 @@ options {
          mov.addImmediate(var.getOffset());
          mov.addDest(tempReg);
 
-         var.setRegister(tempReg);
          current.addInstr(mov);
 
       } else if (var.isGlobal()) {
@@ -58,32 +57,31 @@ options {
          mov.addSource(new ID(var.getName()));
          mov.addDest(tempReg);
 
-         var.setRegister(tempReg);
          current.addInstr(mov);
       }
 
-      return var;
+      tempReg.setType(var.getType());
+
+      return tempReg;
    }
 
-   private Symbol loadFromMem(Symbol source, String field, Node current) {
+   private Register loadFromMem(Register source, String field, Node current) {
       Instruction mov = new LoadaiInstruction();
-      Symbol dest;
-      StructType sourceType, destType;
+      Register dest = new Register();
+      StructType sourceType; 
+      Type destType;
       Field accessedField;
 
-      sourceType = (StructType) source.getType();
+      sourceType = source.getType();
 
-      dest = new Symbol();
-      destType = (StructType) sourceType.getField(field);
+      destType = sourceType.getField(field);
       dest.setType(destType);
-      dest.setRegister(new Register());
 
       accessedField = new Field(field, sourceType);
 
-      mov.addSource(source.getRegister());
+      mov.addSource(source);
       mov.addField(accessedField);
-      mov.addDest(dest.getRegister());
-
+      mov.addDest(dest);
       current.addInstr(mov);
 
       return dest;
@@ -171,7 +169,7 @@ function
       finalNode.setLabel(("." + $ID.getText() + "_final"));
    }
    parameters ^(RETTYPE return_type) declarations statement_list[start]) {
-      // Loading parameters code.
+      // Loading parameters code. 
 
       // Statement list code.
 
@@ -260,20 +258,20 @@ lvalue[Node current, Register storeThis]
    }
    | ^(DOT lvalue_h[current] ID) {
       Instruction mov = new StoreaiInstruction();
-      Symbol source = $lvalue_h.location;
+      Register source = $lvalue_h.r;
       Field accessedField = new Field($ID.getText());
       
-      accessedField.setType((StructType)source.getType());
+      accessedField.setType(source.getType());
 
       mov.addSource(storeThis);
-      mov.addSource(source.getRegister());
+      mov.addSource(source);
       mov.addField(accessedField);
 
       current.addInstr(mov);
    }
    ;
 
-lvalue_h[Node current] returns [Symbol location]
+lvalue_h[Node current] returns [Register r]
 @init {
    /** 
     * Returning a symbol is kind of a hack. 
@@ -281,10 +279,10 @@ lvalue_h[Node current] returns [Symbol location]
     */
 }
    :  ID {
-      $location = loadVar($ID.getText(), current);
+      $r = loadVar($ID.getText(), current);
    }
    | ^(DOT src=lvalue_h[current] ID) {
-      $location = loadFromMem($src.location, $ID.getText(), current);
+      $r = loadFromMem($src.r, $ID.getText(), current);
    }
    ;
 
@@ -399,7 +397,11 @@ invocation[Node current] returns [Register r]
 }
    : ^(INVOKE ID arguments[current])
    {
+      FuncType fun = symTable.getFunction($ID.getText());
+
       $r = new Register();
+      $r.setType(fun.getReturn());
+
       /* Do a jump to ID, then load from return adress into r */
    }
    ;
@@ -450,14 +452,10 @@ expression[Node current] returns [Register r]
       current.addInstr(l);
    }
    | ID {
-      Symbol source = loadVar($ID.getText(), current);
-
-      $r = source.getRegister();
+      $r = loadVar($ID.getText(), current);
    }
-   | ^(DOT expression[current] ID) {
-      //Symbol source = loadFromMem($ID.getText());
-
-      //$r = source.getRegister();
+   | ^(DOT src=expression[current] ID) {
+      $r = loadFromMem($src.r, $ID.getText(), current);
    }
    | invocation[current] { $r = $invocation.r; }
    | ^(NOT e=expression[current]) {
