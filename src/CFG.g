@@ -474,9 +474,14 @@ expression[Node current] returns [Register r]
    | ^(NEW ID) {
       // TODO: Figure out to use field names, or how much data to use.
       $r = new Register();
+      StructType type = symTable.getStruct($ID.getText()); 
       Instruction l = new NewInstruction();
+
+      $r.setType(type);
+      l.addSource(new StructIdentifier(type));
       l.addDest($r);
-      l.addImmediate(9001); // TODO: CHANGE ME!
+
+      current.addInstr(l);
    }
    | NULL {
       // Load immediate 0 into register.

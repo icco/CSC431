@@ -13,7 +13,7 @@ public class NewInstruction extends Instruction {
    }
 
    public String toILOC() {
-      String classPattern = new String("Immediate Register");
+      String classPattern = new String("StructIdentifier Register");
       String[] pattern = classPattern.split(" ");
       String ret = "new ";
       int operandCount = this.getOperands().size();

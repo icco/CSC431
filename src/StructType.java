@@ -1,19 +1,19 @@
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class StructType extends Type implements Cloneable {
-   private HashMap<String, Type> members;
-   private LinkedList<String> memberOrder;
-   private String name; // For error message purposes.
+   protected HashMap<String, Type> members;
+   protected ArrayList<String> memberOrder;
+   protected String name; // For error message purposes.
 
    StructType() {
       members = new HashMap<String, Type>();
-      memberOrder = new LinkedList<String>();
+      memberOrder = new ArrayList<String>();
       name = "shouldn't exist";
    }
 
    public StructType clone() {
-      return this; /** TODO if we want this for more than type checking */
+      return this;
    }
 
    public boolean equals(Object other) {

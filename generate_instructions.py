@@ -191,7 +191,7 @@ instructions = [
 
    {
       'name': 'new',
-      'sources': [ 'Immediate' ],
+      'sources': [ 'StructIdentifier' ],
       'dest': [ 'Register' ],
    },
    {
