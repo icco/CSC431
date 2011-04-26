@@ -397,12 +397,13 @@ delete[Node current]
 ret[Node current] returns [Node exit]
 @init {
 }
-   : ^(RETURN (expression[current])?) {
-      Instruction lr = new LoadretInstruction();
-      lr.addDest(new Register()); // Might need to be addRegister instead
-      current.addInstr(lr);
+   : ^(RETURN (e=expression[current])?) {
+      Instruction sr = new StoreretInstruction();
+      sr.addDest($e.r); // Might need to be addRegister instead
+      current.addInstr(sr);
 
-      // TODO Put value in return register if expression is not null.
+      Instruction r = new RetInstruction();
+      current.addInstr(r);
 
       // Link current block.
       current.addChild(finalNode);

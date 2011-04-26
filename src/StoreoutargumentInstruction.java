@@ -18,7 +18,7 @@ public class StoreoutargumentInstruction extends Instruction {
       String ret = "storeoutargument ";
       int operandCount = this.getOperands().size();
 
-      if (operandCount != pattern.length) {
+      if ((operandCount != 0) && (operandCount != pattern.length)) {
          Evil.error(ret + ": Found " + operandCount + " operands, ILOC expecting " + pattern.length);
       }
 

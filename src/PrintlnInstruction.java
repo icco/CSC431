@@ -18,7 +18,7 @@ public class PrintlnInstruction extends Instruction {
       String ret = "println ";
       int operandCount = this.getOperands().size();
 
-      if (operandCount != pattern.length) {
+      if ((operandCount != 0) && (operandCount != pattern.length)) {
          Evil.error(ret + ": Found " + operandCount + " operands, ILOC expecting " + pattern.length);
       }
 
