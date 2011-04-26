@@ -409,9 +409,11 @@ ret[Node current] returns [Node exit]
 @init {
 }
    : ^(RETURN (e=expression[current])?) {
-      Instruction sr = new StoreretInstruction();
-      sr.addDest($e.r); // Might need to be addRegister instead
-      current.addInstr(sr);
+      if ($e.r != null) {
+         Instruction sr = new StoreretInstruction();
+         sr.addDest($e.r); // Might need to be addRegister instead
+         current.addInstr(sr);
+      }
 
       Instruction r = new RetInstruction();
       current.addInstr(r);
@@ -450,10 +452,12 @@ invocation[Node current] returns [Register r]
       call.addLabel($ID.getText());
       current.addInstr(call);
 
-      // Load return into r.
-      load = new LoadretInstruction();
-      load.addDest($r);
-      current.addInstr(load);
+      // If funcdtion is not Void, load return into r.
+      if (!(fun.getReturn() instanceof VoidType)) {
+         load = new LoadretInstruction();
+         load.addDest($r);
+         current.addInstr(load);
+      }
    }
    ;
 
