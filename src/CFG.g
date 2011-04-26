@@ -287,6 +287,7 @@ lvalue_h[Node current] returns [Register r]
 
 print[Node current]
 @init {
+   // TODO
 }
    :  ^(PRINT expression[current] (ENDL)?)
    ;
@@ -409,18 +410,38 @@ invocation[Node current] returns [Register r]
    : ^(INVOKE ID arguments[current])
    {
       FuncType fun = symTable.getFunction($ID.getText());
+      Instruction store, call, load;
+      int offset = 0;
 
       $r = new Register();
       $r.setType(fun.getReturn());
 
-      /* Do a jump to ID, then load from return adress into r */
+      // Put arguemnts into out registers.
+      for (Register arg : $arguments.args) {
+         store = new StoreoutargumentInstruction();
+         store.addSource(arg);
+         store.addID(fun.getParams().get(offset).getName());
+         store.addImmediate(offset++);
+         current.addInstr(store);
+      }
+
+      // Jump to ID.
+      call = new CallInstruction();
+      call.addLabel($ID.getText());
+      current.addInstr(call);
+
+      // Load return into r.
+      load = new LoadretInstruction();
+      load.addDest($r);
+      current.addInstr(load);
    }
    ;
 
-arguments[Node current]
+arguments[Node current] returns [List<Register> args]
 @init {
+   $args = new LinkedList<Register>();
 }
-   : ^(ARGS (expression[current])*)
+   : ^(ARGS (expression[current] { args.add($expression.r); } )*)
    ;
 
 expression[Node current] returns [Register r]
