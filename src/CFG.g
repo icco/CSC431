@@ -68,7 +68,7 @@ options {
    private Register loadFromMem(Register source, String field, Node current) {
       Instruction mov = new LoadaiInstruction();
       Register dest = new Register();
-      StructType sourceType; 
+      StructType sourceType;
       Type destType;
       Field accessedField;
 
@@ -259,7 +259,7 @@ lvalue[Node current, Register storeThis]
       Instruction mov = new StoreaiInstruction();
       Register source = $lvalue_h.r;
       Field accessedField = new Field($ID.getText());
-      
+
       accessedField.setType(source.getType());
 
       mov.addSource(storeThis);
@@ -314,10 +314,20 @@ conditional[Node current] returns [Node exit]
    fStart.setLabel(ifLabel + "_else");
    $exit.setLabel(ifLabel + "_after");
 }
-   :  ^(IF
-      expression[current] {
-         /* TODO put expression code in current block */
+   :  ^(IF c=expression[current] {
+         // add Branch instructions based on boolean in returned register.
+         Instruction i = new CompiInstruction();
+         Register cc = new ConditionCodeRegister();
+         i.addRegister($c.r);
+         i.addImmediate(1);
+         i.addDest(cc);
+         current.addInstr(i);
 
+         i = new CbreqInstruction();
+         i.addRegister(cc);
+         i.addLabel(tStart.getLabel());
+         i.addLabel(fStart.getLabel()); // TODO we should jump to exit if no else block.
+         current.addInstr(i);
       } tb=block[tStart] (fb=block[fStart])?) {
          /* Add code for looking at expression and jumping */
          /* Link then block path */
@@ -336,7 +346,6 @@ conditional[Node current] returns [Node exit]
             current.addChild($exit);
             $exit.addParent(current);
          }
-
       }
    ;
 

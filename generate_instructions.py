@@ -72,36 +72,36 @@ instructions = [
       'sources': [ 'Register', 'Register' ],
       'dest': [ 'ConditionCodeRegister' ],
    },
-#  {
-#     'name': 'cbreq',
-#     'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
-#     'dest': [ ],
-#  },
-#  {
-#     'name': 'cbrge',
-#     'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
-#     'dest': [ ],
-#  },
-#  {
-#     'name': 'cbrgt',
-#     'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
-#     'dest': [ ],
-#  },
-#  {
-#     'name': 'cbrle',
-#     'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
-#     'dest': [ ],
-#  },
-#  {
-#     'name': 'cbrlt',
-#     'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
-#     'dest': [ ],
-#  },
-#  {
-#     'name': 'cbrne',
-#     'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
-#     'dest': [ ],
-#  },
+  {
+     'name': 'cbreq',
+     'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
+     'dest': [ ],
+  },
+  {
+     'name': 'cbrge',
+     'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
+     'dest': [ ],
+  },
+  {
+     'name': 'cbrgt',
+     'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
+     'dest': [ ],
+  },
+  {
+     'name': 'cbrle',
+     'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
+     'dest': [ ],
+  },
+  {
+     'name': 'cbrlt',
+     'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
+     'dest': [ ],
+  },
+  {
+     'name': 'cbrne',
+     'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
+     'dest': [ ],
+  },
 
 # Loads (Not the kind for her face)
 
