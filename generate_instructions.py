@@ -307,9 +307,7 @@ public class %(classname)s extends Instruction {
          Operand o = this.getOperands().get(i);
          String oper = "null";
 
-         if (o != null) {
-            oper = o.getClass().getName();
-         }
+         if (o != null) { oper = o.getClass().getName(); }
 
          if (!oper.equals(pattern[i])) {
             Evil.error(ret + ": ILOC expecting " + classPattern + ". Found " + oper);
