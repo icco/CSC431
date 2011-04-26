@@ -318,8 +318,8 @@ conditional[Node current] returns [Node exit]
          // add Branch instructions based on boolean in returned register.
          Instruction i = new CompiInstruction();
          Register cc = new ConditionCodeRegister();
-         i.addRegister($c.r);
          i.addImmediate(1);
+         i.addRegister($c.r);
          i.addDest(cc);
          current.addInstr(i);
 
