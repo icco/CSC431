@@ -376,10 +376,10 @@ loop[Node current] returns [Node exit]
    loopNode.addChild($exit);
 }
    : ^(WHILE expression[current] {
-      // Add code to check if we should start looping or not.
+      // TODO Add code to check if we should start looping or not.
 
    } block[loopNode] expression[loopNode]) {
-      // Add code to loopNode that checks if we should loop again.
+      // TODO Add code to loopNode that checks if we should loop again.
    }
    ;
 
