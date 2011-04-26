@@ -289,7 +289,18 @@ print[Node current]
 @init {
    // TODO
 }
-   :  ^(PRINT expression[current] (ENDL)?)
+   :  ^(PRINT e=expression[current] (ENDL)?) {
+      Instruction l = null;
+
+      if ($ENDL != null) {
+         l = new PrintlnInstruction();
+      } else {
+         l = new PrintInstruction();
+      }
+
+      l.addRegister($e.r);
+      current.addInstr(l);
+   }
    ;
 
 read[Node current]
