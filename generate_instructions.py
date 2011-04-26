@@ -102,6 +102,11 @@ instructions = [
      'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
      'dest': [ ],
   },
+  {
+     'name': 'jumpi',
+     'sources': [ 'Label' ],
+     'dest': [ ],
+  },
 
 # Loads (Not the kind for her face)
 
@@ -291,7 +296,7 @@ public class %(classname)s extends Instruction {
       String ret = "%(instr)s ";
       int operandCount = this.getOperands().size();
 
-      if (operandCount != pattern.length) {
+      if ((operandCount != 0) && (operandCount != pattern.length)) {
          Evil.error(ret + ": Found " + operandCount + " operands, ILOC expecting " + pattern.length);
       }
 

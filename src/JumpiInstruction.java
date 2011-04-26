@@ -4,18 +4,18 @@ import java.lang.*;
 /**
  * Generated automatically by generate_instructions.py
  */
-public class NewInstruction extends Instruction {
-   public static Integer operandCount = 2;
-   public NewInstruction() { }
+public class JumpiInstruction extends Instruction {
+   public static Integer operandCount = 1;
+   public JumpiInstruction() { }
 
    public String toString() {
       return this.toILOC();
    }
 
    public String toILOC() {
-      String classPattern = new String("StructIdentifier Register");
+      String classPattern = new String("Label");
       String[] pattern = classPattern.split(" ");
-      String ret = "new ";
+      String ret = "jumpi ";
       int operandCount = this.getOperands().size();
 
       if ((operandCount != 0) && (operandCount != pattern.length)) {

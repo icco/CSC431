@@ -289,7 +289,18 @@ print[Node current]
 @init {
    // TODO
 }
-   :  ^(PRINT expression[current] (ENDL)?)
+   :  ^(PRINT e=expression[current] (ENDL)?) {
+      Instruction l = null;
+
+      if ($ENDL != null) {
+         l = new PrintlnInstruction();
+      } else {
+         l = new PrintInstruction();
+      }
+
+      l.addRegister($e.r);
+      current.addInstr(l);
+   }
    ;
 
 read[Node current]
@@ -337,12 +348,20 @@ conditional[Node current] returns [Node exit]
          $tb.exit.addChild($exit);
          $exit.addParent($tb.exit);
 
+         Instruction i = new JumpiInstruction();
+         i.addLabel($exit.getLabel());
+         $tb.exit.addInstr(i);
+
          if ($fb.exit != null) {
             /* Link else block path */
             current.addChild(fStart);
             fStart.addParent(current);
             $exit.addParent($fb.exit);
             $fb.exit.addChild($exit);
+
+            i = new JumpiInstruction();
+            i.addLabel($exit.getLabel());
+            $fb.exit.addInstr(i);
          } else {
             current.addChild($exit);
             $exit.addParent(current);
@@ -368,10 +387,10 @@ loop[Node current] returns [Node exit]
    loopNode.addChild($exit);
 }
    : ^(WHILE expression[current] {
-      // Add code to check if we should start looping or not.
+      // TODO Add code to check if we should start looping or not.
 
    } block[loopNode] expression[loopNode]) {
-      // Add code to loopNode that checks if we should loop again.
+      // TODO Add code to loopNode that checks if we should loop again.
    }
    ;
 
@@ -389,12 +408,13 @@ delete[Node current]
 ret[Node current] returns [Node exit]
 @init {
 }
-   : ^(RETURN (expression[current])?) {
-      Instruction lr = new LoadretInstruction();
-      lr.addDest(new Register()); // Might need to be addRegister instead
-      current.addInstr(lr);
+   : ^(RETURN (e=expression[current])?) {
+      Instruction sr = new StoreretInstruction();
+      sr.addDest($e.r); // Might need to be addRegister instead
+      current.addInstr(sr);
 
-      // TODO Put value in return register if expression is not null.
+      Instruction r = new RetInstruction();
+      current.addInstr(r);
 
       // Link current block.
       current.addChild(finalNode);
