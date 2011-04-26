@@ -337,12 +337,20 @@ conditional[Node current] returns [Node exit]
          $tb.exit.addChild($exit);
          $exit.addParent($tb.exit);
 
+         Instruction i = new JumpiInstruction();
+         i.addLabel($exit.getLabel());
+         $tb.exit.addInstr(i);
+
          if ($fb.exit != null) {
             /* Link else block path */
             current.addChild(fStart);
             fStart.addParent(current);
             $exit.addParent($fb.exit);
             $fb.exit.addChild($exit);
+
+            i = new JumpiInstruction();
+            i.addLabel($exit.getLabel());
+            $fb.exit.addInstr(i);
          } else {
             current.addChild($exit);
             $exit.addParent(current);

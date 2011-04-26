@@ -102,6 +102,11 @@ instructions = [
      'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
      'dest': [ ],
   },
+  {
+     'name': 'jumpi',
+     'sources': [ 'Label' ],
+     'dest': [ ],
+  },
 
 # Loads (Not the kind for her face)
 
