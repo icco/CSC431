@@ -22,7 +22,7 @@ public class StructType extends Type implements Cloneable {
       if (other instanceof StructType) {
          otherStruct = (StructType)other;
 
-         return otherStruct instanceof NullType 
+         return other instanceof NullType 
           || otherStruct.getName().equals(getName());
       }
 
