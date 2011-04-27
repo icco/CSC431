@@ -59,7 +59,7 @@ run: tests/4.ev
 	java Evil -i ${RUNFLAGS} $@
 
 mochi: tests/4.ev
-	java -jar mochi.jar -r tests/4.ev
+	java -jar mochi.jar -r tests/4.iloc
 
 typetest: all
 	@./typetest.sh
