@@ -1,6 +1,6 @@
 #!/bin/bash
 
-$ECC=gcc -mcpu=v9
+$ECC="gcc -mcpu=v9"
 echo "---- Benchmarks"
 for dir in `ls benchmarks`; do
    echo "${dir}: "
