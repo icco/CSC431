@@ -92,8 +92,8 @@ options {
    {
       Instruction i = new CompiInstruction();
       Register cc = new ConditionCodeRegister();
-      i.addImmediate(1);
       i.addRegister(comp);
+      i.addImmediate(1);
       i.addDest(cc);
       current.addInstr(i);
 
@@ -453,7 +453,7 @@ invocation[Node current] returns [Register r]
       for (Register arg : $arguments.args) {
          store = new StoreoutargumentInstruction();
          store.addSource(arg);
-         store.addID(fun.getParams().get(offset).getName());
+         // store.addID(fun.getParams().get(offset).getName());
          store.addImmediate(offset++);
          current.addInstr(store);
       }

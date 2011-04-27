@@ -64,7 +64,7 @@ instructions = [
 
    {
       'name': 'compi',
-      'sources': [ 'Immediate', 'Register' ],
+      'sources': [ 'Register', 'Immediate'],
       'dest': [ 'ConditionCodeRegister' ],
    },
    {
@@ -171,7 +171,7 @@ instructions = [
    {
       'name': 'storeoutargument',
       'sources': [ 'Register' ],
-      'dest': [ 'ID', 'Immediate' ],
+      'dest': [ 'Immediate' ],
    },
    {
       'name': 'storeret',

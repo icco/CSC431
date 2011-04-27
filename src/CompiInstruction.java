@@ -13,7 +13,7 @@ public class CompiInstruction extends Instruction {
    }
 
    public String toILOC() {
-      String classPattern = new String("Immediate Register ConditionCodeRegister");
+      String classPattern = new String("Register Immediate ConditionCodeRegister");
       String[] pattern = classPattern.split(" ");
       String ret = "compi ";
       int operandCount = this.getOperands().size();
