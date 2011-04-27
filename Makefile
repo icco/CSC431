@@ -61,7 +61,6 @@ run: tests/4.ev
 %.iloc: all
 	java Evil -i ${RUNFLAGS} $(subst .iloc,.ev,$@)
 	java -jar mochi.jar -r $@
-	rm $@
 
 typetest: all
 	@./typetest.sh
