@@ -56,7 +56,7 @@ instructions: generate_instructions.py
 run: tests/4.ev
 
 %.ev: all
-	java Evil ${RUNFLAGS} $@
+	java Evil -i ${RUNFLAGS} $@
 
 %.iloc: all
 	java Evil -i ${RUNFLAGS} $(subst .iloc,.ev,$@)
