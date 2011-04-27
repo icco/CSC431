@@ -301,7 +301,8 @@ public class %(classname)s extends Instruction {
       }
 
       for (Operand r : this.getOperands()) {
-         ret = ret + r + ", ";
+         if (!r.toString().equals(""))
+            ret = ret + r + ", ";
       }
 
       ret = ret.trim();
