@@ -29,7 +29,7 @@ options {
    public SymbolTable symTable;
 
    public String dump() {
-      return cfg.toString();
+      return symTable.toString() + cfg.toString();
    }
 
    private Register loadVar(String name, Node current) {
@@ -86,6 +86,23 @@ options {
 
       return dest;
    }
+
+   public void addBranchInstructions(Register comp, String tLabel,
+    String fLabel, Node current)
+   {
+      Instruction i = new CompiInstruction();
+      Register cc = new ConditionCodeRegister();
+      i.addImmediate(1);
+      i.addRegister(comp);
+      i.addDest(cc);
+      current.addInstr(i);
+
+      i = new CbreqInstruction();
+      i.addRegister(cc);
+      i.addLabel(tLabel);
+      i.addLabel(fLabel);
+      current.addInstr(i);
+   }
 }
 
 build
@@ -130,7 +147,7 @@ declaration
 
 functions
 @init {
-   // Set global offsets.
+   // Set global offsets. This isn't being used for ILOC though.
    Map<String, Symbol> globals = symTable.getGlobals();
    Set<String> globalNames = globals.keySet();
    int offset = 0;
@@ -169,10 +186,6 @@ function
       finalNode.setLabel(("." + $ID.getText() + "_final"));
    }
    parameters ^(RETTYPE return_type) declarations statement_list[start]) {
-      // TODO Loading parameters code.
-
-      // TODO Statement list code.
-
       // Link last current block to final block.
       // (this only makes a difference for void funtions)
       $statement_list.exit.addChild(finalNode);
@@ -286,9 +299,6 @@ lvalue_h[Node current] returns [Register r]
    ;
 
 print[Node current]
-@init {
-   // TODO
-}
    :  ^(PRINT e=expression[current] (ENDL)?) {
       Instruction l = null;
 
@@ -326,24 +336,21 @@ conditional[Node current] returns [Node exit]
    fStart.setLabel(ifLabel + "_else");
    $exit.setLabel(ifLabel + "_after");
 }
-   :  ^(IF c=expression[current] {
-         // add Branch instructions based on boolean in returned register.
-         Instruction i = new CompiInstruction();
-         Register cc = new ConditionCodeRegister();
-         i.addImmediate(1);
-         i.addRegister($c.r);
-         i.addDest(cc);
-         current.addInstr(i);
+   :  ^(IF c=expression[current] tb=block[tStart] (fb=block[fStart])?) {
+         // Add branch from current block to true/false block.
+         String tLabel = tStart.getLabel();
+         String fLabel = fStart.getLabel();
 
-         i = new CbreqInstruction();
-         i.addRegister(cc);
-         i.addLabel(tStart.getLabel());
-         i.addLabel(fStart.getLabel()); // TODO we should jump to exit if no else block.
-         current.addInstr(i);
-      } tb=block[tStart] (fb=block[fStart])?) {
+         if ($fb.exit == null) {
+            // Jump to exit if no else block.
+            fLabel = $exit.getLabel();
+         }
+
+         addBranchInstructions($c.r, tLabel, fLabel, current);
+
          /* Add code for looking at expression and jumping */
          /* Link then block path */
-         current.addChild(tStart);
+         current.addChild(tStart); 
          tStart.addParent(current);
          $tb.exit.addChild($exit);
          $exit.addParent($tb.exit);
@@ -383,24 +390,28 @@ loop[Node current] returns [Node exit]
    current.addChild(loopNode);
    current.addChild($exit);
 
-   loopNode.addChild(loopNode); // TODO Is this right?
+   loopNode.addChild(loopNode); // Is this right?
    loopNode.addChild($exit);
 }
-   : ^(WHILE expression[current] {
-      // TODO Add code to check if we should start looping or not.
+   : ^(WHILE ex1=expression[current] {
 
-   } block[loopNode] expression[loopNode]) {
-      // TODO Add code to loopNode that checks if we should loop again.
+      addBranchInstructions($ex1.r, loopNode.getLabel(), $exit.getLabel(), 
+       current);
+
+   } block[loopNode] ex2=expression[loopNode]) {
+
+      addBranchInstructions($ex2.r, loopNode.getLabel(), $exit.getLabel(), 
+       loopNode);
+
    }
    ;
 
 delete[Node current]
 @init {
 }
-   // TODO Figure out what register to actually delete.
    : ^(DELETE expression[current]) {
       Instruction l = new DelInstruction();
-      l.addRegister(new Register());
+      l.addRegister($expression.r);
       current.addInstr(l);
    }
    ;
@@ -496,7 +507,6 @@ expression[Node current] returns [Register r]
       current.addInstr(l);
    }
    | ^(NEW ID) {
-      // TODO: Figure out to use field names, or how much data to use.
       $r = new Register();
       StructType type = symTable.getStruct($ID.getText()); 
       Instruction l = new NewInstruction();

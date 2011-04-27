@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import java.util.Set;
 
 public class SymbolTable {
    protected Map<String, Symbol> globals;
@@ -152,5 +153,28 @@ public class SymbolTable {
    // The only table that needs a getter.
    public Map<String, Symbol> getGlobals() {
       return globals;
+   }
+
+   public String toString() {
+      return toILOC();
+   }
+
+   public String toILOC() {
+      String functionDefs = "", localDefs = "";
+      Set<String> functionNames, localNames; 
+      FuncType fun;
+
+      functionNames = functions.keySet();
+      for (String fName : functionNames) {
+         functionDefs += "@function " + fName + "\n";
+
+         localNames = getFunction(fName).getLocalMap().keySet();
+
+         for (String lName : localNames) {
+            localDefs += "@local " + fName + ":" + lName + "\n";
+         }
+      }
+
+      return functionDefs + "\n" + localDefs + "\n";
    }
 }
