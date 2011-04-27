@@ -64,7 +64,7 @@ public class Evil {
 
             try {
                String outFile = new String(inputFile);
-               outFile = outFile.replaceFirst(".ev", ".iloc");
+               outFile = outFile.replaceFirst(".ev", ".il");
                FileWriter fstream = new FileWriter(outFile);
                BufferedWriter out = new BufferedWriter(fstream);
                out.write(iloc);
@@ -78,6 +78,8 @@ public class Evil {
       } catch (org.antlr.runtime.RecognitionException e) {
          error(e.toString());
       }
+
+      System.exit(0);
    }
 
    // Input Flags

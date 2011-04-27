@@ -56,7 +56,7 @@ instructions = [
    },
    {
       'name': 'xori',
-      'sources': [ 'Immediate', 'Register' ],
+      'sources': [ 'Register', 'Immediate' ],
       'dest': [ 'Register' ],
    },
 
@@ -64,7 +64,7 @@ instructions = [
 
    {
       'name': 'compi',
-      'sources': [ 'Immediate', 'Register' ],
+      'sources': [ 'Register', 'Immediate'],
       'dest': [ 'ConditionCodeRegister' ],
    },
    {
@@ -171,7 +171,7 @@ instructions = [
    {
       'name': 'storeoutargument',
       'sources': [ 'Register' ],
-      'dest': [ 'ID', 'Immediate' ],
+      'dest': [ 'Immediate' ],
    },
    {
       'name': 'storeret',
@@ -196,7 +196,7 @@ instructions = [
 
    {
       'name': 'new',
-      'sources': [ 'Immediate' ],
+      'sources': [ 'StructIdentifier' ],
       'dest': [ 'Register' ],
    },
    {
@@ -301,7 +301,8 @@ public class %(classname)s extends Instruction {
       }
 
       for (Operand r : this.getOperands()) {
-         ret = ret + r + ", ";
+         if (!r.toString().equals(""))
+            ret = ret + r + ", ";
       }
 
       ret = ret.trim();

@@ -13,6 +13,12 @@ This repository is the work of Ben Sweedler and Nat Welch.
      -i,--dumpIL       Dump ILOC to STDOUT.
      -t,--notype       Don't Typecheck.
 
+## Notes
+
+For Milestone 2:
+
+    make tests/compat.il > myout && curl -s http://users.csc.calpoly.edu/~akeen/courses/csc431/handouts/references/compat.out | diff -u - myout
+
 ## License
 
 Copyright (c) 2011 Ben Sweedler and Nathaniel Welch

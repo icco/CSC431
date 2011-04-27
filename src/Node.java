@@ -19,7 +19,9 @@ public class Node implements Iterable<Node> {
 
    public void addChild(Node child) { this.children.add(child); }
 
-   public String getLabel() { return this.label; }
+   public String getLabel() {
+      return this.label.replace(".", "").replace("_", "");
+   }
 
    public void setLabel(String label) { this.label = label; }
 
@@ -43,10 +45,14 @@ public class Node implements Iterable<Node> {
    }
 
    public String toString() {
-      String ret = getLabel() + ":\n";
+      String ret = "";
 
-      for (Instruction i : getInstr()) {
-         ret += "\t" + i + "\n";
+      if (this.getInstr().size() > 0) {
+         ret = getLabel() + ":\n";
+
+         for (Instruction i : this.getInstr()) {
+            ret += "\t" + i + "\n";
+         }
       }
 
       return ret;

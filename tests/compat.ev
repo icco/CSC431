@@ -58,9 +58,9 @@ void
 	if (a8 == 8) { print 1 endl; } else { print 0; print a8 endl; }
 }
 
-fun returnint(int ret)             int          { return ret; }
-fun returnbool(bool ret)           bool         { return ret; }
-fun returnstruct(struct thing ret) struct thing { return ret; }
+fun returnint(int retVal)             int          { return retVal; }
+fun returnbool(bool retVal)           bool         { return retVal; }
+fun returnstruct(struct thing retVal) struct thing { return retVal; }
 
 fun main() int {
 

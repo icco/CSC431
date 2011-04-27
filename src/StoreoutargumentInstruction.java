@@ -5,7 +5,7 @@ import java.lang.*;
  * Generated automatically by generate_instructions.py
  */
 public class StoreoutargumentInstruction extends Instruction {
-   public static Integer operandCount = 3;
+   public static Integer operandCount = 2;
    public StoreoutargumentInstruction() { }
 
    public String toString() {
@@ -13,7 +13,7 @@ public class StoreoutargumentInstruction extends Instruction {
    }
 
    public String toILOC() {
-      String classPattern = new String("Register ID Immediate");
+      String classPattern = new String("Register Immediate");
       String[] pattern = classPattern.split(" ");
       String ret = "storeoutargument ";
       int operandCount = this.getOperands().size();
@@ -23,7 +23,8 @@ public class StoreoutargumentInstruction extends Instruction {
       }
 
       for (Operand r : this.getOperands()) {
-         ret = ret + r + ", ";
+         if (!r.toString().equals(""))
+            ret = ret + r + ", ";
       }
 
       ret = ret.trim();

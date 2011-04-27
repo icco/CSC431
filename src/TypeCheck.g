@@ -202,8 +202,8 @@ assignment
 @init {
 }
    : ^(ASSIGN ex=expression lval=lvalue) {
-      if (!$ex.t.equals($lval.t)) {
-         Evil.error("Assignment lvalue type (" + $lval.t + ") doesn't match expresion(" + $ex.t + ").", $ASSIGN.getLine());
+      if (!$lval.t.equals($ex.t)) {
+         Evil.error("Assignment lvalue type (" + $lval.t + ") doesn't match expresion (" + $ex.t + ").", $ASSIGN.getLine());
       }
    }
    ;

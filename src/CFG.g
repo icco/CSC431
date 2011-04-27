@@ -29,7 +29,7 @@ options {
    public SymbolTable symTable;
 
    public String dump() {
-      return cfg.toString();
+      return symTable.toString() + cfg.toString();
    }
 
    private Register loadVar(String name, Node current) {
@@ -49,7 +49,6 @@ options {
          mov.addDest(tempReg);
 
          current.addInstr(mov);
-
       } else if (var.isGlobal()) {
          tempReg = new Register();
 
@@ -85,6 +84,22 @@ options {
       current.addInstr(mov);
 
       return dest;
+   }
+
+   public void addBranchInstructions(Register comp, String tLabel,
+    String fLabel, Node current) {
+      Instruction i = new CompiInstruction();
+      Register cc = new ConditionCodeRegister();
+      i.addRegister(comp);
+      i.addImmediate(1);
+      i.addDest(cc);
+      current.addInstr(i);
+
+      i = new CbreqInstruction();
+      i.addRegister(cc);
+      i.addLabel(tLabel);
+      i.addLabel(fLabel);
+      current.addInstr(i);
    }
 }
 
@@ -130,7 +145,7 @@ declaration
 
 functions
 @init {
-   // Set global offsets.
+   // Set global offsets. This isn't being used for ILOC though.
    Map<String, Symbol> globals = symTable.getGlobals();
    Set<String> globalNames = globals.keySet();
    int offset = 0;
@@ -169,12 +184,15 @@ function
       finalNode.setLabel(("." + $ID.getText() + "_final"));
    }
    parameters ^(RETTYPE return_type) declarations statement_list[start]) {
-      // TODO Loading parameters code.
 
-      // TODO Statement list code.
+      // Add return statment incase of no explicit return.
+      Instruction ret = new RetInstruction();
+      $statement_list.exit.addInstr(ret);
 
       // Link last current block to final block.
       // (this only makes a difference for void funtions)
+
+      // TODO Do we need final Node?
       $statement_list.exit.addChild(finalNode);
       finalNode.addParent($statement_list.exit);
 
@@ -286,9 +304,6 @@ lvalue_h[Node current] returns [Register r]
    ;
 
 print[Node current]
-@init {
-   // TODO
-}
    :  ^(PRINT e=expression[current] (ENDL)?) {
       Instruction l = null;
 
@@ -326,21 +341,18 @@ conditional[Node current] returns [Node exit]
    fStart.setLabel(ifLabel + "_else");
    $exit.setLabel(ifLabel + "_after");
 }
-   :  ^(IF c=expression[current] {
-         // add Branch instructions based on boolean in returned register.
-         Instruction i = new CompiInstruction();
-         Register cc = new ConditionCodeRegister();
-         i.addImmediate(1);
-         i.addRegister($c.r);
-         i.addDest(cc);
-         current.addInstr(i);
+   :  ^(IF c=expression[current] tb=block[tStart] (fb=block[fStart])?) {
+         // Add branch from current block to true/false block.
+         String tLabel = tStart.getLabel();
+         String fLabel = fStart.getLabel();
 
-         i = new CbreqInstruction();
-         i.addRegister(cc);
-         i.addLabel(tStart.getLabel());
-         i.addLabel(fStart.getLabel()); // TODO we should jump to exit if no else block.
-         current.addInstr(i);
-      } tb=block[tStart] (fb=block[fStart])?) {
+         if ($fb.exit == null) {
+            // Jump to exit if no else block.
+            fLabel = $exit.getLabel();
+         }
+
+         addBranchInstructions($c.r, tLabel, fLabel, current);
+
          /* Add code for looking at expression and jumping */
          /* Link then block path */
          current.addChild(tStart);
@@ -383,24 +395,26 @@ loop[Node current] returns [Node exit]
    current.addChild(loopNode);
    current.addChild($exit);
 
-   loopNode.addChild(loopNode); // TODO Is this right?
+   loopNode.addChild(loopNode); // Is this right?
    loopNode.addChild($exit);
 }
-   : ^(WHILE expression[current] {
-      // TODO Add code to check if we should start looping or not.
+   : ^(WHILE ex1=expression[current] {
 
-   } block[loopNode] expression[loopNode]) {
-      // TODO Add code to loopNode that checks if we should loop again.
+      addBranchInstructions($ex1.r, loopNode.getLabel(), $exit.getLabel(), current);
+
+   } block[loopNode] ex2=expression[loopNode]) {
+
+      addBranchInstructions($ex2.r, loopNode.getLabel(), $exit.getLabel(), loopNode);
+
    }
    ;
 
 delete[Node current]
 @init {
 }
-   // TODO Figure out what register to actually delete.
    : ^(DELETE expression[current]) {
       Instruction l = new DelInstruction();
-      l.addRegister(new Register());
+      l.addRegister($expression.r);
       current.addInstr(l);
    }
    ;
@@ -409,9 +423,11 @@ ret[Node current] returns [Node exit]
 @init {
 }
    : ^(RETURN (e=expression[current])?) {
-      Instruction sr = new StoreretInstruction();
-      sr.addDest($e.r); // Might need to be addRegister instead
-      current.addInstr(sr);
+      if ($e.r != null) {
+         Instruction sr = new StoreretInstruction();
+         sr.addDest($e.r); // Might need to be addRegister instead
+         current.addInstr(sr);
+      }
 
       Instruction r = new RetInstruction();
       current.addInstr(r);
@@ -440,7 +456,7 @@ invocation[Node current] returns [Register r]
       for (Register arg : $arguments.args) {
          store = new StoreoutargumentInstruction();
          store.addSource(arg);
-         store.addID(fun.getParams().get(offset).getName());
+         // store.addID(fun.getParams().get(offset).getName());
          store.addImmediate(offset++);
          current.addInstr(store);
       }
@@ -450,10 +466,12 @@ invocation[Node current] returns [Register r]
       call.addLabel($ID.getText());
       current.addInstr(call);
 
-      // Load return into r.
-      load = new LoadretInstruction();
-      load.addDest($r);
-      current.addInstr(load);
+      // If funcdtion is not Void, load return into r.
+      if (!(fun.getReturn() instanceof VoidType)) {
+         load = new LoadretInstruction();
+         load.addDest($r);
+         current.addInstr(load);
+      }
    }
    ;
 
@@ -492,11 +510,15 @@ expression[Node current] returns [Register r]
       current.addInstr(l);
    }
    | ^(NEW ID) {
-      // TODO: Figure out to use field names, or how much data to use.
       $r = new Register();
+      StructType type = symTable.getStruct($ID.getText());
       Instruction l = new NewInstruction();
+
+      $r.setType(type);
+      l.addSource(new StructIdentifier(type));
       l.addDest($r);
-      l.addImmediate(9001); // TODO: CHANGE ME!
+
+      current.addInstr(l);
    }
    | NULL {
       // Load immediate 0 into register.
@@ -517,8 +539,8 @@ expression[Node current] returns [Register r]
       // xor with 1 to flop a boolean
       Instruction x = new XoriInstruction();
       $r = new Register();
-      x.addImmediate(new Immediate(1));
       x.addRegister($e.r);
+      x.addImmediate(new Immediate(1));
       x.addDest($r);
 
       current.addInstr(x);
