@@ -1,14 +1,13 @@
-#!/bin/tcsh
-# note: I have ecc aliased to gcc -mcpu=v9
-unlimit
-echo "*********** TIMING **********"
-foreach dir (*)
-   if (${dir} == "timingscript") continue
-   printf "%s " ${dir}
-   cd ${dir}
-      setenv FILES `ls *.s | grep -v .print.s`
-      ecc ${FILES}
-      /usr/bin/time -p a.out < input |& grep real | awk '{ print $2 }'
-   cd ..
-end
+#!/bin/bash
 
+$ECC=gcc -mcpu=v9
+echo "---- Benchmarks"
+for dir in `ls benchmarks`; do
+   echo "${dir}: "
+   FILES=`ls benchmarks/${dir}/*.ev`
+   for ev in $FILES; do
+      il=`echo $ev | sed 's/\.ev/\.il/'`
+      make $il
+      rm $il
+   done
+done
