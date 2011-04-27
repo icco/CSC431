@@ -58,8 +58,8 @@ run: tests/4.ev
 %.ev: all
 	java Evil -i ${RUNFLAGS} $@
 
-%.iloc: all
-	java Evil -i ${RUNFLAGS} $(subst .iloc,.ev,$@)
+%.il: all
+	java Evil -i ${RUNFLAGS} $(subst .il,.ev,$@)
 	java -jar mochi.jar -r $@
 
 typetest: all

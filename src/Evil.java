@@ -64,7 +64,7 @@ public class Evil {
 
             try {
                String outFile = new String(inputFile);
-               outFile = outFile.replaceFirst(".ev", ".iloc");
+               outFile = outFile.replaceFirst(".ev", ".il");
                FileWriter fstream = new FileWriter(outFile);
                BufferedWriter out = new BufferedWriter(fstream);
                out.write(iloc);

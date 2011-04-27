@@ -15,7 +15,7 @@ This repository is the work of Ben Sweedler and Nat Welch.
 
 ## Notes
 
-For Milestone 2 ` make tests/compat.iloc | tail -n +12 > myout && curl -s http://users.csc.calpoly.edu/~akeen/courses/csc431/handouts/references/compat.out | diff -u - myout
+For Milestone 2 ` make tests/compat.il | tail -n +12 > myout && curl -s http://users.csc.calpoly.edu/~akeen/courses/csc431/handouts/references/compat.out | diff -u - myout
 `
 
 ## License
