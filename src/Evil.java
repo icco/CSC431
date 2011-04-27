@@ -78,6 +78,8 @@ public class Evil {
       } catch (org.antlr.runtime.RecognitionException e) {
          error(e.toString());
       }
+
+      System.exit(0);
    }
 
    // Input Flags
