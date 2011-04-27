@@ -186,8 +186,15 @@ function
       finalNode.setLabel(("." + $ID.getText() + "_final"));
    }
    parameters ^(RETTYPE return_type) declarations statement_list[start]) {
+
+      // Add return statment incase of no explicit return.
+      Instruction ret = new RetInstruction();
+      $statement_list.exit.addInstr(ret);
+
       // Link last current block to final block.
       // (this only makes a difference for void funtions)
+
+      // TODO Do we need final Node?
       $statement_list.exit.addChild(finalNode);
       finalNode.addParent($statement_list.exit);
 
