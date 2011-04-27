@@ -19,11 +19,14 @@ public class StructType extends Type implements Cloneable {
    public boolean equals(Object other) {
       StructType otherStruct;
 
+      if (other instanceof NullType) {
+         return true;
+      }
+
       if (other instanceof StructType) {
          otherStruct = (StructType)other;
 
-         return other instanceof NullType 
-          || otherStruct.getName().equals(getName());
+         return otherStruct.getName().equals(getName());
       }
 
       return false;
