@@ -56,10 +56,12 @@ instructions: generate_instructions.py
 run: tests/4.ev
 
 %.ev: all
-	java Evil -i ${RUNFLAGS} $@
+	java Evil ${RUNFLAGS} $@
 
-mochi: tests/4.ev
-	java -jar mochi.jar -r tests/4.iloc
+%.iloc: all
+	java Evil -i ${RUNFLAGS} $(subst .iloc,.ev,$@)
+	java -jar mochi.jar -r $@
+	rm $@
 
 typetest: all
 	@./typetest.sh
