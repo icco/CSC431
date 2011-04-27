@@ -536,8 +536,8 @@ expression[Node current] returns [Register r]
       // xor with 1 to flop a boolean
       Instruction x = new XoriInstruction();
       $r = new Register();
-      x.addImmediate(new Immediate(1));
       x.addRegister($e.r);
+      x.addImmediate(new Immediate(1));
       x.addDest($r);
 
       current.addInstr(x);

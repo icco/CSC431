@@ -56,7 +56,7 @@ instructions = [
    },
    {
       'name': 'xori',
-      'sources': [ 'Immediate', 'Register' ],
+      'sources': [ 'Register', 'Immediate' ],
       'dest': [ 'Register' ],
    },
 
