@@ -49,7 +49,6 @@ options {
          mov.addDest(tempReg);
 
          current.addInstr(mov);
-
       } else if (var.isGlobal()) {
          tempReg = new Register();
 
@@ -88,8 +87,7 @@ options {
    }
 
    public void addBranchInstructions(Register comp, String tLabel,
-    String fLabel, Node current)
-   {
+    String fLabel, Node current) {
       Instruction i = new CompiInstruction();
       Register cc = new ConditionCodeRegister();
       i.addRegister(comp);
