@@ -14,6 +14,6 @@ public class ID implements Operand {
    }
 
    public String toILOC() {
-      return id;
+      return id + "a"; // Super HACK to fix a instruction collision with variable name.
    }
 }

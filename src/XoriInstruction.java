@@ -13,7 +13,7 @@ public class XoriInstruction extends Instruction {
    }
 
    public String toILOC() {
-      String classPattern = new String("Immediate Register Register");
+      String classPattern = new String("Register Immediate Register");
       String[] pattern = classPattern.split(" ");
       String ret = "xori ";
       int operandCount = this.getOperands().size();
