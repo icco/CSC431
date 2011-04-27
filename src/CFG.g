@@ -350,7 +350,7 @@ conditional[Node current] returns [Node exit]
 
          /* Add code for looking at expression and jumping */
          /* Link then block path */
-         current.addChild(tStart); 
+         current.addChild(tStart);
          tStart.addParent(current);
          $tb.exit.addChild($exit);
          $exit.addParent($tb.exit);
@@ -395,12 +395,12 @@ loop[Node current] returns [Node exit]
 }
    : ^(WHILE ex1=expression[current] {
 
-      addBranchInstructions($ex1.r, loopNode.getLabel(), $exit.getLabel(), 
+      addBranchInstructions($ex1.r, loopNode.getLabel(), $exit.getLabel(),
        current);
 
    } block[loopNode] ex2=expression[loopNode]) {
 
-      addBranchInstructions($ex2.r, loopNode.getLabel(), $exit.getLabel(), 
+      addBranchInstructions($ex2.r, loopNode.getLabel(), $exit.getLabel(),
        loopNode);
 
    }
@@ -508,7 +508,7 @@ expression[Node current] returns [Register r]
    }
    | ^(NEW ID) {
       $r = new Register();
-      StructType type = symTable.getStruct($ID.getText()); 
+      StructType type = symTable.getStruct($ID.getText());
       Instruction l = new NewInstruction();
 
       $r.setType(type);
