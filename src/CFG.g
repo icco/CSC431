@@ -395,13 +395,11 @@ loop[Node current] returns [Node exit]
 }
    : ^(WHILE ex1=expression[current] {
 
-      addBranchInstructions($ex1.r, loopNode.getLabel(), $exit.getLabel(),
-       current);
+      addBranchInstructions($ex1.r, loopNode.getLabel(), $exit.getLabel(), current);
 
    } block[loopNode] ex2=expression[loopNode]) {
 
-      addBranchInstructions($ex2.r, loopNode.getLabel(), $exit.getLabel(),
-       loopNode);
+      addBranchInstructions($ex2.r, loopNode.getLabel(), $exit.getLabel(), loopNode);
 
    }
    ;
