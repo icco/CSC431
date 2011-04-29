@@ -12,6 +12,10 @@ public class RsubiInstruction extends Instruction {
       return this.toILOC();
    }
 
+   public String toSparc() {
+      return "";
+   }
+
    public String toILOC() {
       String classPattern = new String("Immediate Register Register");
       String[] pattern = classPattern.split(" ");

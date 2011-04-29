@@ -12,6 +12,10 @@ public class DivInstruction extends Instruction {
       return this.toILOC();
    }
 
+   public String toSparc() {
+      return "";
+   }
+
    public String toILOC() {
       String classPattern = new String("Register Register Register");
       String[] pattern = classPattern.split(" ");

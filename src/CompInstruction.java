@@ -12,6 +12,10 @@ public class CompInstruction extends Instruction {
       return this.toILOC();
    }
 
+   public String toSparc() {
+      return "";
+   }
+
    public String toILOC() {
       String classPattern = new String("Register Register ConditionCodeRegister");
       String[] pattern = classPattern.split(" ");

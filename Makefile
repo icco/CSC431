@@ -24,7 +24,7 @@ classes = $(subst ${SOURCEDIR},${CLASSDIR},$(sources:.java=.class))
 all: ${CLASSDIR} antlr.generated instructions $(classes)
 
 %.class: $(sources)
-	$(JAVAC) ${SOURCEDIR}/*.java
+	@$(JAVAC) ${SOURCEDIR}/*.java
 
 ${CLASSDIR}:
 	mkdir ${CLASSDIR} -p
@@ -50,8 +50,8 @@ antlr.generated.walker : ${SOURCEDIR}/Walker.g
 	@touch antlr.generated.walker
 
 instructions: generate_instructions.py
-	bash -c "rm src/[A-Z]*Instruction.java"
-	./generate_instructions.py
+	@bash -c "rm src/[A-Z]*Instruction.java"
+	@./generate_instructions.py
 
 run: tests/4.ev
 

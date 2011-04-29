@@ -12,6 +12,10 @@ public class MovltInstruction extends Instruction {
       return this.toILOC();
    }
 
+   public String toSparc() {
+      return "";
+   }
+
    public String toILOC() {
       String classPattern = new String("Immediate Register");
       String[] pattern = classPattern.split(" ");

@@ -12,6 +12,10 @@ public class StoreinargumentInstruction extends Instruction {
       return this.toILOC();
    }
 
+   public String toSparc() {
+      return "";
+   }
+
    public String toILOC() {
       String classPattern = new String("Register ID Immediate");
       String[] pattern = classPattern.split(" ");
