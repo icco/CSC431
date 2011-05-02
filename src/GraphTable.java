@@ -4,7 +4,7 @@ import java.util.*;
  * Extends a HashMap, only rewriting the toString function.
  */
 public class GraphTable extends HashMap<String, Node> {
-   public String toString() {
+   public String toILOC() {
       String ret = "";
       List<Node> nodes = new LinkedList<Node>();
 
