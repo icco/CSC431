@@ -6,14 +6,16 @@ import java.lang.*;
  */
 public class MoveqInstruction extends Instruction {
    public static Integer operandCount = 2;
-   public MoveqInstruction() { }
+   public MoveqInstruction() {
+      super();
+   }
 
    public String toString() {
       return this.toILOC();
    }
 
    public String toSparc() {
-      return "";
+      return super.toString();
    }
 
    public String toILOC() {

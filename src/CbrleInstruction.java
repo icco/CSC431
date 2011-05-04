@@ -6,14 +6,16 @@ import java.lang.*;
  */
 public class CbrleInstruction extends Instruction {
    public static Integer operandCount = 3;
-   public CbrleInstruction() { }
+   public CbrleInstruction() {
+      super();
+   }
 
    public String toString() {
       return this.toILOC();
    }
 
    public String toSparc() {
-      return "";
+      return super.toString();
    }
 
    public String toILOC() {

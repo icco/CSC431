@@ -6,14 +6,16 @@ import java.lang.*;
  */
 public class StoreretInstruction extends Instruction {
    public static Integer operandCount = 1;
-   public StoreretInstruction() { }
+   public StoreretInstruction() {
+      super();
+   }
 
    public String toString() {
       return this.toILOC();
    }
 
    public String toSparc() {
-      return "";
+      return super.toString();
    }
 
    public String toILOC() {

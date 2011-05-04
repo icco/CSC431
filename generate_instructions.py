@@ -15,14 +15,16 @@ import java.lang.*;
  */
 public class %(classname)s extends Instruction {
    public static Integer operandCount = %(count)d;
-   public %(classname)s() { }
+   public %(classname)s() {
+      super();%(sparc)s
+   }
 
    public String toString() {
       return this.toILOC();
    }
 
    public String toSparc() {
-      return "";
+      return super.toString();
    }
 
    public String toILOC() {
@@ -60,8 +62,15 @@ public class %(classname)s extends Instruction {
 }
 """
 
-sparc_txt = """
+sparc_txt = """import java.util.*;
+import java.lang.*;
 
+/**
+ * Generated automatically by generate_instructions.py
+ */
+public class %(classname)s extends SparcInstruction {
+
+}
 """
 
 instructions = [
@@ -363,12 +372,16 @@ for instr in instructions:
    filename = "src/" + classname + ".java"
    data = instr['sources'] + instr['dest']
 
+   def s(x): return "sparcs.add(\"" + x+ "\");"
+   def f(x,y): return x + y
+
    data = {
       'date': datetime.now().isoformat(' '),
       'classname': classname,
       'instr': instr['name'],
       'pattern': ' '.join(data),
-      'count': len(data)
+      'count': len(data),
+      'sparc': reduce(f, map(s, instr['sparc']), ""),
    }
 
    # Take the data we built, and apply it to the template.

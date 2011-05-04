@@ -6,14 +6,16 @@ import java.lang.*;
  */
 public class LoadretInstruction extends Instruction {
    public static Integer operandCount = 1;
-   public LoadretInstruction() { }
+   public LoadretInstruction() {
+      super();
+   }
 
    public String toString() {
       return this.toILOC();
    }
 
    public String toSparc() {
-      return "";
+      return super.toString();
    }
 
    public String toILOC() {

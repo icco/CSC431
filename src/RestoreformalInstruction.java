@@ -6,14 +6,16 @@ import java.lang.*;
  */
 public class RestoreformalInstruction extends Instruction {
    public static Integer operandCount = 2;
-   public RestoreformalInstruction() { }
+   public RestoreformalInstruction() {
+      super();
+   }
 
    public String toString() {
       return this.toILOC();
    }
 
    public String toSparc() {
-      return "";
+      return super.toString();
    }
 
    public String toILOC() {

@@ -6,14 +6,16 @@ import java.lang.*;
  */
 public class RetInstruction extends Instruction {
    public static Integer operandCount = 0;
-   public RetInstruction() { }
+   public RetInstruction() {
+      super();
+   }
 
    public String toString() {
       return this.toILOC();
    }
 
    public String toSparc() {
-      return "";
+      return super.toString();
    }
 
    public String toILOC() {

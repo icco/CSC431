@@ -6,14 +6,16 @@ import java.lang.*;
  */
 public class ComputeformaladdressInstruction extends Instruction {
    public static Integer operandCount = 3;
-   public ComputeformaladdressInstruction() { }
+   public ComputeformaladdressInstruction() {
+      super();
+   }
 
    public String toString() {
       return this.toILOC();
    }
 
    public String toSparc() {
-      return "";
+      return super.toString();
    }
 
    public String toILOC() {

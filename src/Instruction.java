@@ -1,10 +1,11 @@
 import java.util.*;
 import java.lang.*;
 
-public class Instruction {
+public abstract class Instruction {
    public static Integer operandCount = 0;
    private ArrayList<Operand> operands = new ArrayList<Operand>();
    private ArrayList<Register> dests = new ArrayList<Register>();
+   private ArrayList<String> sparcs = new ArrayList<String>();
 
    public String toString() {
       return "NULL INSTRUCTION.";
@@ -19,6 +20,10 @@ public class Instruction {
       }
 
       return ret;
+   }
+
+   public String toSparc() {
+      return sparcs.toString();
    }
 
    public ArrayList<Register> getDestinations() {

@@ -6,14 +6,16 @@ import java.lang.*;
  */
 public class StoreaiInstruction extends Instruction {
    public static Integer operandCount = 3;
-   public StoreaiInstruction() { }
+   public StoreaiInstruction() {
+      super();
+   }
 
    public String toString() {
       return this.toILOC();
    }
 
    public String toSparc() {
-      return "";
+      return super.toString();
    }
 
    public String toILOC() {
