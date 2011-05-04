@@ -37,18 +37,9 @@ options {
       Register tempReg = null;
       Instruction mov;
 
-      if (var.isLocal()) {
+      if (var.isLocal() || var.isParam()) {
          tempReg = var.getRegister();
 
-      } else if (var.isParam()) {
-         tempReg = new Register();
-
-         mov = new LoadinargumentInstruction();
-         mov.addID(var.getName());
-         mov.addImmediate(var.getOffset());
-         mov.addDest(tempReg);
-
-         current.addInstr(mov);
       } else if (var.isGlobal()) {
          tempReg = new Register();
 
@@ -172,9 +163,19 @@ function
          local.setRegister(new Register());
       }
 
-      // Set up parameters.
+      // Set up parameters, load parameters into registers.
       for (Symbol param : currentFunc.getParams()) {
          param.setOffset(offset++);
+         param.setRegister(new Register());
+         
+         Instruction mov = new LoadinargumentInstruction();
+         Register tempReg = new Register();
+
+         mov.addID(param.getName());
+         mov.addImmediate(param.getOffset());
+         mov.addDest(param.getRegister());
+
+         start.addInstr(mov);
       }
 
       start.setLabel(name);
@@ -182,6 +183,9 @@ function
       /* All paths from start end with the function's final node */
       finalNode = new Node();
       finalNode.setLabel(("." + $ID.getText() + "_final"));
+      
+
+
    }
    parameters ^(RETTYPE return_type) declarations statement_list[start]) {
 
@@ -260,10 +264,6 @@ lvalue[Node current, Register storeThis]
          mov = new MovInstruction();
          mov.addSource(storeThis);
          mov.addDest(var.getRegister());
-      } else if (var.isParam()) {
-         mov = new StoreinargumentInstruction();
-         mov.addSource(storeThis);
-         mov.addImmediate(var.getOffset());
 
       } else if (var.isGlobal()) {
          mov = new StoreglobalInstruction();

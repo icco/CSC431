@@ -164,11 +164,6 @@ instructions = [
       'dest': [ 'ID' ],
    },
    {
-      'name': 'storeinargument',
-      'sources': [ 'Register' ],
-      'dest': [ 'ID', 'Immediate' ],
-   },
-   {
       'name': 'storeoutargument',
       'sources': [ 'Register' ],
       'dest': [ 'Immediate' ],
