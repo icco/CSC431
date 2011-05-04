@@ -7,281 +7,7 @@
 
 from datetime import datetime, date, time
 
-instructions = [
-
-# Arithmetic (MATHS)
-
-   {
-      'name': 'add',
-      'sources': [ 'Register', 'Register' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'addi',
-      'sources': [ 'Immediate', 'Register' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'div',
-      'sources': [ 'Register', 'Register' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'mult',
-      'sources': [ 'Register', 'Register' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'sub',
-      'sources': [ 'Register', 'Register' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'rsubi',
-      'sources': [ 'Immediate', 'Register' ],
-      'dest': [ 'Register' ],
-   },
-
-# Boolean
-
-   {
-      'name': 'and',
-      'sources': [ 'Register', 'Register' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'or',
-      'sources': [ 'Register', 'Register' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'xori',
-      'sources': [ 'Register', 'Immediate' ],
-      'dest': [ 'Register' ],
-   },
-
-# Comparison and Branching (Forks in the road)
-
-   {
-      'name': 'compi',
-      'sources': [ 'Register', 'Immediate'],
-      'dest': [ 'ConditionCodeRegister' ],
-   },
-   {
-      'name': 'comp',
-      'sources': [ 'Register', 'Register' ],
-      'dest': [ 'ConditionCodeRegister' ],
-   },
-  {
-     'name': 'cbreq',
-     'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
-     'dest': [ ],
-  },
-  {
-     'name': 'cbrge',
-     'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
-     'dest': [ ],
-  },
-  {
-     'name': 'cbrgt',
-     'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
-     'dest': [ ],
-  },
-  {
-     'name': 'cbrle',
-     'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
-     'dest': [ ],
-  },
-  {
-     'name': 'cbrlt',
-     'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
-     'dest': [ ],
-  },
-  {
-     'name': 'cbrne',
-     'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
-     'dest': [ ],
-  },
-  {
-     'name': 'jumpi',
-     'sources': [ 'Label' ],
-     'dest': [ ],
-  },
-
-# Loads (Not the kind for her face)
-
-   {
-      'name': 'loadi',
-      'sources': [ 'Immediate' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'loadai',
-      'sources': [ 'Register', 'Field' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'loadglobal',
-      'sources': [ 'ID' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'loadinargument',
-      'sources': [ 'ID', 'Immediate' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'loadret',
-      'sources': [ ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'computeformaladdress',
-      'sources': [ 'ID', 'Immediate' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'restoreformal',
-      'sources': [ 'ID', 'Immediate' ],
-      'dest': [ ],
-   },
-   {
-      'name': 'computeglobaladdress',
-      'sources': [ 'ID' ],
-      'dest': [ 'Register' ],
-   },
-
-# Stores (Target, 7-11, etc.)
-
-   {
-      'name': 'storeai',
-      'sources': [ 'Register' ],
-      'dest': [ 'Register', 'Field' ],
-   },
-   {
-      'name': 'storeglobal',
-      'sources': [ 'Register' ],
-      'dest': [ 'ID' ],
-   },
-   {
-      'name': 'storeinargument',
-      'sources': [ 'Register' ],
-      'dest': [ 'ID', 'Immediate' ],
-   },
-   {
-      'name': 'storeoutargument',
-      'sources': [ 'Register' ],
-      'dest': [ 'Immediate' ],
-   },
-   {
-      'name': 'storeret',
-      'sources': [ 'Register' ],
-      'dest': [ ],
-   },
-
-# Invocation (Casting spells, raising demons)
-
-   {
-      'name': 'call',
-      'sources': [ 'Label' ],
-      'dest': [ ],
-   },
-   {
-      'name': 'ret',
-      'sources': [ ],
-      'dest': [ ],
-   },
-
-# Allocation (Too serious to joke about)
-
-   {
-      'name': 'new',
-      'sources': [ 'StructIdentifier' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'del',
-      'sources': [ 'Register' ],
-      'dest': [ ],
-   },
-
-# I/0 (That's a planet right?)
-
-   {
-      'name': 'print',
-      'sources': [ 'Register' ],
-      'dest': [ ],
-   },
-   {
-      'name': 'println',
-      'sources': [ 'Register' ],
-      'dest': [ ],
-   },
-   {
-      'name': 'read',
-      'sources': [ 'Register' ],
-      'dest': [ ],
-   },
-
-# Moves (for the dance floor)
-   {
-      'name': 'mov',
-      'sources': [ 'Register' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'moveq',
-      'sources': [ 'Immediate' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'movge',
-      'sources': [ 'Immediate' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'movgt',
-      'sources': [ 'Immediate' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'movle',
-      'sources': [ 'Immediate' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'movlt',
-      'sources': [ 'Immediate' ],
-      'dest': [ 'Register' ],
-   },
-   {
-      'name': 'movne',
-      'sources': [ 'Immediate' ],
-      'dest': [ 'Register' ],
-      'sparc': {
-         'name': '...',
-         'sources': [],
-         'dest': [],
-      }
-   },
-]
-
-# Now that the instructions are defined, apply them to the template.
-for instr in instructions:
-   classname = instr['name'].capitalize() + "Instruction"
-   filename = "src/" + classname + ".java"
-   data = instr['sources'] + instr['dest']
-
-   data = {
-      'date': datetime.now().isoformat(' '),
-      'classname': classname,
-      'instr': instr['name'],
-      'pattern': ' '.join(data),
-      'count': len(data)
-   }
-
-   # Take the data we built, and apply it to the template below.
-   txt = """import java.util.*;
+iloc_txt = """import java.util.*;
 import java.lang.*;
 
 /**
@@ -332,7 +58,327 @@ public class %(classname)s extends Instruction {
       return ret;
    }
 }
-""" % data
+"""
+
+sparc_txt = """
+
+"""
+
+instructions = [
+
+# Arithmetic (MATHS)
+
+   {
+      'name': 'add',
+      'sources': [ 'Register', 'Register' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'addi',
+      'sources': [ 'Immediate', 'Register' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'div',
+      'sources': [ 'Register', 'Register' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'mult',
+      'sources': [ 'Register', 'Register' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'sub',
+      'sources': [ 'Register', 'Register' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'rsubi',
+      'sources': [ 'Immediate', 'Register' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+
+# Boolean
+
+   {
+      'name': 'and',
+      'sources': [ 'Register', 'Register' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'or',
+      'sources': [ 'Register', 'Register' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'xori',
+      'sources': [ 'Register', 'Immediate' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+
+# Comparison and Branching (Forks in the road)
+
+   {
+      'name': 'compi',
+      'sources': [ 'Register', 'Immediate'],
+      'dest': [ 'ConditionCodeRegister' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'comp',
+      'sources': [ 'Register', 'Register' ],
+      'dest': [ 'ConditionCodeRegister' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'cbreq',
+      'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
+      'dest': [ ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'cbrge',
+      'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
+      'dest': [ ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'cbrgt',
+      'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
+      'dest': [ ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'cbrle',
+      'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
+      'dest': [ ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'cbrlt',
+      'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
+      'dest': [ ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'cbrne',
+      'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
+      'dest': [ ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'jumpi',
+      'sources': [ 'Label' ],
+      'dest': [ ],
+      'sparc': [ ],
+   },
+
+# Loads (Not the kind for her face)
+
+   {
+      'name': 'loadi',
+      'sources': [ 'Immediate' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'loadai',
+      'sources': [ 'Register', 'Field' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'loadglobal',
+      'sources': [ 'ID' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'loadinargument',
+      'sources': [ 'ID', 'Immediate' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'loadret',
+      'sources': [ ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'computeformaladdress',
+      'sources': [ 'ID', 'Immediate' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'restoreformal',
+      'sources': [ 'ID', 'Immediate' ],
+      'dest': [ ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'computeglobaladdress',
+      'sources': [ 'ID' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+
+# Stores (Target, 7-11, etc.)
+
+   {
+      'name': 'storeai',
+      'sources': [ 'Register' ],
+      'dest': [ 'Register', 'Field' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'storeglobal',
+      'sources': [ 'Register' ],
+      'dest': [ 'ID' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'storeinargument',
+      'sources': [ 'Register' ],
+      'dest': [ 'ID', 'Immediate' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'storeoutargument',
+      'sources': [ 'Register' ],
+      'dest': [ 'Immediate' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'storeret',
+      'sources': [ 'Register' ],
+      'dest': [ ],
+      'sparc': [ ],
+   },
+
+# Invocation (Casting spells, raising demons)
+
+   {
+      'name': 'call',
+      'sources': [ 'Label' ],
+      'dest': [ ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'ret',
+      'sources': [ ],
+      'dest': [ ],
+      'sparc': [ ],
+   },
+
+# Allocation (Too serious to joke about)
+
+   {
+      'name': 'new',
+      'sources': [ 'StructIdentifier' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'del',
+      'sources': [ 'Register' ],
+      'dest': [ ],
+      'sparc': [ ],
+   },
+
+# I/0 (That's a planet right?)
+
+   {
+      'name': 'print',
+      'sources': [ 'Register' ],
+      'dest': [ ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'println',
+      'sources': [ 'Register' ],
+      'dest': [ ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'read',
+      'sources': [ 'Register' ],
+      'dest': [ ],
+      'sparc': [ ],
+   },
+
+# Moves (for the dance floor)
+   {
+      'name': 'mov',
+      'sources': [ 'Register' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'moveq',
+      'sources': [ 'Immediate' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'movge',
+      'sources': [ 'Immediate' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'movgt',
+      'sources': [ 'Immediate' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'movle',
+      'sources': [ 'Immediate' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'movlt',
+      'sources': [ 'Immediate' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+   {
+      'name': 'movne',
+      'sources': [ 'Immediate' ],
+      'dest': [ 'Register' ],
+      'sparc': [ ],
+   },
+]
+
+# Now that the instructions are defined, apply them to the template.
+for instr in instructions:
+   classname = instr['name'].capitalize() + "Instruction"
+   filename = "src/" + classname + ".java"
+   data = instr['sources'] + instr['dest']
+
+   data = {
+      'date': datetime.now().isoformat(' '),
+      'classname': classname,
+      'instr': instr['name'],
+      'pattern': ' '.join(data),
+      'count': len(data)
+   }
+
+   # Take the data we built, and apply it to the template.
+   txt = iloc_txt % data
 
    f = open(filename, 'w')
    f.write(txt)

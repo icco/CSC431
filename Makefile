@@ -21,7 +21,7 @@ JAVAC=javac ${JAVAFLAGS}
 sources = $(wildcard ${SOURCEDIR}/*.java)
 classes = $(subst ${SOURCEDIR},${CLASSDIR},$(sources:.java=.class))
 
-all: ${CLASSDIR} antlr.generated instructions $(classes)
+all: ${CLASSDIR} antlr.generated antlr.generated.inst $(classes)
 
 %.class: $(sources)
 	$(JAVAC) ${SOURCEDIR}/*.java
@@ -49,9 +49,11 @@ antlr.generated.walker : ${SOURCEDIR}/Walker.g
 	java org.antlr.Tool ${ANTLRFLAGS} ${DEBUGFLAGS} src/Walker.g
 	@touch antlr.generated.walker
 
-instructions: generate_instructions.py
+# Technically not antlr, but looks nice.
+antlr.generated.inst: generate_instructions.py
 	bash -c "rm src/[A-Z]*Instruction.java"
 	./generate_instructions.py
+	@touch antlr.generated.inst
 
 run: tests/4.ev
 
