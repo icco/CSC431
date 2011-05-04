@@ -249,12 +249,6 @@ instructions = [
       'sparc': [ ],
    },
    {
-      'name': 'storeinargument',
-      'sources': [ 'Register' ],
-      'dest': [ 'ID', 'Immediate' ],
-      'sparc': [ ],
-   },
-   {
       'name': 'storeoutargument',
       'sources': [ 'Register' ],
       'dest': [ 'Immediate' ],
