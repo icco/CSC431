@@ -7,7 +7,7 @@ import java.lang.*;
 public class RetInstruction extends Instruction {
    public static Integer operandCount = 0;
    public RetInstruction() {
-      super();
+      super();sparcs.add("return");
    }
 
    public String toString() {

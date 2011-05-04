@@ -210,13 +210,13 @@ instructions = [
       'name': 'call',
       'sources': [ 'Label' ],
       'dest': [ ],
-      'sparc': [ ],
+      'sparc': [ 'call' ],
    },
    {
       'name': 'ret',
       'sources': [ ],
       'dest': [ ],
-      'sparc': [ ],
+      'sparc': [ 'return' ],
    },
 
 # Allocation (Too serious to joke about)
