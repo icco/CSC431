@@ -7,7 +7,7 @@ import java.lang.*;
 public class OrInstruction extends Instruction {
    public static Integer operandCount = 3;
    public OrInstruction() {
-      super();
+      super();sparcs.add("or");
    }
 
    public String toString() {
@@ -15,7 +15,7 @@ public class OrInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toString();
+      return super.toSparc();
    }
 
    public String toILOC() {

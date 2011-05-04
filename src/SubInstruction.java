@@ -7,7 +7,7 @@ import java.lang.*;
 public class SubInstruction extends Instruction {
    public static Integer operandCount = 3;
    public SubInstruction() {
-      super();
+      super();sparcs.add("sub");
    }
 
    public String toString() {
@@ -15,7 +15,7 @@ public class SubInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toString();
+      return super.toSparc();
    }
 
    public String toILOC() {

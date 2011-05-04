@@ -7,7 +7,7 @@ import java.lang.*;
 public class XoriInstruction extends Instruction {
    public static Integer operandCount = 3;
    public XoriInstruction() {
-      super();
+      super();sparcs.add("xor");
    }
 
    public String toString() {
@@ -15,7 +15,7 @@ public class XoriInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toString();
+      return super.toSparc();
    }
 
    public String toILOC() {

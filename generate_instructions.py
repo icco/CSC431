@@ -15,13 +15,13 @@ instructions = [
       'name': 'add',
       'sources': [ 'Register', 'Register' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'add' ],
    },
    {
       'name': 'addi',
       'sources': [ 'Immediate', 'Register' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'add' ],
    },
    {
       'name': 'div',
@@ -39,7 +39,7 @@ instructions = [
       'name': 'sub',
       'sources': [ 'Register', 'Register' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'sub' ],
    },
    {
       'name': 'rsubi',
@@ -54,19 +54,19 @@ instructions = [
       'name': 'and',
       'sources': [ 'Register', 'Register' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'and' ],
    },
    {
       'name': 'or',
       'sources': [ 'Register', 'Register' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'or' ],
    },
    {
       'name': 'xori',
       'sources': [ 'Register', 'Immediate' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'xor' ],
    },
 
 # Comparison and Branching (Forks in the road)
@@ -318,7 +318,7 @@ public class %(classname)s extends Instruction {
    }
 
    public String toSparc() {
-      return super.toString();
+      return super.toSparc();
    }
 
    public String toILOC() {
@@ -362,7 +362,7 @@ import java.lang.*;
 /**
  * Generated automatically by generate_instructions.py
  */
-public class %(classname)s extends SparcInstruction {
+public class %(classname)s extends Sparc {
 
 }
 """
