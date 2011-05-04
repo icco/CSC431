@@ -24,7 +24,6 @@ For Milestone 2:
 Nat
 
  * Benchmarks running
- * create single executable
  * generating Sparc instructions and ILOC to Sparc relations
 
 Ben
