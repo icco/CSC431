@@ -12,6 +12,10 @@ public class RetInstruction extends Instruction {
       return this.toILOC();
    }
 
+   public String toSparc() {
+      return "";
+   }
+
    public String toILOC() {
       String classPattern = new String("");
       String[] pattern = classPattern.split(" ");

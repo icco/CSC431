@@ -12,6 +12,10 @@ public class ComputeformaladdressInstruction extends Instruction {
       return this.toILOC();
    }
 
+   public String toSparc() {
+      return "";
+   }
+
    public String toILOC() {
       String classPattern = new String("ID Immediate Register");
       String[] pattern = classPattern.split(" ");

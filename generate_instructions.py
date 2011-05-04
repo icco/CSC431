@@ -253,6 +253,11 @@ instructions = [
       'name': 'movne',
       'sources': [ 'Immediate' ],
       'dest': [ 'Register' ],
+      'sparc': {
+         'name': '...',
+         'sources': [],
+         'dest': [],
+      }
    },
 ]
 
@@ -283,6 +288,10 @@ public class %(classname)s extends Instruction {
 
    public String toString() {
       return this.toILOC();
+   }
+
+   public String toSparc() {
+      return "";
    }
 
    public String toILOC() {

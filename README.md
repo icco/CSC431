@@ -19,6 +19,19 @@ For Milestone 2:
 
     make tests/compat.il > myout && curl -s http://users.csc.calpoly.edu/~akeen/courses/csc431/handouts/references/compat.out | diff -u - myout
 
+## TODO
+
+Nat
+
+ * Benchmarks running
+ * create single executable
+ * generating Sparc instructions and ILOC to Sparc relations
+
+Ben
+
+ * Gen / Kill stuff
+ * Register building.
+
 ## License
 
 Copyright (c) 2011 Ben Sweedler and Nathaniel Welch

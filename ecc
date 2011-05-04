@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# A shell wrapper for our compiler.
+make all &> /dev/null
+
+java -cp .:./src:./classes:./antlr-3.3-complete.jar:./commons-cli-1.2.jar Evil $@

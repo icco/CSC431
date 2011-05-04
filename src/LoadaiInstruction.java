@@ -12,6 +12,10 @@ public class LoadaiInstruction extends Instruction {
       return this.toILOC();
    }
 
+   public String toSparc() {
+      return "";
+   }
+
    public String toILOC() {
       String classPattern = new String("Register Field Register");
       String[] pattern = classPattern.split(" ");

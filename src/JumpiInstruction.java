@@ -12,6 +12,10 @@ public class JumpiInstruction extends Instruction {
       return this.toILOC();
    }
 
+   public String toSparc() {
+      return "";
+   }
+
    public String toILOC() {
       String classPattern = new String("Label");
       String[] pattern = classPattern.split(" ");

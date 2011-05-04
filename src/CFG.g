@@ -29,7 +29,7 @@ options {
    public SymbolTable symTable;
 
    public String dump() {
-      return symTable.toString() + cfg.toString();
+      return symTable.toILOC() + cfg.toILOC();
    }
 
    private Register loadVar(String name, Node current) {

@@ -12,6 +12,10 @@ public class StoreaiInstruction extends Instruction {
       return this.toILOC();
    }
 
+   public String toSparc() {
+      return "";
+   }
+
    public String toILOC() {
       String classPattern = new String("Register Register Field");
       String[] pattern = classPattern.split(" ");

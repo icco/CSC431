@@ -12,6 +12,10 @@ public class NewInstruction extends Instruction {
       return this.toILOC();
    }
 
+   public String toSparc() {
+      return "";
+   }
+
    public String toILOC() {
       String classPattern = new String("StructIdentifier Register");
       String[] pattern = classPattern.split(" ");
