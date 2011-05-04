@@ -7,10 +7,10 @@ This repository is the work of Ben Sweedler and Nat Welch.
 ## Usage
 
     usage: java Evil [options] filename.ev
+     -?,--help         Print this help message.
      -a,--displayAST   Print out a dotty graph of the AST.
      -d,--debug        Print debug messages while running.
-     -h,--help         Print this help message.
-     -i,--dumpIL       Dump ILOC to STDOUT.
+     -i,--dumpIL       Dump ILOC to a file.
      -t,--notype       Don't Typecheck.
 
 ## Notes

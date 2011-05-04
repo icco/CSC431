@@ -100,7 +100,7 @@ public class Evil {
       Options options = new Options();
       options.addOption("a", "displayAST", false, "Print out a dotty graph of the AST." );
       options.addOption("d", "debug", false, "Print debug messages while running." );
-      options.addOption("h", "help", false, "Print this help message." );
+      options.addOption("?", "help", false, "Print this help message." );
       options.addOption("i", "dumpIL", false, "Dump ILOC to a file." );
       options.addOption("t", "notype", false, "Don't Typecheck." );
 
@@ -109,10 +109,7 @@ public class Evil {
          cmd = parser.parse( options, args );
 
          if (cmd.hasOption("help")) {
-            // automatically generate the help statement
-            HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp("java Evil [options] filename.ev", options);
-            System.exit(0);
+            Evil.help(options);
          }
 
          if (cmd.hasOption("debug")) {
@@ -133,7 +130,7 @@ public class Evil {
          if (fileArgs.length > 1) {
             error("Only one file can be compiled at a time.");
          } else if (fileArgs.length == 0) {
-            error("No files specified.");
+            Evil.help(options);
          } else {
             inputFile = fileArgs[0];
          }
@@ -144,6 +141,13 @@ public class Evil {
 
    public static void error(String msg) {
       error(msg, 0);
+   }
+
+   public static void help(Options o) {
+      // automatically generate the help statement
+      HelpFormatter formatter = new HelpFormatter();
+      formatter.printHelp("java Evil [options] filename.ev", o);
+      System.exit(0);
    }
 
    public static void error(String msg, int lineno) {
