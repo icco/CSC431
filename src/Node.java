@@ -3,6 +3,8 @@ import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * A box representing a block I guess.
@@ -14,6 +16,53 @@ public class Node implements Iterable<Node> {
    protected ArrayList<Node> parents;
    protected ArrayList<Node> children;
    private String label;
+
+   private Set<Register> gen;
+   private Set<Register> kill;
+      
+   public Set<Register> getGenSet() { return gen; }
+   public Set<Register> getKillSet() { return kill; }
+
+   public void createGenAndKill() {
+      if (gen == null) {
+         gen = new HashSet<Register>();
+         kill = new HashSet<Register>();
+
+         for (Instruction instr : getInstr()) {
+            for (Register src : instr.getSources()) {
+               if (!kill.contains(src)) {
+                  gen.add(src);
+               } 
+            }
+
+            for (Register dest : instr.getDestinations()) {
+               kill.add(dest);
+            }
+         }
+
+         for (Node successor : children) {
+            successor.createGenAndKill();
+         }
+      }
+   }
+
+   public Set<Register> getLiveOut() {
+      Set<Register> liveOut = new HashSet<Register>(); 
+      Set<Register> immediate;
+      Set<Register> nonImmediate;
+
+      for (Node successor : children) {
+         immediate = successor.getGenSet();
+         nonImmediate = successor.getLiveOut();
+         nonImmediate.removeAll(successor.getKillSet());
+
+         liveOut.addAll(immediate);
+         liveOut.addAll(nonImmediate);
+      }
+
+      return liveOut;
+   }
+
 
    public void addParent(Node parent) { this.parents.add(parent); }
 
