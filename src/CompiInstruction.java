@@ -7,7 +7,7 @@ import java.lang.*;
 public class CompiInstruction extends Instruction {
    public static Integer operandCount = 3;
    public CompiInstruction() {
-      super();
+      super();sparcs.add("cmp");
    }
 
    public String toString() {
