@@ -15,7 +15,7 @@ public class ComputeglobaladdressInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "computeglobaladdress : " + this.sparcs.toString();
    }
 
    public String toILOC() {

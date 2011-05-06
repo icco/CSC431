@@ -7,7 +7,7 @@ import java.lang.*;
 public class CbrgeInstruction extends Instruction {
    public static Integer operandCount = 3;
    public CbrgeInstruction() {
-      super();sparcs.add("bge");
+      super();sparcs.add("bge");sparcs.add("nop");
    }
 
    public String toString() {
@@ -15,7 +15,7 @@ public class CbrgeInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "cbrge : " + this.sparcs.toString();
    }
 
    public String toILOC() {

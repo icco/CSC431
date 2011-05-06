@@ -87,43 +87,43 @@ instructions = [
       'name': 'cbreq',
       'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
       'dest': [ ],
-      'sparc': [ 'be' ],
+      'sparc': [ 'be', 'nop' ],
    },
    {
       'name': 'cbrge',
       'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
       'dest': [ ],
-      'sparc': [ 'bge' ],
+      'sparc': [ 'bge', 'nop' ],
    },
    {
       'name': 'cbrgt',
       'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
       'dest': [ ],
-      'sparc': [ 'bg' ],
+      'sparc': [ 'bg', 'nop' ],
    },
    {
       'name': 'cbrle',
       'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
       'dest': [ ],
-      'sparc': [ 'ble' ],
+      'sparc': [ 'ble', 'nop' ],
    },
    {
       'name': 'cbrlt',
       'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
       'dest': [ ],
-      'sparc': [ 'bl' ],
+      'sparc': [ 'bl', 'nop' ],
    },
    {
       'name': 'cbrne',
       'sources': [ 'ConditionCodeRegister', 'Label', 'Label' ],
       'dest': [ ],
-      'sparc': [ 'bne' ],
+      'sparc': [ 'bne', 'nop' ],
    },
    {
       'name': 'jumpi',
       'sources': [ 'Label' ],
       'dest': [ ],
-      'sparc': [ 'ba' ],
+      'sparc': [ 'ba', 'nop' ],
    },
 
 # Loads (Not the kind for her face)
@@ -260,43 +260,43 @@ instructions = [
       'name': 'mov',
       'sources': [ 'Register' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'mova' ],
    },
    {
       'name': 'moveq',
       'sources': [ 'Immediate' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'move' ],
    },
    {
       'name': 'movge',
       'sources': [ 'Immediate' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'movge' ],
    },
    {
       'name': 'movgt',
       'sources': [ 'Immediate' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'movg' ],
    },
    {
       'name': 'movle',
       'sources': [ 'Immediate' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'movle' ],
    },
    {
       'name': 'movlt',
       'sources': [ 'Immediate' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'movl' ],
    },
    {
       'name': 'movne',
       'sources': [ 'Immediate' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'movne' ],
    },
 ]
 
@@ -318,7 +318,7 @@ public class %(classname)s extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "%(instr)s : " + this.sparcs.toString();
    }
 
    public String toILOC() {

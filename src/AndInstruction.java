@@ -15,7 +15,7 @@ public class AndInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "and : " + this.sparcs.toString();
    }
 
    public String toILOC() {

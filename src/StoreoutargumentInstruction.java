@@ -15,7 +15,7 @@ public class StoreoutargumentInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "storeoutargument : " + this.sparcs.toString();
    }
 
    public String toILOC() {

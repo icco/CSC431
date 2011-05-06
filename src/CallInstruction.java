@@ -15,7 +15,7 @@ public class CallInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "call : " + this.sparcs.toString();
    }
 
    public String toILOC() {

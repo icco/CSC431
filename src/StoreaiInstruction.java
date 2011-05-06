@@ -15,7 +15,7 @@ public class StoreaiInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "storeai : " + this.sparcs.toString();
    }
 
    public String toILOC() {

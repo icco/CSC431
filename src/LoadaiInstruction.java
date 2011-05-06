@@ -15,7 +15,7 @@ public class LoadaiInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "loadai : " + this.sparcs.toString();
    }
 
    public String toILOC() {

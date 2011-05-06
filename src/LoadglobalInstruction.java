@@ -15,7 +15,7 @@ public class LoadglobalInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "loadglobal : " + this.sparcs.toString();
    }
 
    public String toILOC() {

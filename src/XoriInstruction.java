@@ -15,7 +15,7 @@ public class XoriInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "xori : " + this.sparcs.toString();
    }
 
    public String toILOC() {

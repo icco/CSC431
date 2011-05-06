@@ -15,7 +15,7 @@ public class NewInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "new : " + this.sparcs.toString();
    }
 
    public String toILOC() {

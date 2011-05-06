@@ -15,7 +15,7 @@ public class RsubiInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "rsubi : " + this.sparcs.toString();
    }
 
    public String toILOC() {

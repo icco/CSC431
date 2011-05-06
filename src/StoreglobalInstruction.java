@@ -15,7 +15,7 @@ public class StoreglobalInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "storeglobal : " + this.sparcs.toString();
    }
 
    public String toILOC() {

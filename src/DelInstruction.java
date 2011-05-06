@@ -15,7 +15,7 @@ public class DelInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "del : " + this.sparcs.toString();
    }
 
    public String toILOC() {

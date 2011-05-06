@@ -15,7 +15,7 @@ public class CompiInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "compi : " + this.sparcs.toString();
    }
 
    public String toILOC() {

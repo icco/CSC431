@@ -15,7 +15,7 @@ public class PrintlnInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "println : " + this.sparcs.toString();
    }
 
    public String toILOC() {

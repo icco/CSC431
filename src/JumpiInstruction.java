@@ -7,7 +7,7 @@ import java.lang.*;
 public class JumpiInstruction extends Instruction {
    public static Integer operandCount = 1;
    public JumpiInstruction() {
-      super();sparcs.add("ba");
+      super();sparcs.add("ba");sparcs.add("nop");
    }
 
    public String toString() {
@@ -15,7 +15,7 @@ public class JumpiInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "jumpi : " + this.sparcs.toString();
    }
 
    public String toILOC() {

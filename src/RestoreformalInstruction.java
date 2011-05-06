@@ -15,7 +15,7 @@ public class RestoreformalInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "restoreformal : " + this.sparcs.toString();
    }
 
    public String toILOC() {

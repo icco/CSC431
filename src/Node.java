@@ -95,14 +95,28 @@ public class Node implements Iterable<Node> {
       this.instructions.add(i);
    }
 
-   public String toString() {
+   public String toILOC() {
       String ret = "";
 
       if (this.getInstr().size() > 0) {
          ret = getLabel() + ":\n";
 
          for (Instruction i : this.getInstr()) {
-            ret += "\t" + i + "\n";
+            ret += "\t" + i.toILOC() + "\n";
+         }
+      }
+
+      return ret;
+   }
+
+   public String toSparc() {
+      String ret = "";
+
+      if (this.getInstr().size() > 0) {
+         ret = getLabel() + ":\n";
+
+         for (Instruction i : this.getInstr()) {
+            ret += "\t" + i.toSparc() + "\n";
          }
       }
 

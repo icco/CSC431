@@ -7,7 +7,7 @@ import java.lang.*;
 public class MovInstruction extends Instruction {
    public static Integer operandCount = 2;
    public MovInstruction() {
-      super();
+      super();sparcs.add("mova");
    }
 
    public String toString() {
@@ -15,7 +15,7 @@ public class MovInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "mov : " + this.sparcs.toString();
    }
 
    public String toILOC() {

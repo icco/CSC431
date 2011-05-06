@@ -7,7 +7,7 @@ import java.lang.*;
 public class CbreqInstruction extends Instruction {
    public static Integer operandCount = 3;
    public CbreqInstruction() {
-      super();sparcs.add("be");
+      super();sparcs.add("be");sparcs.add("nop");
    }
 
    public String toString() {
@@ -15,7 +15,7 @@ public class CbreqInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "cbreq : " + this.sparcs.toString();
    }
 
    public String toILOC() {
