@@ -19,9 +19,11 @@ public class Node implements Iterable<Node> {
 
    private Set<Register> gen;
    private Set<Register> kill;
+   private Set<Register> live;
       
    public Set<Register> getGenSet() { return gen; }
    public Set<Register> getKillSet() { return kill; }
+   public Set<Register> getLiveSet() { return live; }
 
    public void createGenAndKill() {
       if (gen == null) {
@@ -46,7 +48,7 @@ public class Node implements Iterable<Node> {
       }
    }
 
-   public Set<Register> getLiveOut() {
+   public void createLive() {
       Set<Register> liveOut = new HashSet<Register>(); 
       Set<Register> immediate;
       Set<Register> nonImmediate;
@@ -60,7 +62,7 @@ public class Node implements Iterable<Node> {
          liveOut.addAll(nonImmediate);
       }
 
-      return liveOut;
+      this.live = liveOut;
    }
 
 
