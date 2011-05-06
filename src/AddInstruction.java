@@ -15,7 +15,7 @@ public class AddInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "add : " + this.sparcs.toString();
    }
 
    public String toILOC() {

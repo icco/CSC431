@@ -32,6 +32,10 @@ options {
       return symTable.toILOC() + cfg.toILOC();
    }
 
+   public String toSparc() {
+      return cfg.toSparc();
+   }
+
    private Register loadVar(String name, Node current) {
       Symbol var = symTable.get(name);
       Register tempReg = null;

@@ -15,7 +15,7 @@ public class RetInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "ret : " + this.sparcs.toString();
    }
 
    public String toILOC() {

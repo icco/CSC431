@@ -15,7 +15,7 @@ public class LoadinargumentInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "loadinargument : " + this.sparcs.toString();
    }
 
    public String toILOC() {

@@ -15,7 +15,7 @@ public class OrInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "or : " + this.sparcs.toString();
    }
 
    public String toILOC() {

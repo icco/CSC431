@@ -15,7 +15,7 @@ public class LoadretInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "loadret : " + this.sparcs.toString();
    }
 
    public String toILOC() {

@@ -15,7 +15,7 @@ public class CbrltInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "cbrlt : " + this.sparcs.toString();
    }
 
    public String toILOC() {

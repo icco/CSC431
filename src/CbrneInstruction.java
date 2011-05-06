@@ -15,7 +15,7 @@ public class CbrneInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "cbrne : " + this.sparcs.toString();
    }
 
    public String toILOC() {

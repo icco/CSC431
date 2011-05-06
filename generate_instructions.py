@@ -318,7 +318,7 @@ public class %(classname)s extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "%(instr)s : " + this.sparcs.toString();
    }
 
    public String toILOC() {

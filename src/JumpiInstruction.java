@@ -15,7 +15,7 @@ public class JumpiInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "jumpi : " + this.sparcs.toString();
    }
 
    public String toILOC() {

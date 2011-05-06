@@ -15,7 +15,7 @@ public class DivInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "div : " + this.sparcs.toString();
    }
 
    public String toILOC() {

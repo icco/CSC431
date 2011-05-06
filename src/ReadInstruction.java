@@ -15,7 +15,7 @@ public class ReadInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "read : " + this.sparcs.toString();
    }
 
    public String toILOC() {

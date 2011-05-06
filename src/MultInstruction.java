@@ -15,7 +15,7 @@ public class MultInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "mult : " + this.sparcs.toString();
    }
 
    public String toILOC() {

@@ -15,7 +15,7 @@ public class CbreqInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "cbreq : " + this.sparcs.toString();
    }
 
    public String toILOC() {

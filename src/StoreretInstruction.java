@@ -15,7 +15,7 @@ public class StoreretInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "storeret : " + this.sparcs.toString();
    }
 
    public String toILOC() {

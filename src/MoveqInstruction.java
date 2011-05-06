@@ -15,7 +15,7 @@ public class MoveqInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "moveq : " + this.sparcs.toString();
    }
 
    public String toILOC() {

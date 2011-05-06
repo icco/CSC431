@@ -15,7 +15,7 @@ public class MovInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "mov : " + this.sparcs.toString();
    }
 
    public String toILOC() {

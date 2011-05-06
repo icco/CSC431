@@ -15,7 +15,7 @@ public class CbrgeInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "cbrge : " + this.sparcs.toString();
    }
 
    public String toILOC() {

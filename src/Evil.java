@@ -75,6 +75,21 @@ public class Evil {
                System.err.println("File Write Error: " + e.getMessage());
             }
          }
+
+         // Output sparc
+         String sparc = cfg.toSparc();
+         try {
+            String outFile = new String(inputFile);
+            outFile = outFile.replaceFirst(".ev", ".s");
+            FileWriter fstream = new FileWriter(outFile);
+            BufferedWriter out = new BufferedWriter(fstream);
+            out.write(sparc);
+            out.close();
+
+            System.out.println("Sparc written to: " + outFile);
+         } catch (Exception e) {
+            System.err.println("File Write Error: " + e.getMessage());
+         }
       } catch (org.antlr.runtime.RecognitionException e) {
          error(e.toString());
       }
@@ -146,7 +161,7 @@ public class Evil {
    public static void help(Options o) {
       // automatically generate the help statement
       HelpFormatter formatter = new HelpFormatter();
-      formatter.printHelp("java Evil [options] filename.ev", o);
+      formatter.printHelp("ecc [options] filename.ev", o);
       System.exit(0);
    }
 

@@ -15,7 +15,7 @@ public class MovgtInstruction extends Instruction {
    }
 
    public String toSparc() {
-      return super.toSparc();
+      return "movgt : " + this.sparcs.toString();
    }
 
    public String toILOC() {

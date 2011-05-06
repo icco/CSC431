@@ -11,6 +11,10 @@ public abstract class Instruction {
       return "NULL INSTRUCTION.";
    }
 
+   public String toILOC() {
+      return "noop";
+   }
+
    public ArrayList<Register> getSources() {
       ArrayList<Register> ret = new ArrayList<Register>();
 
