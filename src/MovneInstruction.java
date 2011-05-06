@@ -7,7 +7,7 @@ import java.lang.*;
 public class MovneInstruction extends Instruction {
    public static Integer operandCount = 2;
    public MovneInstruction() {
-      super();
+      super();sparcs.add("movne");
    }
 
    public String toString() {

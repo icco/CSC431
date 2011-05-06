@@ -7,7 +7,7 @@ import java.lang.*;
 public class CbrleInstruction extends Instruction {
    public static Integer operandCount = 3;
    public CbrleInstruction() {
-      super();sparcs.add("ble");
+      super();sparcs.add("ble");sparcs.add("nop");
    }
 
    public String toString() {

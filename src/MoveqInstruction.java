@@ -7,7 +7,7 @@ import java.lang.*;
 public class MoveqInstruction extends Instruction {
    public static Integer operandCount = 2;
    public MoveqInstruction() {
-      super();
+      super();sparcs.add("move");
    }
 
    public String toString() {

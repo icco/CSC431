@@ -7,7 +7,7 @@ import java.lang.*;
 public class MovltInstruction extends Instruction {
    public static Integer operandCount = 2;
    public MovltInstruction() {
-      super();
+      super();sparcs.add("movl");
    }
 
    public String toString() {
