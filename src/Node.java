@@ -55,7 +55,7 @@ public class Node implements Iterable<Node> {
 
       for (Node successor : children) {
          immediate = successor.getGenSet();
-         nonImmediate = successor.getLiveOut();
+         nonImmediate = successor.getLiveSet();
          nonImmediate.removeAll(successor.getKillSet());
 
          liveOut.addAll(immediate);
