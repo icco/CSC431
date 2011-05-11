@@ -24,7 +24,7 @@ classes = $(subst ${SOURCEDIR},${CLASSDIR},$(sources:.java=.class))
 all: ${CLASSDIR} antlr.generated antlr.generated.inst $(classes)
 
 %.class: $(sources)
-	$(JAVAC) $(subst .class,.java,$(subst ${CLASSDIR},${SOURCEDIR},$@))
+	$(JAVAC) ${SOURCEDIR}/*.java
 
 ${CLASSDIR}:
 	mkdir ${CLASSDIR} -p
