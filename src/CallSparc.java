@@ -6,6 +6,17 @@ import java.lang.*;
  */
 public class CallSparc extends Sparc {
    public String toString() {
-      return "call";
+      String ret = "call ";
+
+      for (Operand r : this.getOperands()) {
+         if (!r.toString().equals(""))
+            ret = ret + r + ", ";
+      }
+
+      ret = ret.trim();
+      if (ret.lastIndexOf(",") == ret.length()-1)
+         ret = ret.substring(0, ret.length()-1);
+
+      return ret;
    }
 }

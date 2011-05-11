@@ -37,11 +37,19 @@ public abstract class Instruction {
          try {
             Class cls = Class.forName(instr);
             Sparc i = (Sparc)cls.newInstance();
+            if (this.sparcs.size() == 1) {
+               for (Operand o : this.getSources())
+                  i.addSource(o);
+               for (Operand o : this.getDestinations())
+                  i.addDest(o);
+            }
+
             instructions.add(i);
          } catch (Exception e) {
             Evil.error("You're doing it wrong: " + e.getMessage());
          }
       }
+
 
       return instructions;
    }
