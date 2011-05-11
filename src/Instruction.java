@@ -38,7 +38,7 @@ public abstract class Instruction {
             Class cls = Class.forName(instr);
             Sparc i = (Sparc)cls.newInstance();
             if (this.sparcs.size() == 1) {
-               for (Operand o : this.getSources())
+               for (Operand o : this.getAllSources())
                   i.addSource(o);
                for (Operand o : this.getDestinations())
                   i.addDest(o);
@@ -57,6 +57,11 @@ public abstract class Instruction {
    public ArrayList<Register> getDestinations() {
       return new ArrayList<Register>(this.dests);
    }
+
+   public ArrayList<Operand> getAllSources() {
+      return this.operands;
+   }
+
 
    public ArrayList<Operand> getOperands() {
       ArrayList<Operand> ret = new ArrayList<Operand>();
