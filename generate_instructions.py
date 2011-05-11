@@ -256,6 +256,7 @@ instructions = [
    },
 
 # Moves (for the dance floor)
+
    {
       'name': 'mov',
       'sources': [ 'Register' ],
@@ -391,3 +392,20 @@ for instr in instructions:
    f = open(filename, 'w')
    f.write(txt)
    f.close()
+
+   for sparc in instr['sparc']:
+      classname = sparc.capitalize() + "Sparc"
+      filename = "src/" + classname + ".java"
+
+      sparc_data = {
+         'date': datetime.now().isoformat(' '),
+         'classname': classname,
+         'instr': sparc
+      }
+
+      txt = sparc_txt % sparc_data
+
+      f = open(filename, 'w')
+      f.write(txt)
+      f.close()
+
