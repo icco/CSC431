@@ -5,5 +5,7 @@ import java.lang.*;
  * Generated automatically by generate_instructions.py
  */
 public class MovlSparc extends Sparc {
-
+   public String toString() {
+      return "movl";
+   }
 }

@@ -14,10 +14,6 @@ public class StoreretInstruction extends Instruction {
       return this.toILOC();
    }
 
-   public String toSparc() {
-      return "storeret : " + this.sparcs.toString();
-   }
-
    public String toILOC() {
       String classPattern = new String("Register");
       String[] pattern = classPattern.split(" ");

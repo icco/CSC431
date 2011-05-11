@@ -14,10 +14,6 @@ public class CbrneInstruction extends Instruction {
       return this.toILOC();
    }
 
-   public String toSparc() {
-      return "cbrne : " + this.sparcs.toString();
-   }
-
    public String toILOC() {
       String classPattern = new String("ConditionCodeRegister Label Label");
       String[] pattern = classPattern.split(" ");

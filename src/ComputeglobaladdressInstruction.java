@@ -14,10 +14,6 @@ public class ComputeglobaladdressInstruction extends Instruction {
       return this.toILOC();
    }
 
-   public String toSparc() {
-      return "computeglobaladdress : " + this.sparcs.toString();
-   }
-
    public String toILOC() {
       String classPattern = new String("ID Register");
       String[] pattern = classPattern.split(" ");

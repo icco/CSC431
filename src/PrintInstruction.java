@@ -14,10 +14,6 @@ public class PrintInstruction extends Instruction {
       return this.toILOC();
    }
 
-   public String toSparc() {
-      return "print : " + this.sparcs.toString();
-   }
-
    public String toILOC() {
       String classPattern = new String("Register");
       String[] pattern = classPattern.split(" ");

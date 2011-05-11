@@ -14,10 +14,6 @@ public class MovgeInstruction extends Instruction {
       return this.toILOC();
    }
 
-   public String toSparc() {
-      return "movge : " + this.sparcs.toString();
-   }
-
    public String toILOC() {
       String classPattern = new String("Immediate Register");
       String[] pattern = classPattern.split(" ");

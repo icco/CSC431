@@ -14,10 +14,6 @@ public class AddInstruction extends Instruction {
       return this.toILOC();
    }
 
-   public String toSparc() {
-      return "add : " + this.sparcs.toString();
-   }
-
    public String toILOC() {
       String classPattern = new String("Register Register Register");
       String[] pattern = classPattern.split(" ");

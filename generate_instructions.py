@@ -318,10 +318,6 @@ public class %(classname)s extends Instruction {
       return this.toILOC();
    }
 
-   public String toSparc() {
-      return "%(instr)s : " + this.sparcs.toString();
-   }
-
    public String toILOC() {
       String classPattern = new String("%(pattern)s");
       String[] pattern = classPattern.split(" ");
@@ -364,7 +360,9 @@ import java.lang.*;
  * Generated automatically by generate_instructions.py
  */
 public class %(classname)s extends Sparc {
-
+   public String toString() {
+      return "%(instr)s";
+   }
 }
 """
 

@@ -14,10 +14,6 @@ public class CbrgtInstruction extends Instruction {
       return this.toILOC();
    }
 
-   public String toSparc() {
-      return "cbrgt : " + this.sparcs.toString();
-   }
-
    public String toILOC() {
       String classPattern = new String("ConditionCodeRegister Label Label");
       String[] pattern = classPattern.split(" ");

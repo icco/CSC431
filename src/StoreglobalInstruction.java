@@ -14,10 +14,6 @@ public class StoreglobalInstruction extends Instruction {
       return this.toILOC();
    }
 
-   public String toSparc() {
-      return "storeglobal : " + this.sparcs.toString();
-   }
-
    public String toILOC() {
       String classPattern = new String("Register ID");
       String[] pattern = classPattern.split(" ");

@@ -14,10 +14,6 @@ public class CbrgeInstruction extends Instruction {
       return this.toILOC();
    }
 
-   public String toSparc() {
-      return "cbrge : " + this.sparcs.toString();
-   }
-
    public String toILOC() {
       String classPattern = new String("ConditionCodeRegister Label Label");
       String[] pattern = classPattern.split(" ");

@@ -14,10 +14,6 @@ public class StoreoutargumentInstruction extends Instruction {
       return this.toILOC();
    }
 
-   public String toSparc() {
-      return "storeoutargument : " + this.sparcs.toString();
-   }
-
    public String toILOC() {
       String classPattern = new String("Register Immediate");
       String[] pattern = classPattern.split(" ");

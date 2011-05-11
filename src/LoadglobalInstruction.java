@@ -14,10 +14,6 @@ public class LoadglobalInstruction extends Instruction {
       return this.toILOC();
    }
 
-   public String toSparc() {
-      return "loadglobal : " + this.sparcs.toString();
-   }
-
    public String toILOC() {
       String classPattern = new String("ID Register");
       String[] pattern = classPattern.split(" ");

@@ -14,10 +14,6 @@ public class CallInstruction extends Instruction {
       return this.toILOC();
    }
 
-   public String toSparc() {
-      return "call : " + this.sparcs.toString();
-   }
-
    public String toILOC() {
       String classPattern = new String("Label");
       String[] pattern = classPattern.split(" ");

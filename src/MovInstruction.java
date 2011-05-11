@@ -14,10 +14,6 @@ public class MovInstruction extends Instruction {
       return this.toILOC();
    }
 
-   public String toSparc() {
-      return "mov : " + this.sparcs.toString();
-   }
-
    public String toILOC() {
       String classPattern = new String("Register Register");
       String[] pattern = classPattern.split(" ");

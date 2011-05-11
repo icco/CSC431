@@ -26,8 +26,24 @@ public abstract class Instruction {
       return ret;
    }
 
-   public String toSparc() {
-      return sparcs.toString();
+   public ArrayList<Sparc> toSparc() {
+      ArrayList<Sparc> instructions = new ArrayList<Sparc>();
+      String ret = "";
+
+      for (String instr : this.sparcs) {
+         String cap = instr.toUpperCase();
+         instr = cap.substring(0,1) + instr.substring(1) + "Sparc";
+
+         try {
+            Class cls = Class.forName(instr);
+            Sparc i = (Sparc)cls.newInstance();
+            instructions.add(i);
+         } catch (Exception e) {
+            Evil.error("You're doing it wrong: " + e.getMessage());
+         }
+      }
+
+      return instructions;
    }
 
    public ArrayList<Register> getDestinations() {

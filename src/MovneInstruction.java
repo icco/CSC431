@@ -14,10 +14,6 @@ public class MovneInstruction extends Instruction {
       return this.toILOC();
    }
 
-   public String toSparc() {
-      return "movne : " + this.sparcs.toString();
-   }
-
    public String toILOC() {
       String classPattern = new String("Immediate Register");
       String[] pattern = classPattern.split(" ");

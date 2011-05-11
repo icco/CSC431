@@ -14,10 +14,6 @@ public class LoadiInstruction extends Instruction {
       return this.toILOC();
    }
 
-   public String toSparc() {
-      return "loadi : " + this.sparcs.toString();
-   }
-
    public String toILOC() {
       String classPattern = new String("Immediate Register");
       String[] pattern = classPattern.split(" ");

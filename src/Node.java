@@ -20,7 +20,7 @@ public class Node implements Iterable<Node> {
    private Set<Register> gen;
    private Set<Register> kill;
    private Set<Register> live;
-      
+
    public Set<Register> getGenSet() { return gen; }
    public Set<Register> getKillSet() { return kill; }
    public Set<Register> getLiveSet() { return live; }
@@ -34,7 +34,7 @@ public class Node implements Iterable<Node> {
             for (Register src : instr.getSources()) {
                if (!kill.contains(src)) {
                   gen.add(src);
-               } 
+               }
             }
 
             for (Register dest : instr.getDestinations()) {
@@ -49,7 +49,7 @@ public class Node implements Iterable<Node> {
    }
 
    public void createLive() {
-      Set<Register> liveOut = new HashSet<Register>(); 
+      Set<Register> liveOut = new HashSet<Register>();
       Set<Register> immediate;
       Set<Register> nonImmediate;
 
@@ -116,7 +116,9 @@ public class Node implements Iterable<Node> {
          ret = getLabel() + ":\n";
 
          for (Instruction i : this.getInstr()) {
-            ret += "\t" + i.toSparc() + "\n";
+            for (Sparc s : i.toSparc()) {
+               ret += "\t" + s + "\n";
+            }
          }
       }
 
