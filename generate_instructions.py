@@ -217,7 +217,7 @@ instructions = [
       'name': 'ret',
       'sources': [ ],
       'dest': [ ],
-      'sparc': [ 'return' ],
+      'sparc': [ 'ret', 'restore' ],
    },
 
 # Allocation (Too serious to joke about)

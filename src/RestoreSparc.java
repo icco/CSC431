@@ -4,9 +4,9 @@ import java.lang.*;
 /**
  * Generated automatically by generate_instructions.py
  */
-public class ReturnSparc extends Sparc {
+public class RestoreSparc extends Sparc {
    public String toString() {
-      String ret = "return ";
+      String ret = "restore ";
 
       for (Operand r : this.getOperands()) {
          if (!r.toString().equals(""))
