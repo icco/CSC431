@@ -14,6 +14,39 @@ public class MultInstruction extends Instruction {
       return this.toILOC();
    }
 
+   // TODO: Moves need to use input / output registers.
+   public ArrayList<Sparc> toSparc() {
+      System.out.println("Mult");
+      ArrayList<Sparc> instructions = new ArrayList<Sparc>();
+      Sparc i;
+
+      //mov  9, %o0   ; operand one
+      i = new MovaSparc();
+      i.addSource(this.getSources().get(0));
+      instructions.add(i);
+
+      //mov  7, %o1   ; operand two
+      i = new MovaSparc();
+      i.addSource(this.getSources().get(1));
+      instructions.add(i);
+
+      //call .mul
+      i = new CallSparc();
+      i.addSource(new Label(".mul"));
+      instructions.add(i);
+
+      //nop
+      instructions.add(new NopSparc());
+
+      //mov  %o0, %l0 ; result
+      i = new MovaSparc();
+      i.addDest(this.getOperands().get(2));
+      instructions.add(i);
+
+      return instructions;
+   }
+
+
    public String toILOC() {
       String classPattern = new String("Register Register Register");
       String[] pattern = classPattern.split(" ");

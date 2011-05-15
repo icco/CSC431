@@ -28,7 +28,6 @@ public abstract class Instruction {
 
    public ArrayList<Sparc> toSparc() {
       ArrayList<Sparc> instructions = new ArrayList<Sparc>();
-      String ret = "";
 
       for (String instr : this.sparcs) {
          String cap = instr.toUpperCase();
@@ -47,7 +46,7 @@ public abstract class Instruction {
                // These are the hard ones.
 
                // Branches.
-               if (instr.equals( "be") ||
+               if (instr.equals("be") ||
                      instr.equals("bl") ||
                      instr.equals("bg") ||
                      instr.equals("ba") ||

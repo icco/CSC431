@@ -398,6 +398,7 @@ for instr in instructions:
    # Take the data we built, and apply it to the template.
    txt = iloc_txt % data
 
+   # Writing disabled now that we are doing things by hand.
    f = open(filename, 'w')
    f.write(txt)
    f.close()
