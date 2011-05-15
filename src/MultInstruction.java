@@ -14,7 +14,6 @@ public class MultInstruction extends Instruction {
       return this.toILOC();
    }
 
-   // TODO: Moves need to use input / output registers.
    public ArrayList<Sparc> toSparc() {
       System.out.println("Mult");
       ArrayList<Sparc> instructions = new ArrayList<Sparc>();
