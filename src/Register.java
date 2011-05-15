@@ -22,4 +22,16 @@ public class Register implements Operand {
    public String toString() {
       return "r" + this.id;
    }
+
+   public boolean equals(Object other) {
+      if (other instanceof Register) {
+         return toString().equals(other.toString());
+      } 
+
+      return false;
+   }
+
+   public int hashCode() {
+      return toString().hashCode();
+   }
 }
