@@ -21,12 +21,12 @@ public class MultInstruction extends Instruction {
       Sparc i;
 
       //mov  9, %o0   ; operand one
-      i = new MovaSparc();
+      i = new MovSparc();
       i.addSource(this.getSources().get(0));
       instructions.add(i);
 
       //mov  7, %o1   ; operand two
-      i = new MovaSparc();
+      i = new MovSparc();
       i.addSource(this.getSources().get(1));
       instructions.add(i);
 
@@ -39,7 +39,7 @@ public class MultInstruction extends Instruction {
       instructions.add(new NopSparc());
 
       //mov  %o0, %l0 ; result
-      i = new MovaSparc();
+      i = new MovSparc();
       i.addDest(this.getOperands().get(2));
       instructions.add(i);
 

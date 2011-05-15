@@ -30,10 +30,11 @@ instructions = [
       'sparc': [ ],
    },
    {
+      # Sparc is defined in src/MultInstruction.java
       'name': 'mult',
       'sources': [ 'Register', 'Register' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'mov', 'mov','call', 'nop', 'mov' ],
    },
    {
       'name': 'sub',
@@ -399,9 +400,9 @@ for instr in instructions:
    txt = iloc_txt % data
 
    # Writing disabled now that we are doing things by hand.
-   f = open(filename, 'w')
-   f.write(txt)
-   f.close()
+   #f = open(filename, 'w')
+   #f.write(txt)
+   #f.close()
 
    for sparc in instr['sparc']:
       classname = sparc.capitalize() + "Sparc"
