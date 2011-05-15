@@ -32,16 +32,34 @@ public abstract class Instruction {
 
       for (String instr : this.sparcs) {
          String cap = instr.toUpperCase();
-         instr = cap.substring(0,1) + instr.substring(1) + "Sparc";
+         String classname = cap.substring(0,1) + instr.substring(1) + "Sparc";
 
          try {
-            Class cls = Class.forName(instr);
+            Class cls = Class.forName(classname);
             Sparc i = (Sparc)cls.newInstance();
             if (this.sparcs.size() == 1) {
                for (Operand o : this.getAllSources())
                   i.addSource(o);
                for (Operand o : this.getDestinations())
                   i.addDest(o);
+            } else {
+               // Alright, Those were the simple instructions.
+               // These are the hard ones.
+
+               // Branches.
+               if (instr.equals( "be") ||
+                     instr.equals("bl") ||
+                     instr.equals("bg") ||
+                     instr.equals("ba") ||
+                     instr.equals("bne") ||
+                     instr.equals("ble") ||
+                     instr.equals("bge")
+                  ) {
+                     for (Operand o : this.getAllSources())
+                        i.addSource(o);
+                     for (Operand o : this.getDestinations())
+                        i.addDest(o);
+                 }
             }
 
             instructions.add(i);
@@ -49,7 +67,6 @@ public abstract class Instruction {
             Evil.error("You're doing it wrong: " + e.getMessage());
          }
       }
-
 
       return instructions;
    }
