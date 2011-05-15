@@ -15,7 +15,6 @@ public class MultInstruction extends Instruction {
    }
 
    public ArrayList<Sparc> toSparc() {
-      System.out.println("Mult");
       ArrayList<Sparc> instructions = new ArrayList<Sparc>();
       Sparc i;
 

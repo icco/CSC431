@@ -180,6 +180,10 @@ public class Evil {
       }
    }
 
+   public static void warning(String msg) {
+      System.err.println("WARNING: " + msg);
+   }
+
    private static EvilLexer createLexer() {
       try {
          ANTLRInputStream input;
