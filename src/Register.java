@@ -1,11 +1,15 @@
 public class Register implements Operand {
    public static int regCounter = 0;
-   public int id = 0;
+   public String id = "";
    public StructType type;
 
    public Register() {
       regCounter = regCounter + 1;
-      this.id = regCounter;
+      this.id = "r" + regCounter;
+   }
+
+   public Register(String in) {
+      this.id = in;
    }
 
    public StructType getType() { 
@@ -20,7 +24,7 @@ public class Register implements Operand {
    }
 
    public String toString() {
-      return "r" + this.id;
+      return this.id;
    }
 
    public boolean equals(Object other) {

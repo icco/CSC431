@@ -36,6 +36,8 @@ public abstract class Instruction {
          try {
             Class cls = Class.forName(classname);
             Sparc i = (Sparc)cls.newInstance();
+
+            // TODO: Need to add code here to deal with Immediates > 13 bits.
             if (this.sparcs.size() == 1) {
                for (Operand o : this.getAllSources())
                   i.addSource(o);
