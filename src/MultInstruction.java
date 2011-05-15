@@ -23,11 +23,13 @@ public class MultInstruction extends Instruction {
       //mov  9, %o0   ; operand one
       i = new MovSparc();
       i.addSource(this.getSources().get(0));
+      i.addSource(new Register("%o0"));
       instructions.add(i);
 
       //mov  7, %o1   ; operand two
       i = new MovSparc();
       i.addSource(this.getSources().get(1));
+      i.addSource(new Register("%o1"));
       instructions.add(i);
 
       //call .mul
@@ -40,6 +42,7 @@ public class MultInstruction extends Instruction {
 
       //mov  %o0, %l0 ; result
       i = new MovSparc();
+      i.addSource(new Register("%o0"));
       i.addDest(this.getOperands().get(2));
       instructions.add(i);
 
