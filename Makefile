@@ -59,10 +59,10 @@ antlr.generated.inst: generate_instructions.py
 run: tests/4.ev
 
 %.ev: all
-	java Evil ${RUNFLAGS} $@
+	./ecc ${RUNFLAGS} $@
 
 %.il: all
-	java Evil -i ${RUNFLAGS} $(subst .il,.ev,$@)
+	./ecc -i ${RUNFLAGS} $(subst .il,.ev,$@)
 	java -jar mochi.jar -r $@
 
 typetest: all
@@ -77,13 +77,13 @@ run_debug: debug
 	@make -s run -e RUNFLAGS=-d
 
 ast: all
-	java Evil --displayAST tests/1.ev
+	./ecc --displayAST tests/1.ev
 
 d: all
-	java Evil -d tests/1.ev
+	./ecc -d tests/1.ev
 
 help: all
-	@java Evil -h
+	@./ecc -h
 
 clean:
 	@rm -rfv classes
