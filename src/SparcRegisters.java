@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class SparcRegisters {
    public static ArrayList<Register> globals;
    public static ArrayList<Register> locals;
@@ -5,7 +7,7 @@ public class SparcRegisters {
    public static ArrayList<Register> outputs;
    public static ArrayList<Register> all;
 
-   public static setupRegisters() {
+   public static void setupRegisters() {
       globals = new ArrayList<Register>();
       locals = new ArrayList<Register>();
       inputs = new ArrayList<Register>();
@@ -36,12 +38,12 @@ public class SparcRegisters {
       inputs.add(new Register("%i4"));
       inputs.add(new Register("%i5"));
 
-      ouputs.add(new Register("%o0")); // Used for return values.
-      ouputs.add(new Register("%o1"));
-      ouputs.add(new Register("%o2"));
-      ouputs.add(new Register("%o3"));
-      ouputs.add(new Register("%o4"));
-      ouputs.add(new Register("%o5"));
+      outputs.add(new Register("%o0")); // Used for return values.
+      outputs.add(new Register("%o1"));
+      outputs.add(new Register("%o2"));
+      outputs.add(new Register("%o3"));
+      outputs.add(new Register("%o4"));
+      outputs.add(new Register("%o5"));
 
       all.addAll(globals);
       all.addAll(locals);
