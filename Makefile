@@ -89,3 +89,4 @@ clean:
 	@rm -fv *.tokens
 	@rm -fv antlr.generated*
 	@rm -fv src/EvilLexer.java src/EvilParser.java src/TypeCheck.java src/CFG.java src/Walker.java
+	@rm -fv benchmarks/*/*.s
