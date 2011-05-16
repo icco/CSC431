@@ -43,12 +43,13 @@ instructions = [
       'dest': [ 'Register' ],
       'sparc': [ 'sub' ],
    },
-   {
-      'name': 'rsubi',
-      'sources': [ 'Immediate', 'Register' ],
-      'dest': [ 'Register' ],
-      'sparc': [ ],
-   },
+  # Not sure if we really need this...
+  # {
+  #    'name': 'rsubi',
+  #    'sources': [ 'Immediate', 'Register' ],
+  #    'dest': [ 'Register' ],
+  #    'sparc': [ ],
+  # },
 
 # Boolean
 
