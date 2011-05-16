@@ -27,7 +27,8 @@ instructions = [
       'name': 'div',
       'sources': [ 'Register', 'Register' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'mov', 'mov','call', 'nop', 'mov' ],
+      'modified': 1
    },
    {
       'name': 'mult',
@@ -307,7 +308,7 @@ iloc_txt = """import java.util.*;
 import java.lang.*;
 
 /**
- * Generated automatically by generate_instructions.py
+ * Generated automatically by generate_instructions.py.
  */
 public class %(classname)s extends Instruction {
    public static Integer operandCount = %(count)d;
@@ -358,7 +359,7 @@ sparc_txt = """import java.util.*;
 import java.lang.*;
 
 /**
- * Generated automatically by generate_instructions.py
+ * Generated automatically by generate_instructions.py.
  */
 public class %(classname)s extends Sparc {
    public String toString() {

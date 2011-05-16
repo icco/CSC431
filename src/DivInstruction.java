@@ -2,12 +2,13 @@ import java.util.*;
 import java.lang.*;
 
 /**
- * Generated automatically by generate_instructions.py
+ * Generated automatically by generate_instructions.py.
+ * Modified by Nat.
  */
 public class DivInstruction extends Instruction {
    public static Integer operandCount = 3;
    public DivInstruction() {
-      super();
+      super();sparcs.add("mov");sparcs.add("mov");sparcs.add("call");sparcs.add("nop");sparcs.add("mov");
    }
 
    public String toString() {
