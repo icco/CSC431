@@ -106,8 +106,10 @@ public class Node implements Iterable<Node> {
    public String toSparc() {
       String ret = "";
 
+      // TODO: We need to add special code above actual functions. Do we know
+      // which labels we made and which are real?
       if (this.getInstr().size() > 0) {
-         ret = getLabel() + ":\n";
+         ret = "\n" + getLabel() + ":\n";
 
          for (Instruction i : this.getInstr()) {
             for (Sparc s : i.toSparc()) {

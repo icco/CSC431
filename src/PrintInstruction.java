@@ -12,6 +12,40 @@ public class PrintInstruction extends Instruction {
 
    public String toString() { return this.toILOC(); }
 
+   public ArrayList<Sparc> toSparc() {
+      ArrayList<Sparc> instructions = new ArrayList<Sparc>();
+      Sparc i;
+
+      // sethi   %hi(.LLC1), %i0
+      i = new SethiSparc();
+      i.addSource(new Register("%hi(.LLC0)"));
+      i.addDest(new Register("%i0"));
+      instructions.add(i);
+
+      // or      %i0, %lo(.LLC1), %o0
+      i = new OrSparc();
+      i.addSource(new Register("%i0"));
+      i.addSource(new Register("%lo(.LLC0)"));
+      i.addDest(new Register("%o0"));
+      instructions.add(i);
+
+      // mov     %i5, %o1
+      i = new MovSparc();
+      i.addSource(this.getSources().get(0));
+      i.addSource(new Register("%o1"));
+      instructions.add(i);
+
+      // call    printf
+      i = new CallSparc();
+      i.addSource(new Label("printf"));
+      instructions.add(i);
+
+      //nop
+      instructions.add(new NopSparc());
+
+      return instructions;
+   }
+
    public String toILOC() {
       String classPattern = new String("Register");
       String[] pattern = classPattern.split(" ");
