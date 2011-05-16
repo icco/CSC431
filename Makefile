@@ -51,7 +51,6 @@ antlr.generated.walker : ${SOURCEDIR}/Walker.g
 
 # Technically not antlr, but looks nice.
 antlr.generated.inst: generate_instructions.py
-	#bash -c "rm -f src/[A-Z]*Instruction.java"
 	bash -c "rm -f src/[A-Z]*Sparc.java"
 	./generate_instructions.py
 	@touch antlr.generated.inst
