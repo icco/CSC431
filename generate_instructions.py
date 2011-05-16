@@ -30,11 +30,11 @@ instructions = [
       'sparc': [ ],
    },
    {
-      # Sparc is defined in src/MultInstruction.java
       'name': 'mult',
       'sources': [ 'Register', 'Register' ],
       'dest': [ 'Register' ],
       'sparc': [ 'mov', 'mov','call', 'nop', 'mov' ],
+      'modified': 1
    },
    {
       'name': 'sub',
@@ -217,7 +217,7 @@ instructions = [
       'name': 'ret',
       'sources': [ ],
       'dest': [ ],
-      'sparc': [ 'return' ],
+      'sparc': [ 'ret', 'restore' ],
    },
 
 # Allocation (Too serious to joke about)
@@ -399,10 +399,11 @@ for instr in instructions:
    # Take the data we built, and apply it to the template.
    txt = iloc_txt % data
 
-   # Writing disabled now that we are doing things by hand.
-   #f = open(filename, 'w')
-   #f.write(txt)
-   #f.close()
+   # Writing disabled if data["modified"]
+   if "modified" not in instr:
+      f = open(filename, 'w')
+      f.write(txt)
+      f.close()
 
    for sparc in instr['sparc']:
       classname = sparc.capitalize() + "Sparc"

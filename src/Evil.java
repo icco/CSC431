@@ -84,6 +84,7 @@ public class Evil {
             FileWriter fstream = new FileWriter(outFile);
             BufferedWriter out = new BufferedWriter(fstream);
             out.write(sparc);
+            out.write(ReadOnlyData.getInstance().toString());
             out.close();
 
             System.out.println("Sparc written to: " + outFile);
@@ -178,6 +179,10 @@ public class Evil {
       if (debugFlag) {
          System.err.println(msg);
       }
+   }
+
+   public static void warning(String msg) {
+      System.err.println("WARNING: " + msg);
    }
 
    private static EvilLexer createLexer() {
