@@ -10,9 +10,7 @@ public class RetInstruction extends Instruction {
       super();sparcs.add("ret");sparcs.add("restore");
    }
 
-   public String toString() {
-      return this.toILOC();
-   }
+   public String toString() { return this.toILOC(); }
 
    public String toILOC() {
       String classPattern = new String("");

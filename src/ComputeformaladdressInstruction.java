@@ -10,9 +10,7 @@ public class ComputeformaladdressInstruction extends Instruction {
       super();
    }
 
-   public String toString() {
-      return this.toILOC();
-   }
+   public String toString() { return this.toILOC(); }
 
    public String toILOC() {
       String classPattern = new String("ID Immediate Register");

@@ -10,9 +10,7 @@ public class AddiInstruction extends Instruction {
       super();sparcs.add("add");
    }
 
-   public String toString() {
-      return this.toILOC();
-   }
+   public String toString() { return this.toILOC(); }
 
    public String toILOC() {
       String classPattern = new String("Immediate Register Register");

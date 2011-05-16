@@ -10,9 +10,7 @@ public class AndInstruction extends Instruction {
       super();sparcs.add("and");
    }
 
-   public String toString() {
-      return this.toILOC();
-   }
+   public String toString() { return this.toILOC(); }
 
    public String toILOC() {
       String classPattern = new String("Register Register Register");

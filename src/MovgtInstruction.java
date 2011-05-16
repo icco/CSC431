@@ -10,9 +10,7 @@ public class MovgtInstruction extends Instruction {
       super();sparcs.add("movg");
    }
 
-   public String toString() {
-      return this.toILOC();
-   }
+   public String toString() { return this.toILOC(); }
 
    public String toILOC() {
       String classPattern = new String("Immediate Register");

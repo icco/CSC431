@@ -10,9 +10,7 @@ public class CbrltInstruction extends Instruction {
       super();sparcs.add("bl");sparcs.add("nop");
    }
 
-   public String toString() {
-      return this.toILOC();
-   }
+   public String toString() { return this.toILOC(); }
 
    public String toILOC() {
       String classPattern = new String("ConditionCodeRegister Label Label");

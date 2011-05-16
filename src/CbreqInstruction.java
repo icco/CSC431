@@ -10,9 +10,7 @@ public class CbreqInstruction extends Instruction {
       super();sparcs.add("be");sparcs.add("nop");
    }
 
-   public String toString() {
-      return this.toILOC();
-   }
+   public String toString() { return this.toILOC(); }
 
    public String toILOC() {
       String classPattern = new String("ConditionCodeRegister Label Label");

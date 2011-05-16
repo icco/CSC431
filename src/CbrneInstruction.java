@@ -10,9 +10,7 @@ public class CbrneInstruction extends Instruction {
       super();sparcs.add("bne");sparcs.add("nop");
    }
 
-   public String toString() {
-      return this.toILOC();
-   }
+   public String toString() { return this.toILOC(); }
 
    public String toILOC() {
       String classPattern = new String("ConditionCodeRegister Label Label");

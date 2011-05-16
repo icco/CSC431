@@ -317,9 +317,7 @@ public class %(classname)s extends Instruction {
       super();%(sparc)s
    }
 
-   public String toString() {
-      return this.toILOC();
-   }
+   public String toString() { return this.toILOC(); }
 
    public String toILOC() {
       String classPattern = new String("%(pattern)s");
@@ -422,4 +420,3 @@ for instr in instructions:
       f = open(filename, 'w')
       f.write(txt)
       f.close()
-

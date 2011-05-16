@@ -10,9 +10,7 @@ public class MoveqInstruction extends Instruction {
       super();sparcs.add("move");
    }
 
-   public String toString() {
-      return this.toILOC();
-   }
+   public String toString() { return this.toILOC(); }
 
    public String toILOC() {
       String classPattern = new String("Immediate Register");

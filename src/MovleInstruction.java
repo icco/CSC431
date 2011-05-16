@@ -10,9 +10,7 @@ public class MovleInstruction extends Instruction {
       super();sparcs.add("movle");
    }
 
-   public String toString() {
-      return this.toILOC();
-   }
+   public String toString() { return this.toILOC(); }
 
    public String toILOC() {
       String classPattern = new String("Immediate Register");

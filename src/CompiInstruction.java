@@ -10,9 +10,7 @@ public class CompiInstruction extends Instruction {
       super();sparcs.add("cmp");
    }
 
-   public String toString() {
-      return this.toILOC();
-   }
+   public String toString() { return this.toILOC(); }
 
    public String toILOC() {
       String classPattern = new String("Register Immediate ConditionCodeRegister");
