@@ -1,0 +1,15 @@
+
+# adds two numbers
+fun sum (int a, int b) int
+{
+    return (a + b);
+
+}
+
+fun main () int 
+{
+        
+   print (sum (1, 2)) endl;
+
+   return 0;
+}
