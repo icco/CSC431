@@ -8,11 +8,42 @@ import java.lang.*;
 public class DivInstruction extends Instruction {
    public static Integer operandCount = 3;
    public DivInstruction() {
-      super();sparcs.add("mov");sparcs.add("mov");sparcs.add("call");sparcs.add("nop");sparcs.add("mov");
+      super();
    }
 
-   public String toString() {
-      return this.toILOC();
+   public String toString() { return this.toILOC(); }
+
+   public ArrayList<Sparc> toSparc() {
+      ArrayList<Sparc> instructions = new ArrayList<Sparc>();
+      Sparc i;
+
+      //mov  9, %o0   ; operand one
+      i = new MovSparc();
+      i.addSource(this.getSources().get(0));
+      i.addSource(new Register("%O0"));
+      instructions.add(i);
+
+      //mov  7, %o1   ; operand two
+      i = new MovSparc();
+      i.addSource(this.getSources().get(1));
+      i.addSource(new Register("%O1"));
+      instructions.add(i);
+
+      //call .div
+      i = new CallSparc();
+      i.addSource(new Label(".div"));
+      instructions.add(i);
+
+      //nop
+      instructions.add(new NopSparc());
+
+      //mov  %o0, %l0 ; result
+      i = new MovSparc();
+      i.addSource(new Register("%O0"));
+      i.addDest(this.getOperands().get(2));
+      instructions.add(i);
+
+      return instructions;
    }
 
    public String toILOC() {
