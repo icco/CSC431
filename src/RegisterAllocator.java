@@ -122,12 +122,13 @@ public class RegisterAllocator {
     * Use the mappings to change the instructions.
     */
    public void transformCode(GraphTable functions) {
-      Set<String> funcNames = functions.keySet();
-      Node block;
+      List<Node> nodes = new LinkedList<Node>();
 
-      for (String name : funcNames) {
-         block = functions.get(name);
+      for (String s : functions.keySet()) {
+         nodes.addAll(TopoSort.sort(functions.get(s)));
+      }
 
+      for (Node block : nodes) {
          for (Instruction instr : block.getInstr()) {
             instr.transformRegisters(allocations);
          }

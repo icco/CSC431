@@ -16,7 +16,8 @@ public abstract class Instruction {
    }
 
    /**
-    * List of actual register sources.
+    * List of actual register sources. 
+    * TODO: check if it's safe to exclude
     */
    public ArrayList<Register> getSources() {
       ArrayList<Register> ret = new ArrayList<Register>();
@@ -156,7 +157,7 @@ public abstract class Instruction {
             if (real != null) {
                operands.set(ndx, real);                 
             } else {
-               //Evil.warning("No mapping for register " + virtual + ".");
+               Evil.warning("No mapping for register " + virtual + ".");
             }
          }
       }
@@ -169,7 +170,7 @@ public abstract class Instruction {
          if (real != null) {
             dests.set(ndx, real);
          } else {
-            //Evil.warning("No mapping for register " + virtual + ".");
+            Evil.warning("No mapping for register " + virtual + ".");
          }
       }
 

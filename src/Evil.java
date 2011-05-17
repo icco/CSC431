@@ -36,7 +36,7 @@ public class Evil {
       }
 
       CommonTree t = (CommonTree)ret.getTree();
-      if (cmd.hasOption("displayAST") && t != null) {
+      y
          DOTTreeGenerator gen = new DOTTreeGenerator();
          StringTemplate st = gen.toDOT(t);
          System.out.println(st);
@@ -65,6 +65,9 @@ public class Evil {
          allocator.buildGraph(cfg.nodeTable);
          allocator.colorGraph();
          allocator.transformCode(cfg.nodeTable);
+
+         //System.out.println(allocator);
+         //iloc = cfg.dump();
 
          if (dumpFlag) {
             //System.out.println(iloc);
