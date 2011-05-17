@@ -15,30 +15,56 @@ public class Node implements Iterable<Node> {
    private Set<Register> kill;
    private Set<Register> live;
 
-   public Set<Register> getGenSet() { return gen; }
-   public Set<Register> getKillSet() { return kill; }
-   public Set<Register> getLiveSet() { return live; }
-
-   public void createGenAndKill() {
+   public Set<Register> getGenSet() { 
       if (gen == null) {
-         gen = new HashSet<Register>();
-         kill = new HashSet<Register>();
+         createGenAndKill();
+      }
+      
+      return gen; 
+   }
 
-         for (Instruction instr : getInstr()) {
-            for (Register src : instr.getSources()) {
-               if (!kill.contains(src)) {
-                  gen.add(src);
-               }
-            }
+   public Set<Register> getKillSet() { 
+      if (kill == null) {
+         createGenAndKill();
+      }
+      
+      return kill; 
+   }
 
-            for (Register dest : instr.getDestinations()) {
-               kill.add(dest);
+   public Set<Register> getLiveSet() { 
+      if (live == null) {
+          // This needs to iterate, AND still might not be the right place to do this.
+         createLive();
+      }
+
+      return live; 
+   }
+
+   /**
+    * Creates gen and kill for node.
+    */
+   public void createGenAndKill() {
+      gen = new HashSet<Register>();
+      kill = new HashSet<Register>();
+
+      for (Instruction instr : getInstr()) {
+         for (Register src : instr.getSources()) {
+            if (!kill.contains(src)) {
+               gen.add(src);
             }
          }
 
-         for (Node successor : children) {
-            successor.createGenAndKill();
+         for (Register dest : instr.getActualDestinations()) {
+            kill.add(dest);
          }
+      }
+
+      if (kill.contains(new ConditionCodeRegister())) {
+         Evil.error("kill has it");
+      }
+
+      if (gen.contains(new ConditionCodeRegister())) {
+         Evil.error("gen has it");
       }
    }
 
@@ -48,12 +74,14 @@ public class Node implements Iterable<Node> {
       Set<Register> nonImmediate;
 
       for (Node successor : children) {
-         immediate = successor.getGenSet();
-         nonImmediate = successor.getLiveSet();
-         nonImmediate.removeAll(successor.getKillSet());
+         if (successor != this) {
+            immediate = successor.getGenSet();
+            nonImmediate = successor.getLiveSet();
+            nonImmediate.removeAll(successor.getKillSet());
 
-         liveOut.addAll(immediate);
-         liveOut.addAll(nonImmediate);
+            liveOut.addAll(immediate);
+            liveOut.addAll(nonImmediate);
+         }
       }
 
       this.live = liveOut;

@@ -59,8 +59,11 @@ public class Evil {
          cfg.build();
          String iloc = cfg.dump();
 
+         SparcRegisters.setupRegisters();
+
          RegisterAllocator allocator = new RegisterAllocator();
          allocator.buildGraph(cfg.nodeTable);
+         allocator.colorGraph();
          allocator.transformCode(cfg.nodeTable);
 
          if (dumpFlag) {

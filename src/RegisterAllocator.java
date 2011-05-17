@@ -14,6 +14,7 @@ public class RegisterAllocator {
     */
    private Map<Register, ColorNode> graph;
    private Set<ColorNode> realNodes;
+   private Map<Integer, List<Register>> colorings;
    private Map<Register, Register> allocations;
 
    static private final int kColors = 25;
@@ -23,6 +24,7 @@ public class RegisterAllocator {
 
       realNodes = new HashSet<ColorNode>();
       graph = new HashMap<Register, ColorNode>();
+      colorings = new HashMap<Integer, List<Register>>();
       allocations = new HashMap<Register, Register>();
 
       /**
@@ -50,10 +52,14 @@ public class RegisterAllocator {
     * from all the functions in a program.
     */
    public void buildGraph(GraphTable functions) {
-      Set<String> funcNames = functions.keySet();
+      List<Node> nodes = new LinkedList<Node>();
 
-      for (String name : funcNames) {
-         addNode(functions.get(name));
+      for (String s : functions.keySet()) {
+         nodes.addAll(TopoSort.sort(functions.get(s)));
+      }
+
+      for (Node n : nodes) {
+         addNode(n);
       }
    }
 
@@ -67,7 +73,7 @@ public class RegisterAllocator {
     
       for (Instruction instr : block.getInstr()) {
          srcs = instr.getSources();
-         dests = instr.getDestinations();
+         dests = instr.getActualDestinations();
 
          for (Register dest : dests) {
             liveSet.remove(dest);
@@ -77,11 +83,6 @@ public class RegisterAllocator {
          for (Register src : srcs) {
             liveSet.add(src); 
          }
-      }
-
-      // Recurse through the child blocks.
-      for (Node successor : block) {
-         addNode(successor);
       }
    }
 
@@ -139,14 +140,17 @@ public class RegisterAllocator {
    public void colorGraph() {
       Stack<ColorNode> popped;
       Set<Register> keys;
-      Map<Integer, List<Register>> colorings 
-       = new HashMap<Integer, List<Register>>();
       
       popped = deconstructGraph();
       reconstructGraph(popped);
 
       // Everything after this just runs through the graph and makes a map of
       // Virtual Register -> Real Register.
+
+      // Initialize coloring map for each color.
+      for (int color = 0; color < kColors; color++) {
+         colorings.put(color, new LinkedList<Register>());
+      }
 
       // Sort of a hacky way to do this. 
       // First map colors (numbers) to a list of virtual registers.
@@ -155,10 +159,6 @@ public class RegisterAllocator {
          ColorNode node = graph.get(key);
 
          if (!node.isReal()) {
-            if (colorings.get(node.getColor()) == null) {
-               colorings.put(node.getColor(), new LinkedList<Register>());
-            }
-
             colorings.get(node.getColor()).add(node.getVertex());
          }
       }
@@ -242,5 +242,32 @@ public class RegisterAllocator {
             Evil.warning("Spill for register: " + vertex.getVertex());
          }
       }
+   }
+
+   /**
+    * For debugging purposes only.
+    */
+   public String toString() {
+      String ret = "";
+
+      ret +=  "Real registers\n";
+      for (ColorNode node : realNodes) {
+         ret += node.getVertex() + ", ";
+      }
+      ret += "\n";
+
+      ret += "Colors\n";
+      for (Register r: graph.keySet()) {
+         ret += r + " -> " + graph.get(r).getColor() + "\n";
+      }
+      ret += "\n";
+
+      ret += "Register mappings\n";
+      for (Register virtual : allocations.keySet()) {
+         ret += virtual + " -> " + allocations.get(virtual) + "\n";
+      }
+      ret += "\n";
+
+      return ret;
    }
 }

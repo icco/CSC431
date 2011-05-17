@@ -4,6 +4,10 @@ public class ConditionCodeRegister extends Register {
    }
 
    public String toILOC() {
-      return "";
+      return "%cc";
+   }
+
+   public String toSparc() {
+      return "%icc";
    }
 }

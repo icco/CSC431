@@ -15,12 +15,16 @@ public abstract class Instruction {
       return "noop";
    }
 
+   /**
+    * List of actual register sources.
+    */
    public ArrayList<Register> getSources() {
       ArrayList<Register> ret = new ArrayList<Register>();
 
       for (Operand o : this.operands) {
-         if (o instanceof Register)
+         if (o instanceof Register && !(o instanceof ConditionCodeRegister)) {
             ret.add((Register)o);
+         }
       }
 
       return ret;
@@ -74,6 +78,21 @@ public abstract class Instruction {
 
    public ArrayList<Register> getDestinations() {
       return new ArrayList<Register>(this.dests);
+   }
+
+   /**
+    * We don't want the ConditionCode Register really ever.
+    */
+   public ArrayList<Register> getActualDestinations() {
+      ArrayList<Register> actualDests = new ArrayList<Register>();
+
+      for (Register r : getDestinations()) {
+         if (!(r instanceof ConditionCodeRegister)) {
+            actualDests.add(r);
+         }
+      }
+
+      return actualDests;
    }
 
    public ArrayList<Operand> getAllSources() {
@@ -135,9 +154,9 @@ public abstract class Instruction {
             real = allocations.get(virtual);
 
             if (real != null) {
-               operands.add(ndx, real);                 
+               operands.set(ndx, real);                 
             } else {
-               Evil.warning("No mapping for register " + virtual + ".");
+               //Evil.warning("No mapping for register " + virtual + ".");
             }
          }
       }
@@ -148,10 +167,11 @@ public abstract class Instruction {
          real = allocations.get(virtual);
 
          if (real != null) {
-            dests.add(ndx, real);                 
+            dests.set(ndx, real);
          } else {
-            Evil.warning("No mapping for register " + virtual + ".");
+            //Evil.warning("No mapping for register " + virtual + ".");
          }
       }
+
    }
 }
