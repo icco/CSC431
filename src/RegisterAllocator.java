@@ -4,7 +4,6 @@ import java.util.*;
  * Maps virtual registers to real registers.
  *
  * How to use:
- *   pass list of "real" registers using setReal().
  *   add each node to graph using addNode().
  *   get mappings using colorGraph().
  */
@@ -14,24 +13,57 @@ public class RegisterAllocator {
     * All of the connections in the graph are stored in the ColorNode objects.
     */
    private Map<Register, ColorNode> graph;
-
-   /** Registers to consider real, colors will eventually map to these. */
-   private List<Register> real;
+   private Set<ColorNode> realNodes;
+   private Map<Register, Register> allocations;
 
    static private final int kColors = 25;
 
    public RegisterAllocator() {
+      ColorNode realNode;
+
+      realNodes = new HashSet<ColorNode>();
       graph = new HashMap<Register, ColorNode>();
+      allocations = new HashMap<Register, Register>();
+
+      /**
+       * Graph starts with all the real registers. 
+       * These registers all interfere with each other, as
+       * they each need a unique color.
+       */
+      for (Register real : SparcRegisters.all) {
+         realNode = new ColorNode(real);
+
+         graph.put(real, realNode);
+
+         realNode.setReal(true);
+         realNodes.add(realNode); // Keep track of these real nodes.
+      }
+
+      // Now that there is a node for each real register, connect them all.
+      for (Register real : SparcRegisters.all) {
+         graph.get(real).addEdges(realNodes);
+      }
+   }
+
+   /**
+    * Build the graph by adding registers from all the nodes 
+    * from all the functions in a program.
+    */
+   public void buildGraph(GraphTable functions) {
+      Set<String> funcNames = functions.keySet();
+
+      for (String name : funcNames) {
+         addNode(functions.get(name));
+      }
    }
 
    /**
     * Fill the graph with all the registers from a block of code.
     */
-   public void addNode(Node block) {
+   private void addNode(Node block) {
       List<Register> srcs;
       List<Register> dests;
-      Set<Register> liveSet = 
-       new HashSet<Register>(block.getLiveSet());
+      Set<Register> liveSet = new HashSet<Register>(block.getLiveSet());
     
       for (Instruction instr : block.getInstr()) {
          srcs = instr.getSources();
@@ -45,6 +77,11 @@ public class RegisterAllocator {
          for (Register src : srcs) {
             liveSet.add(src); 
          }
+      }
+
+      // Recurse through the child blocks.
+      for (Node successor : block) {
+         addNode(successor);
       }
    }
 
@@ -73,20 +110,69 @@ public class RegisterAllocator {
          graph.put(one, vertex);
       }
 
-      // Make sure edges are connected to vertex in graph.
+      // Make sure edges are connected to vertex.
       vertex.addEdges(edges);
       for (ColorNode node : edges) {
          node.addEdge(vertex);
       }
    }
 
+   /** 
+    * Use the mappings to change the instructions.
+    */
+   public void transformCode(GraphTable functions) {
+      Set<String> funcNames = functions.keySet();
+      Node block;
+
+      for (String name : funcNames) {
+         block = functions.get(name);
+
+         for (Instruction instr : block.getInstr()) {
+            instr.transformRegisters(allocations);
+         }
+      }
+   }
+
+   /**
+    * Color the graph, and make a mapping of register to register.
+    */
    public void colorGraph() {
       Stack<ColorNode> popped;
+      Set<Register> keys;
+      Map<Integer, List<Register>> colorings 
+       = new HashMap<Integer, List<Register>>();
       
       popped = deconstructGraph();
       reconstructGraph(popped);
 
+      // Everything after this just runs through the graph and makes a map of
+      // Virtual Register -> Real Register.
 
+      // Sort of a hacky way to do this. 
+      // First map colors (numbers) to a list of virtual registers.
+      keys = graph.keySet();
+      for (Register key : keys) {
+         ColorNode node = graph.get(key);
+
+         if (!node.isReal()) {
+            if (colorings.get(node.getColor()) == null) {
+               colorings.put(node.getColor(), new LinkedList<Register>());
+            }
+
+            colorings.get(node.getColor()).add(node.getVertex());
+         }
+      }
+
+      // Then iterate through the real nodes and look at the list of virtual
+      // ones that share a color.
+      for (ColorNode realNode : realNodes) {
+         int color = realNode.getColor();
+         Register real = realNode.getVertex();
+
+         for (Register virtual : colorings.get(color)) {
+            allocations.put(virtual, real);
+         }
+      }
    }
 
    /** Get the ColorNode with the best hueristic for reducing spills. */
@@ -149,6 +235,11 @@ public class RegisterAllocator {
             if (goodColor) {
                vertex.setColor(color);
             }
+         }
+
+         if (vertex.getColor() == -1) {
+            // TODO handle spills.
+            Evil.warning("Spill for register: " + vertex.getVertex());
          }
       }
    }

@@ -124,4 +124,32 @@ public abstract class Instruction {
    public void addImmediate(Integer in) {
       this.addSource(new Immediate(in));
    }
+
+   public void transformRegisters(Map<Register, Register> allocations) {
+      Register virtual, real;
+
+      for (int ndx = 0; ndx < operands.size(); ndx++) {
+         if (operands.get(ndx) instanceof Register) {
+            virtual = (Register) operands.get(ndx);
+            real = allocations.get(virtual);
+
+            if (real != null) {
+               operands.add(ndx, real);                 
+            } else {
+               Evil.warning("No mapping for register " + virtual + ".");
+            }
+         }
+      }
+
+      for (int ndx = 0; ndx < dests.size(); ndx++) {
+         virtual = dests.get(ndx);
+         real = allocations.get(virtual);
+
+         if (real != null) {
+            dests.add(ndx, real);                 
+         } else {
+            Evil.warning("No mapping for register " + virtual + ".");
+         }
+      }
+   }
 }

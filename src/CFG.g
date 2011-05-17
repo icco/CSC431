@@ -24,16 +24,16 @@ options {
 
 @members {
    // Creates a CFG mapping label names to boxes
-   private GraphTable cfg = new GraphTable();
+   public GraphTable nodeTable = new GraphTable();
    private Node finalNode; // final node for the current function.
    public SymbolTable symTable;
 
    public String dump() {
-      return symTable.toILOC() + cfg.toILOC();
+      return symTable.toILOC() + nodeTable.toILOC();
    }
 
    public String toSparc() {
-      return cfg.toSparc();
+      return nodeTable.toSparc();
    }
 
    private Register loadVar(String name, Node current) {
@@ -205,7 +205,7 @@ function
       finalNode.addParent($statement_list.exit);
 
       // Exiting code.
-      cfg.put($ID.getText(), start);
+      nodeTable.put($ID.getText(), start);
    }
    ;
 
