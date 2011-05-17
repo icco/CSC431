@@ -90,8 +90,13 @@ public class Evil {
             outFile = outFile.replaceFirst(".ev", ".s");
             FileWriter fstream = new FileWriter(outFile);
             BufferedWriter out = new BufferedWriter(fstream);
+
+            out.write("\t.section\t\".text\"\n");
+
             out.write(sparc);
+
             out.write(ReadOnlyData.getInstance().toString());
+
             out.close();
 
             System.out.println("Sparc written to: " + outFile);

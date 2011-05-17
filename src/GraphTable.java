@@ -28,7 +28,23 @@ public class GraphTable extends HashMap<String, Node> {
       }
 
       for (Node n : nodes) {
+         if (this.containsKey(n.getLabel())) {
+            // .align 4
+            ret += "\t.align 4\n";
+
+            // .global printList
+            ret += "\t.global " + n.getLabel() + "\n";
+
+            // .type    printList, #function
+            ret += "\t.type " + n.getLabel() + ", #function\n";
+         }
+
          ret += n.toSparc();
+
+         if (this.containsKey(n.getLabel())) {
+            // .size    add, .-add
+         }
+
       }
 
       return ret;
