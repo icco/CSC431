@@ -109,7 +109,7 @@ public class Node implements Iterable<Node> {
       // TODO: We need to add special code above actual functions. Do we know
       // which labels we made and which are real?
       if (this.getInstr().size() > 0) {
-         ret = "\n" + getLabel() + ":\n";
+         ret = getLabel() + ":\n";
 
          for (Instruction i : this.getInstr()) {
             for (Sparc s : i.toSparc()) {

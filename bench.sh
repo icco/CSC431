@@ -5,7 +5,7 @@ comp="./ecc"
 
 echo "---- Benchmarks"
 select dir in `ls benchmarks`; do
-   echo "${dir}: "
+   echo -e "\n${dir}: "
    FILES=`ls benchmarks/${dir}/${dir}.ev`
    for ev in $FILES; do
       $comp $ev

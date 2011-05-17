@@ -36,7 +36,7 @@ public class GraphTable extends HashMap<String, Node> {
             ret += "\t.global " + n.getLabel() + "\n";
 
             // .type    printList, #function
-            ret += "\t.type   " + n.getLabel() + ", #function\n";
+            ret += "\t.type " + n.getLabel() + ", #function\n";
          }
 
          ret += n.toSparc();
