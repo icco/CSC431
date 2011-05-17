@@ -63,7 +63,6 @@ public class Evil {
          allocator.buildGraph(cfg.nodeTable);
          allocator.transformCode(cfg.nodeTable);
 
-
          if (dumpFlag) {
             //System.out.println(iloc);
 
