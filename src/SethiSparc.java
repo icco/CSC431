@@ -4,9 +4,9 @@ import java.lang.*;
 /**
  * Generated automatically by generate_instructions.py.
  */
-public class NopSparc extends Sparc {
+public class SethiSparc extends Sparc {
    public String toString() {
-      String ret = "nop ";
+      String ret = "sethi ";
 
       for (Operand r : this.getOperands()) {
          if (!r.toString().equals(""))

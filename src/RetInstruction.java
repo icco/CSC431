@@ -2,7 +2,7 @@ import java.util.*;
 import java.lang.*;
 
 /**
- * Generated automatically by generate_instructions.py
+ * Generated automatically by generate_instructions.py.
  */
 public class RetInstruction extends Instruction {
    public static Integer operandCount = 0;
@@ -10,9 +10,7 @@ public class RetInstruction extends Instruction {
       super();sparcs.add("ret");sparcs.add("restore");
    }
 
-   public String toString() {
-      return this.toILOC();
-   }
+   public String toString() { return this.toILOC(); }
 
    public String toILOC() {
       String classPattern = new String("");

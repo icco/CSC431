@@ -55,7 +55,8 @@ antlr.generated.inst: generate_instructions.py
 	./generate_instructions.py
 	@touch antlr.generated.inst
 
-run: tests/4.ev
+run:
+	echo 13 | ./bench.sh
 
 %.ev: all
 	./ecc ${RUNFLAGS} $@

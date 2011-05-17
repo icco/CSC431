@@ -27,7 +27,8 @@ instructions = [
       'name': 'div',
       'sources': [ 'Register', 'Register' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'mov', 'mov','call', 'nop', 'mov' ],
+      'modified': 1
    },
    {
       'name': 'mult',
@@ -42,12 +43,13 @@ instructions = [
       'dest': [ 'Register' ],
       'sparc': [ 'sub' ],
    },
-   {
-      'name': 'rsubi',
-      'sources': [ 'Immediate', 'Register' ],
-      'dest': [ 'Register' ],
-      'sparc': [ ],
-   },
+  # Not sure if we really need this...
+  # {
+  #    'name': 'rsubi',
+  #    'sources': [ 'Immediate', 'Register' ],
+  #    'dest': [ 'Register' ],
+  #    'sparc': [ ],
+  # },
 
 # Boolean
 
@@ -241,13 +243,16 @@ instructions = [
       'name': 'print',
       'sources': [ 'Register' ],
       'dest': [ ],
-      'sparc': [ ],
+      'sparc': [ 'sethi', 'or', 'mov', 'call', 'nop' ],
+      'modified': 1,
    },
    {
       'name': 'println',
       'sources': [ 'Register' ],
       'dest': [ ],
       'sparc': [ ],
+      'sparc': [ 'sethi', 'or', 'mov', 'call', 'nop' ],
+      'modified': 1,
    },
    {
       'name': 'read',
@@ -307,7 +312,7 @@ iloc_txt = """import java.util.*;
 import java.lang.*;
 
 /**
- * Generated automatically by generate_instructions.py
+ * Generated automatically by generate_instructions.py.
  */
 public class %(classname)s extends Instruction {
    public static Integer operandCount = %(count)d;
@@ -315,9 +320,7 @@ public class %(classname)s extends Instruction {
       super();%(sparc)s
    }
 
-   public String toString() {
-      return this.toILOC();
-   }
+   public String toString() { return this.toILOC(); }
 
    public String toILOC() {
       String classPattern = new String("%(pattern)s");
@@ -358,7 +361,7 @@ sparc_txt = """import java.util.*;
 import java.lang.*;
 
 /**
- * Generated automatically by generate_instructions.py
+ * Generated automatically by generate_instructions.py.
  */
 public class %(classname)s extends Sparc {
    public String toString() {
@@ -420,4 +423,3 @@ for instr in instructions:
       f = open(filename, 'w')
       f.write(txt)
       f.close()
-

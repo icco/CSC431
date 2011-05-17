@@ -2,7 +2,7 @@ import java.util.*;
 import java.lang.*;
 
 /**
- * Generated automatically by generate_instructions.py
+ * Generated automatically by generate_instructions.py.
  */
 public class CbrgeInstruction extends Instruction {
    public static Integer operandCount = 3;
@@ -10,9 +10,7 @@ public class CbrgeInstruction extends Instruction {
       super();sparcs.add("bge");sparcs.add("nop");
    }
 
-   public String toString() {
-      return this.toILOC();
-   }
+   public String toString() { return this.toILOC(); }
 
    public String toILOC() {
       String classPattern = new String("ConditionCodeRegister Label Label");

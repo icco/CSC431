@@ -2,7 +2,7 @@ import java.util.*;
 import java.lang.*;
 
 /**
- * Generated automatically by generate_instructions.py
+ * Generated automatically by generate_instructions.py.
  */
 public class StoreaiInstruction extends Instruction {
    public static Integer operandCount = 3;
@@ -10,9 +10,7 @@ public class StoreaiInstruction extends Instruction {
       super();
    }
 
-   public String toString() {
-      return this.toILOC();
-   }
+   public String toString() { return this.toILOC(); }
 
    public String toILOC() {
       String classPattern = new String("Register Register Field");

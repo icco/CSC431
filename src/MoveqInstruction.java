@@ -2,7 +2,7 @@ import java.util.*;
 import java.lang.*;
 
 /**
- * Generated automatically by generate_instructions.py
+ * Generated automatically by generate_instructions.py.
  */
 public class MoveqInstruction extends Instruction {
    public static Integer operandCount = 2;
@@ -10,9 +10,7 @@ public class MoveqInstruction extends Instruction {
       super();sparcs.add("move");
    }
 
-   public String toString() {
-      return this.toILOC();
-   }
+   public String toString() { return this.toILOC(); }
 
    public String toILOC() {
       String classPattern = new String("Immediate Register");
