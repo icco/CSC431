@@ -10,7 +10,7 @@ select dir in `ls benchmarks`; do
    for ev in $FILES; do
       s=`echo $ev | sed 's/\.ev/\.s/'`
       $ECC $s
-      benchmarks/${dir}/a.out < benchmarks/${dir}/input > benchmarks/${dir}/output.ev
+      ./a.out < benchmarks/$dir/input > benchmarks/$dir/output.ev
       diff -wb output.ev output >& /dev/null
       echo " -- returns: $?"
    done
