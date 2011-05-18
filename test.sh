@@ -11,7 +11,7 @@ select dir in `ls benchmarks`; do
       s=`echo $ev | sed 's/\.ev/\.s/'`
       $ECC $s
       ./a.out < benchmarks/$dir/input > benchmarks/$dir/output.ev
-      diff -wb output.ev output >& /dev/null
+      diff -wbu benchmarks/$dir/output.ev benchmarks/$dir/output >& /dev/null
       echo " -- returns: $?"
    done
 
