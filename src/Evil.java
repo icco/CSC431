@@ -36,13 +36,13 @@ public class Evil {
       }
 
       CommonTree t = (CommonTree)ret.getTree();
-      y
+      if (cmd.hasOption("displayAST") && t != null) {
          DOTTreeGenerator gen = new DOTTreeGenerator();
          StringTemplate st = gen.toDOT(t);
          System.out.println(st);
       }
 
-      // To create and invoke a tree parser.  Modify with the appropriate
+      // To create and invoke a tree parser. Modify with the appropriate
       // name of the tree parser and the appropriate start rule.
       try {
          CommonTreeNodeStream nodes = new CommonTreeNodeStream(t);
