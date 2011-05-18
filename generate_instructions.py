@@ -43,13 +43,6 @@ instructions = [
       'dest': [ 'Register' ],
       'sparc': [ 'sub' ],
    },
-  # Not sure if we really need this...
-  # {
-  #    'name': 'rsubi',
-  #    'sources': [ 'Immediate', 'Register' ],
-  #    'dest': [ 'Register' ],
-  #    'sparc': [ ],
-  # },
 
 # Boolean
 
@@ -135,13 +128,13 @@ instructions = [
       'name': 'loadi',
       'sources': [ 'Immediate' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'mov' ],
    },
    {
       'name': 'loadai',
       'sources': [ 'Register', 'Field' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'ldsw' ],
    },
    {
       'name': 'loadglobal',
@@ -260,7 +253,8 @@ instructions = [
       'name': 'read',
       'sources': [ 'Register' ],
       'dest': [ ],
-      'sparc': [ ],
+      'sparc': [ 'sethi', 'or', 'mov', 'call', 'nop' ],
+      'modified': 1,
    },
 
 # Moves (for the dance floor)

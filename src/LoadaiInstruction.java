@@ -7,7 +7,7 @@ import java.lang.*;
 public class LoadaiInstruction extends Instruction {
    public static Integer operandCount = 3;
    public LoadaiInstruction() {
-      super();
+      super();sparcs.add("ldsw");
    }
 
    public String toString() { return this.toILOC(); }
