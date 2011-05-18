@@ -27,6 +27,14 @@ public class Register implements Operand {
       return this.id;
    }
 
+   public String toSparc() {
+      return this.toString();
+   }
+
+   public String toILOC() {
+      return this.toString();
+   }
+
    public boolean equals(Object other) {
       if (other instanceof Register) {
          return toString().equals(other.toString());

@@ -22,4 +22,12 @@ public class Immediate implements Operand {
    public String toString() {
       return this.getValue().toString();
    }
+
+   public String toSparc() {
+      return this.toString();
+   }
+
+   public String toILOC() {
+      return this.toString();
+   }
 }

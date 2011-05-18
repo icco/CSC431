@@ -10,10 +10,14 @@ public class Label implements Operand {
    }
 
    public String toString() {
-      return toILOC();
+      return this.name;
    }
 
    public String toILOC() {
-      return name;
+      return this.toString();
+   }
+
+   public String toSparc() {
+      return this.toString();
    }
 }

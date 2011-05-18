@@ -1,1 +1,4 @@
-interface Operand {}
+interface Operand {
+   String toILOC();
+   String toSparc();
+}

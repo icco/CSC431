@@ -19,6 +19,6 @@ public class Field extends ID {
    }
 
    public String toString() { 
-      return this.toILOC();
+      return this.id.toString();
    }
 }

@@ -2,18 +2,22 @@ public class ID implements Operand {
    public String id;
 
    public ID() {
-      id = "sym";
+      this.id = "sym";
    }
 
    public ID(String name) {
-      id = name;
+      this.id = name;
    }
 
    public String toString() {
-      return toILOC();
+      return this.id.toString();
    }
 
    public String toILOC() {
-      return id;
+      return this.toString();
+   }
+
+   public String toSparc() {
+      return this.toString();
    }
 }

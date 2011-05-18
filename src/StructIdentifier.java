@@ -6,7 +6,12 @@ public class StructIdentifier extends StructType implements Operand {
    }
 
    public String toString() {
-      return toILOC(); 
+      return this.toILOC(); 
+   }
+
+   /* TODO: Implement... */
+   public String toSparc() {
+      return this.toILOC(); 
    }
 
    public String toILOC() {

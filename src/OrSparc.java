@@ -10,7 +10,7 @@ public class OrSparc extends Sparc {
 
       for (Operand r : this.getOperands()) {
          if (!r.toString().equals(""))
-            ret = ret + r + ", ";
+            ret = ret + r.toSparc() + ", ";
       }
 
       ret = ret.trim();
