@@ -251,7 +251,8 @@ instructions = [
       'name': 'read',
       'sources': [ 'Register' ],
       'dest': [ ],
-      'sparc': [ ],
+      'sparc': [ 'sethi', 'or', 'mov', 'call', 'nop' ],
+      'modified': 1,
    },
 
 # Moves (for the dance floor)
