@@ -16,10 +16,11 @@ public class LoadinargumentInstruction extends Instruction {
       ArrayList<Sparc> instructions = new ArrayList<Sparc>();
       Sparc i;
 
-      Immediate argNumber = (Immediate) this.getOperands().get(1);
+      Immediate argImmediate = (Immediate) this.getOperands().get(1);
+      int argNumber = argImmediate.getValue() + 1;
 
       // TODO load from stack for parameters over 6.
-      if (argNumber.getValue() >= 6) {
+      if (argNumber >= 6) {
          Evil.warning("Parameter number " + argNumber + " not loaded.");
          return instructions; 
       }

@@ -5,7 +5,9 @@ public abstract class Instruction {
    public static Integer operandCount = 0;
    private ArrayList<Operand> operands = new ArrayList<Operand>();
    private ArrayList<Register> dests = new ArrayList<Register>();
-   ArrayList<String> sparcs = new ArrayList<String>();
+   private ArrayList<Register> srcs = new ArrayList<Register>();
+
+   protected ArrayList<String> sparcs = new ArrayList<String>();
 
    public String toString() {
       return "NULL INSTRUCTION.";
