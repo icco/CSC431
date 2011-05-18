@@ -9,7 +9,9 @@ fun sum (int a, int b) int
 fun main () int 
 {
         
-   print (sum (1, 2)) endl;
+   if ( 1 < 2 ) {
+      print (sum (1, 2)) endl;
+   }
 
    return 0;
 }
