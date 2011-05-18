@@ -56,7 +56,8 @@ antlr.generated.inst: generate_instructions.py
 	@touch antlr.generated.inst
 
 run:
-	echo 13 | ./bench.sh
+	echo 13 | ./build.sh
+	@echo "ssh sparc03 , cd `pwd` , echo 13 | ./test.sh"
 
 %.ev: all
 	./ecc ${RUNFLAGS} $@

@@ -8,7 +8,6 @@ select dir in `ls benchmarks`; do
    echo -e "\n${dir}: "
    FILES=`ls benchmarks/${dir}/${dir}.ev`
    for ev in $FILES; do
-      $comp $ev
       s=`echo $ev | sed 's/\.ev/\.s/'`
       $ECC $s
       benchmarks/${dir}/a.out < benchmarks/${dir}/input > benchmarks/${dir}/output.ev
