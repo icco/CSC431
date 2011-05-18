@@ -7,10 +7,30 @@ import java.lang.*;
 public class LoadinargumentInstruction extends Instruction {
    public static Integer operandCount = 3;
    public LoadinargumentInstruction() {
-      super();
+      super();sparcs.add("mov");
    }
 
    public String toString() { return this.toILOC(); }
+
+   public ArrayList<Sparc> toSparc() {
+      ArrayList<Sparc> instructions = new ArrayList<Sparc>();
+      Sparc i;
+
+      Immediate argNumber = (Immediate) this.getOperands().get(1);
+
+      // TODO load from stack for parameters over 6.
+      if (argNumber.getValue() >= 6) {
+         Evil.warning("Parameter number " + argNumber + " not loaded.");
+         return instructions; 
+      }
+
+      i = new MovSparc();
+      i.addSource(new Register("%i" + argNumber));
+      i.addDest(this.getDestinations().get(0));
+
+      instructions.add(i);
+      return instructions;
+   }
 
    public String toILOC() {
       String classPattern = new String("ID Immediate Register");

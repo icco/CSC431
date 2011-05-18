@@ -7,10 +7,30 @@ import java.lang.*;
 public class StoreoutargumentInstruction extends Instruction {
    public static Integer operandCount = 2;
    public StoreoutargumentInstruction() {
-      super();
+      super();sparcs.add("mov");
    }
 
    public String toString() { return this.toILOC(); }
+
+   public ArrayList<Sparc> toSparc() {
+      ArrayList<Sparc> instructions = new ArrayList<Sparc>();
+      Sparc i;
+
+      Immediate argNumber = (Immediate) this.getAllSources().get(1);
+
+      // TODO store into stack for arguments over 6.
+      if (argNumber.getValue() >= 6) {
+         Evil.warning("Argument number " + argNumber + " not stored.");
+         return instructions; 
+      }
+
+      i = new MovSparc();
+      i.addSource(this.getSources().get(0));
+      i.addDest(new Register("%o" + argNumber));
+
+      instructions.add(i);
+      return instructions;
+   }
 
    public String toILOC() {
       String classPattern = new String("Register Immediate");

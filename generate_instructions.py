@@ -153,7 +153,8 @@ instructions = [
       'name': 'loadinargument',
       'sources': [ 'ID', 'Immediate' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': ['mov'],
+      'modified': 1
    },
    {
       'name': 'loadret',
@@ -198,7 +199,8 @@ instructions = [
       'name': 'storeoutargument',
       'sources': [ 'Register' ],
       'dest': [ 'Immediate' ],
-      'sparc': [ ],
+      'sparc': ['mov'],
+      'modified': 1
    },
    {
       'name': 'storeret',

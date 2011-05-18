@@ -174,6 +174,9 @@ public class RegisterAllocator {
             allocations.put(virtual, real);
          }
       }
+
+      // Hack to not map %cc.
+      allocations.put(new ConditionCodeRegister(), new ConditionCodeRegister());
    }
 
    /** Get the ColorNode with the best hueristic for reducing spills. */
