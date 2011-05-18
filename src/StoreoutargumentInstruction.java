@@ -25,8 +25,8 @@ public class StoreoutargumentInstruction extends Instruction {
       }
 
       i = new MovSparc();
-      i.addSource(this.getSources().get(0));
-      i.addDest(new Register("%o" + argNumber));
+      i.addOp(this.getSources().get(0));
+      i.addOp(new Register("%o" + argNumber));
 
       instructions.add(i);
       return instructions;

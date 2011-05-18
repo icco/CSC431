@@ -25,8 +25,8 @@ public class LoadinargumentInstruction extends Instruction {
       }
 
       i = new MovSparc();
-      i.addSource(new Register("%i" + argNumber));
-      i.addDest(this.getDestinations().get(0));
+      i.addOp(new Register("%i" + argNumber));
+      i.addOp(this.getDestinations().get(0));
 
       instructions.add(i);
       return instructions;
