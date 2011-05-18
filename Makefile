@@ -69,6 +69,7 @@ run:
 typetest: all
 	@./typetest.sh
 
+.PHONY: test
 test: tests/compat.ev
 
 debug:
