@@ -55,7 +55,7 @@ antlr.generated.inst: generate_instructions.py
 	./generate_instructions.py
 	@touch antlr.generated.inst
 
-run:
+run: all
 	echo 13 | ./build.sh
 	@echo "ssh sparc03 , cd `pwd` , echo 13 | ./test.sh"
 
@@ -75,8 +75,8 @@ test: tests/compat.ev
 debug:
 	@make -s -B -e DEBUGFLAGS=-trace
 
-run_debug: debug
-	@make -s run -e RUNFLAGS=-d
+#run_debug: debug
+#	@make -s run -e RUNFLAGS=-d
 
 ast: all
 	./ecc --displayAST tests/1.ev

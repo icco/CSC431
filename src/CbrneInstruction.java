@@ -7,7 +7,7 @@ import java.lang.*;
 public class CbrneInstruction extends Instruction {
    public static Integer operandCount = 3;
    public CbrneInstruction() {
-      super();sparcs.add("bne");sparcs.add("nop");
+      super();sparcs.add("bne");sparcs.add("nop");sparcs.add("ba");sparcs.add("nop");
    }
 
    public String toString() { return this.toILOC(); }

@@ -30,32 +30,38 @@ public abstract class Instruction {
 
             // TODO: Need to add code here to deal with Immediates > 13 bits.
             if (this.sparcs.size() == 1) {
-               for (Operand o : this.getOperands()) {
-                  i.addOp(o);
-               }
-            } else {
-               // Alright, Those were the simple instructions.
-               // These are the hard ones.
 
-               // Branches.
-               if (instr.equals("be") ||
-                     instr.equals("bl") ||
-                     instr.equals("bg") ||
-                     instr.equals("ba") ||
-                     instr.equals("bne") ||
-                     instr.equals("ble") ||
-                     instr.equals("bge")
-                  ) {
-                     for (Operand o : this.getOperands()) {
-                        i.addOp(o);
-                     }
-                 }
+               // Conditional moves need a %icc
+               if (instr.substring(0,3).equals("mov") && instr.length() > 3) {
+                  i.addSource(new ConditionCodeRegister());
+               }
+
+               for (Operand o : this.getOperands()) {
+                  // Don't write out %icc for cmp.
+                  if (!(instr.equals("cmp") && o instanceof ConditionCodeRegister)) {
+                     i.addOp(o);
+                  }
+               }
+            }
+
+            // To deal with jumpi basically.
+            if (instr.equals("ba") && this.sparcs.size() <= 2) {
+               for (Operand o : this.getAllSources()) {
+                  i.addSource(o);
+               }
             }
 
             instructions.add(i);
          } catch (Exception e) {
             Evil.error("You're doing it wrong: " + e.getMessage());
          }
+      }
+
+      // Conditional Branches.
+      String firstthree = this.getClass().getName().toLowerCase().substring(0,3);
+      if (firstthree.equals("cbr")) {
+         instructions.get(0).addOp(this.getOperands().get(1));
+         instructions.get(2).addOp(this.getOperands().get(2));
       }
 
       return instructions;
@@ -142,7 +148,7 @@ public abstract class Instruction {
             real = allocations.get(virtual);
 
             if (real != null) {
-               operands.set(ndx, real);                 
+               operands.set(ndx, real);
             } else {
                Evil.warning("No mapping for register " + virtual + ".");
             }

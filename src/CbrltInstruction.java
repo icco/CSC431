@@ -7,7 +7,7 @@ import java.lang.*;
 public class CbrltInstruction extends Instruction {
    public static Integer operandCount = 3;
    public CbrltInstruction() {
-      super();sparcs.add("bl");sparcs.add("nop");
+      super();sparcs.add("bl");sparcs.add("nop");sparcs.add("ba");sparcs.add("nop");
    }
 
    public String toString() { return this.toILOC(); }
