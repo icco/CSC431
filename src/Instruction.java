@@ -46,6 +46,8 @@ public abstract class Instruction {
 
             // TODO: Need to add code here to deal with Immediates > 13 bits.
             if (this.sparcs.size() == 1) {
+
+               // Conditional moves need a %icc
                if (instr.substring(0,3).equals("mov") && instr.length() > 3) {
                   i.addSource(new ConditionCodeRegister());
                }
@@ -55,6 +57,7 @@ public abstract class Instruction {
                }
 
                for (Operand o : this.getDestinations()) {
+                  // Don't write out %icc for cmp
                   if (!instr.equals("cmp")) {
                      i.addDest(o);
                   }
