@@ -55,7 +55,9 @@ public abstract class Instruction {
                }
 
                for (Operand o : this.getDestinations()) {
-                  i.addDest(o);
+                  if (!instr.equals("cmp")) {
+                     i.addDest(o);
+                  }
                }
 
             } else {
