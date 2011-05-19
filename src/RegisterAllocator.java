@@ -51,15 +51,11 @@ public class RegisterAllocator {
     * Build the graph by adding registers from all the nodes 
     * from all the functions in a program.
     */
-   public void buildGraph(GraphTable functions) {
+   public void buildGraph(GraphTable graph) {
       List<Node> nodes = new LinkedList<Node>();
 
-      for (String s : functions.keySet()) {
-         nodes.addAll(TopoSort.sort(functions.get(s)));
-      }
-
-      for (Node n : nodes) {
-         addNode(n);
+      for (Node block : graph.allNodes) {
+         addNode(block); 
       }
    }
 
@@ -72,8 +68,15 @@ public class RegisterAllocator {
       Set<Register> liveSet = new HashSet<Register>(block.getLiveSet());
     
       for (Instruction instr : block.getInstr()) {
-         srcs = instr.getSources();
-         dests = instr.getDestinations();
+         srcs = new ArrayList<Register>(instr.getSources());
+         dests = new ArrayList<Register>(instr.getDestinations());
+
+         // Edge cases
+         if (instr instanceof CallInstruction) {
+            srcs.addAll(SparcRegisters.outputs);
+            dests.addAll(SparcRegisters.globals);
+            dests.addAll(SparcRegisters.outputs);
+         }
 
          for (Register dest : dests) {
             liveSet.remove(dest);
@@ -121,14 +124,8 @@ public class RegisterAllocator {
    /** 
     * Use the mappings to change the instructions.
     */
-   public void transformCode(GraphTable functions) {
-      List<Node> nodes = new LinkedList<Node>();
-
-      for (String s : functions.keySet()) {
-         nodes.addAll(TopoSort.sort(functions.get(s)));
-      }
-
-      for (Node block : nodes) {
+   public void transformCode(GraphTable graph) {
+      for (Node block : graph.allNodes) {
          for (Instruction instr : block.getInstr()) {
             instr.transformRegisters(allocations);
          }
