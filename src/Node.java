@@ -54,17 +54,9 @@ public class Node implements Iterable<Node> {
             }
          }
 
-         for (Register dest : instr.getActualDestinations()) {
+         for (Register dest : instr.getDestinations()) {
             kill.add(dest);
          }
-      }
-
-      if (kill.contains(new ConditionCodeRegister())) {
-         Evil.error("kill has it");
-      }
-
-      if (gen.contains(new ConditionCodeRegister())) {
-         Evil.error("gen has it");
       }
    }
 

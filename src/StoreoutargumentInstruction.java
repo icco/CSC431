@@ -16,7 +16,7 @@ public class StoreoutargumentInstruction extends Instruction {
       ArrayList<Sparc> instructions = new ArrayList<Sparc>();
       Sparc i;
 
-      Immediate argImmediate = (Immediate) this.getAllSources().get(1);
+      Immediate argImmediate = (Immediate) this.getOperands().get(1);
       int argNumber = argImmediate.getValue() + 1;
 
       // TODO store into stack for arguments over 6.

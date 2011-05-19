@@ -48,7 +48,7 @@ options {
          tempReg = new Register();
 
          mov = new LoadglobalInstruction();
-         mov.addSource(new ID(var.getName()));
+         mov.addOp(new ID(var.getName()));
          mov.addDest(tempReg);
 
          current.addInstr(mov);
@@ -85,9 +85,9 @@ options {
     String fLabel, Node current) {
       Instruction i = new CompiInstruction();
       Register cc = new ConditionCodeRegister();
-      i.addRegister(comp);
+      i.addSource(comp);
       i.addImmediate(1);
-      i.addDest(cc);
+      i.addRegister(cc);
       current.addInstr(i);
 
       i = new CbreqInstruction();
@@ -317,7 +317,7 @@ print[Node current]
          l = new PrintInstruction();
       }
 
-      l.addRegister($e.r);
+      l.addSource($e.r);
       current.addInstr(l);
    }
    ;
@@ -418,7 +418,7 @@ delete[Node current]
 }
    : ^(DELETE expression[current]) {
       Instruction l = new DelInstruction();
-      l.addRegister($expression.r);
+      l.addSource($expression.r);
       current.addInstr(l);
    }
    ;
@@ -429,7 +429,7 @@ ret[Node current] returns [Node exit]
    : ^(RETURN (e=expression[current])?) {
       if ($e.r != null) {
          Instruction sr = new StoreretInstruction();
-         sr.addDest($e.r); // Might need to be addRegister instead
+         sr.addSource($e.r); 
          current.addInstr(sr);
       }
 
@@ -519,7 +519,7 @@ expression[Node current] returns [Register r]
       Instruction l = new NewInstruction();
 
       $r.setType(type);
-      l.addSource(new StructIdentifier(type));
+      l.addOp(new StructIdentifier(type));
       l.addDest($r);
 
       current.addInstr(l);
@@ -543,7 +543,7 @@ expression[Node current] returns [Register r]
       // xor with 1 to flop a boolean
       Instruction x = new XoriInstruction();
       $r = new Register();
-      x.addRegister($e.r);
+      x.addSource($e.r);
       x.addImmediate(new Immediate(1));
       x.addDest($r);
 
@@ -559,59 +559,59 @@ expression[Node current] returns [Register r]
       current.addInstr(l);
 
       Instruction m = new MultInstruction();
-      m.addRegister($e.r);
-      m.addRegister(ri);
+      m.addSource($e.r);
+      m.addSource(ri);
       m.addDest(rt);
       current.addInstr(m);
       $r = rt;
    }
    | ^(AND f1=expression[current] f2=expression[current]) {
       Instruction inst = new AndInstruction();
-      inst.addRegister($f1.r);
-      inst.addRegister($f2.r);
+      inst.addSource($f1.r);
+      inst.addSource($f2.r);
       inst.addDest($r = new Register());
       current.addInstr(inst);
    }
    | ^(OR f1=expression[current] f2=expression[current]) {
       Instruction inst = new OrInstruction();
-      inst.addRegister($f1.r);
-      inst.addRegister($f2.r);
+      inst.addSource($f1.r);
+      inst.addSource($f2.r);
       inst.addDest($r = new Register());
       current.addInstr(inst);
    }
    | ^(PLUS f1=expression[current] f2=expression[current]) {
       Instruction inst = new AddInstruction();
-      inst.addRegister($f1.r);
-      inst.addRegister($f2.r);
+      inst.addSource($f1.r);
+      inst.addSource($f2.r);
       inst.addDest($r = new Register());
       current.addInstr(inst);
    }
    | ^(MINUS f1=expression[current] f2=expression[current]) {
       Instruction inst = new SubInstruction();
-      inst.addRegister($f1.r);
-      inst.addRegister($f2.r);
+      inst.addSource($f1.r);
+      inst.addSource($f2.r);
       inst.addDest($r = new Register());
       current.addInstr(inst);
    }
    | ^(TIMES f1=expression[current] f2=expression[current]) {
       Instruction inst = new MultInstruction();
-      inst.addRegister($f1.r);
-      inst.addRegister($f2.r);
+      inst.addSource($f1.r);
+      inst.addSource($f2.r);
       inst.addDest($r = new Register());
       current.addInstr(inst);
    }
    | ^(DIVIDE f1=expression[current] f2=expression[current]) {
       Instruction inst = new DivInstruction();
-      inst.addRegister($f1.r);
-      inst.addRegister($f2.r);
+      inst.addSource($f1.r);
+      inst.addSource($f2.r);
       inst.addDest($r = new Register());
       current.addInstr(inst);
    }
    | ^(EQ f1=expression[current] f2=expression[current]) {
       Instruction inst = new CompInstruction();
-      inst.addRegister($f1.r);
-      inst.addRegister($f2.r);
-      inst.addDest(new ConditionCodeRegister());
+      inst.addSource($f1.r);
+      inst.addSource($f2.r);
+      inst.addRegister(new ConditionCodeRegister());
       current.addInstr(inst);
 
       $r = new Register();
@@ -629,9 +629,9 @@ expression[Node current] returns [Register r]
    }
    | ^(LT f1=expression[current] f2=expression[current]) {
       Instruction inst = new CompInstruction();
-      inst.addRegister($f1.r);
-      inst.addRegister($f2.r);
-      inst.addDest(new ConditionCodeRegister());
+      inst.addSource($f1.r);
+      inst.addSource($f2.r);
+      inst.addRegister(new ConditionCodeRegister());
       current.addInstr(inst);
 
       $r = new Register();
@@ -649,9 +649,9 @@ expression[Node current] returns [Register r]
    }
    | ^(GT f1=expression[current] f2=expression[current]) {
       Instruction inst = new CompInstruction();
-      inst.addRegister($f1.r);
-      inst.addRegister($f2.r);
-      inst.addDest(new ConditionCodeRegister());
+      inst.addSource($f1.r);
+      inst.addSource($f2.r);
+      inst.addRegister(new ConditionCodeRegister());
       current.addInstr(inst);
 
       $r = new Register();
@@ -669,9 +669,9 @@ expression[Node current] returns [Register r]
    }
    | ^(NE f1=expression[current] f2=expression[current]) {
       Instruction inst = new CompInstruction();
-      inst.addRegister($f1.r);
-      inst.addRegister($f2.r);
-      inst.addDest(new ConditionCodeRegister());
+      inst.addSource($f1.r);
+      inst.addSource($f2.r);
+      inst.addRegister(new ConditionCodeRegister());
       current.addInstr(inst);
 
       $r = new Register();
@@ -689,9 +689,9 @@ expression[Node current] returns [Register r]
    }
    | ^(LE f1=expression[current] f2=expression[current]) {
       Instruction inst = new CompInstruction();
-      inst.addRegister($f1.r);
-      inst.addRegister($f2.r);
-      inst.addDest(new ConditionCodeRegister());
+      inst.addSource($f1.r);
+      inst.addSource($f2.r);
+      inst.addRegister(new ConditionCodeRegister());
       current.addInstr(inst);
 
       $r = new Register();
@@ -709,9 +709,9 @@ expression[Node current] returns [Register r]
    }
    | ^(GE f1=expression[current] f2=expression[current]) {
       Instruction inst = new CompInstruction();
-      inst.addRegister($f1.r);
-      inst.addRegister($f2.r);
-      inst.addDest(new ConditionCodeRegister());
+      inst.addSource($f1.r);
+      inst.addSource($f2.r);
+      inst.addRegister(new ConditionCodeRegister());
       current.addInstr(inst);
 
       $r = new Register();

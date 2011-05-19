@@ -17,22 +17,6 @@ public abstract class Instruction {
       return "noop";
    }
 
-   /**
-    * List of actual register sources. 
-    * TODO: check if it's safe to exclude
-    */
-   public ArrayList<Register> getSources() {
-      ArrayList<Register> ret = new ArrayList<Register>();
-
-      for (Operand o : this.operands) {
-         if (o instanceof Register && !(o instanceof ConditionCodeRegister)) {
-            ret.add((Register)o);
-         }
-      }
-
-      return ret;
-   }
-
    public ArrayList<Sparc> toSparc() {
       ArrayList<Sparc> instructions = new ArrayList<Sparc>();
 
@@ -46,10 +30,9 @@ public abstract class Instruction {
 
             // TODO: Need to add code here to deal with Immediates > 13 bits.
             if (this.sparcs.size() == 1) {
-               for (Operand o : this.getAllSources())
-                  i.addSource(o);
-               for (Operand o : this.getDestinations())
-                  i.addDest(o);
+               for (Operand o : this.getOperands()) {
+                  i.addOp(o);
+               }
             } else {
                // Alright, Those were the simple instructions.
                // These are the hard ones.
@@ -63,10 +46,9 @@ public abstract class Instruction {
                      instr.equals("ble") ||
                      instr.equals("bge")
                   ) {
-                     for (Operand o : this.getAllSources())
-                        i.addSource(o);
-                     for (Operand o : this.getDestinations())
-                        i.addDest(o);
+                     for (Operand o : this.getOperands()) {
+                        i.addOp(o);
+                     }
                  }
             }
 
@@ -80,80 +62,83 @@ public abstract class Instruction {
    }
 
    public ArrayList<Register> getDestinations() {
-      return new ArrayList<Register>(this.dests);
+      return this.dests;
    }
 
-   /**
-    * We don't want the ConditionCode Register really ever.
-    */
-   public ArrayList<Register> getActualDestinations() {
-      ArrayList<Register> actualDests = new ArrayList<Register>();
-
-      for (Register r : getDestinations()) {
-         if (!(r instanceof ConditionCodeRegister)) {
-            actualDests.add(r);
-         }
-      }
-
-      return actualDests;
+   public ArrayList<Register> getSources() {
+      return this.srcs;
    }
 
-   public ArrayList<Operand> getAllSources() {
+   public ArrayList<Operand> getOperands() {
       return this.operands;
    }
 
-
-   public ArrayList<Operand> getOperands() {
-      ArrayList<Operand> ret = new ArrayList<Operand>();
-      ret.addAll(this.operands);
-      ret.addAll(this.dests);
-
-      return ret;
-   }
-
-   void addSource(Operand in) {
+   /**
+    * Add a register to the source and operand list.
+    */
+   public void addSource(Register in) {
+      if (in instanceof ConditionCodeRegister) {
+         System.out.println(this + " has it!");
+      }
+      this.srcs.add(in);
       this.operands.add(in);
    }
 
+   /**
+    * Add a register the the destination and operand list.
+    */
+   public void addDest(Register in) {
+      if (in instanceof ConditionCodeRegister) {
+         System.out.println(this + " has it!");
+      }
+      this.dests.add(in);
+      this.operands.add(in);
+   }
+
+   /**
+    * The rest of the addX functions are wrappers around addOp.
+    */
+   public void addOp(Operand op) {
+      this.operands.add(op);
+   }
+
    public void addLabel(Label in) {
-      this.addSource(in);
+      this.addOp(in);
    }
 
    public void addLabel(String in) {
-      this.addLabel(new Label(in));
+      this.addOp(new Label(in));
    }
 
    public void addID(String in) {
-      this.addSource(new ID(in));
+      this.addOp(new ID(in));
    }
 
    public void addField(Field in) {
-      this.addSource(in);
+      this.addOp(in);
    }
 
    public void addRegister(Register in) {
-      this.addSource(in);
-   }
-
-   public void addDest(Register in) {
-      this.dests.add(in);
+      this.addOp(in);
    }
 
    public void addImmediate(Immediate in) {
-      this.addSource(in);
+      this.addOp(in);
    }
 
    public void addImmediate(Integer in) {
-      this.addSource(new Immediate(in));
+      this.addOp(new Immediate(in));
    }
 
    public void transformRegisters(Map<Register, Register> allocations) {
       Register virtual, real;
+      int ndx = 0;
 
       // Transform operands list.
-      for (int ndx = 0; ndx < operands.size(); ndx++) {
-         if (operands.get(ndx) instanceof Register) {
-            virtual = (Register) operands.get(ndx);
+      for (Operand op : this.operands) {
+         if (op instanceof Register && !(op instanceof ConditionCodeRegister)) {
+            virtual = (Register) op;
+
             real = allocations.get(virtual);
 
             if (real != null) {
@@ -162,15 +147,29 @@ public abstract class Instruction {
                Evil.warning("No mapping for register " + virtual + ".");
             }
          }
+
+         ndx++;
       }
 
       // Transform destination list.
-      for (int ndx = 0; ndx < dests.size(); ndx++) {
+      for (ndx = 0; ndx < dests.size(); ndx++) {
          virtual = dests.get(ndx);
          real = allocations.get(virtual);
 
          if (real != null) {
             dests.set(ndx, real);
+         } else {
+            Evil.warning("No mapping for register " + virtual + ".");
+         }
+      }
+
+      // Transform sources list.
+      for (ndx = 0; ndx < srcs.size(); ndx++) {
+         virtual = srcs.get(ndx);
+         real = allocations.get(virtual);
+
+         if (real != null) {
+            srcs.set(ndx, real);
          } else {
             Evil.warning("No mapping for register " + virtual + ".");
          }

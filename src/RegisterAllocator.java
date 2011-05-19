@@ -73,7 +73,7 @@ public class RegisterAllocator {
     
       for (Instruction instr : block.getInstr()) {
          srcs = instr.getSources();
-         dests = instr.getActualDestinations();
+         dests = instr.getDestinations();
 
          for (Register dest : dests) {
             liveSet.remove(dest);
@@ -174,9 +174,6 @@ public class RegisterAllocator {
             allocations.put(virtual, real);
          }
       }
-
-      // Hack to not map %cc.
-      allocations.put(new ConditionCodeRegister(), new ConditionCodeRegister());
    }
 
    /** Get the ColorNode with the best hueristic for reducing spills. */
