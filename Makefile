@@ -57,7 +57,6 @@ antlr.generated.inst: generate_instructions.py
 
 run: all
 	echo 13 | ./build.sh
-	@echo "ssh sparc03 , cd `pwd` , echo 13 | ./test.sh"
 
 %.ev: all
 	./ecc ${RUNFLAGS} $@
@@ -71,6 +70,10 @@ typetest: all
 
 .PHONY: test
 test: tests/compat.ev
+
+.PHONY: benchmarks
+bechmarks:
+	./test.sh
 
 debug:
 	@make -s -B -e DEBUGFLAGS=-trace
