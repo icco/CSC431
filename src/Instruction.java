@@ -16,7 +16,7 @@ public abstract class Instruction {
    }
 
    /**
-    * List of actual register sources. 
+    * List of actual register sources.
     * TODO: check if it's safe to exclude
     */
    public ArrayList<Register> getSources() {
@@ -44,13 +44,21 @@ public abstract class Instruction {
 
             // TODO: Need to add code here to deal with Immediates > 13 bits.
             if (this.sparcs.size() == 1) {
-               for (Operand o : this.getAllSources())
+               if (instr.substring(0,3).equals("mov") && o instanceof ConditionCodeRegister) {
+                  i.addSource(new ConditionCodeRegister());
+               }
+
+               for (Operand o : this.getAllSources()) {
                   i.addSource(o);
-               for (Operand o : this.getDestinations())
+               }
+
+               for (Operand o : this.getDestinations()) {
                   i.addDest(o);
+               }
+
             } else {
                // Alright, Those were the simple instructions.
-               // These are the hard ones.
+               // These are the harder ones.
 
                // Branches.
                if (instr.equals("be") ||
@@ -66,6 +74,7 @@ public abstract class Instruction {
                      for (Operand o : this.getDestinations())
                         i.addDest(o);
                  }
+
             }
 
             instructions.add(i);
@@ -155,7 +164,7 @@ public abstract class Instruction {
             real = allocations.get(virtual);
 
             if (real != null) {
-               operands.set(ndx, real);                 
+               operands.set(ndx, real);
             } else {
                Evil.warning("No mapping for register " + virtual + ".");
             }
