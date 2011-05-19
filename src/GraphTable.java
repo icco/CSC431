@@ -4,6 +4,8 @@ import java.util.*;
  * Extends a HashMap, only rewriting the toString function.
  */
 public class GraphTable extends HashMap<String, Node> {
+   private List<Node> allNodes;
+
    public String toILOC() {
       String ret = "";
       List<Node> nodes = new LinkedList<Node>();
@@ -21,10 +23,11 @@ public class GraphTable extends HashMap<String, Node> {
 
    public String toSparc() {
       String ret = "";
-      List<Node> nodes = new LinkedList<Node>();
+      nodes = new LinkedList<Node>();
 
       for (String s : this.keySet()) {
-         nodes.addAll(TopoSort.sort(this.get(s)));
+         nodes = TopoSort.sort(this.get(s));
+         allNodes.addAll(nodes);
       }
 
       for (Node n : nodes) {
