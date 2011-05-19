@@ -24,27 +24,21 @@ public class GraphTable extends HashMap<String, Node> {
       List<Node> nodes = new LinkedList<Node>();
 
       for (String s : this.keySet()) {
-         nodes.addAll(TopoSort.sort(this.get(s)));
-      }
+         // .align 4
+         ret += "\t.align 4\n";
 
-      for (Node n : nodes) {
-         if (this.containsKey(n.getLabel())) {
-            // .align 4
-            ret += "\t.align 4\n";
+         // .global printList
+         ret += "\t.global " + n.getLabel() + "\n";
 
-            // .global printList
-            ret += "\t.global " + n.getLabel() + "\n";
+         // .type    printList, #function
+         ret += "\t.type " + n.getLabel() + ", #function\n";
 
-            // .type    printList, #function
-            ret += "\t.type " + n.getLabel() + ", #function\n";
+         for (Node n : TopoSort.sort(this.get(s))) {
+            ret += n.toSparc();
          }
 
-         ret += n.toSparc();
-
-         if (this.containsKey(n.getLabel())) {
-            // .size    add, .-add
-         }
-
+         // .size    add, .-add
+         ret += "\t.size " + n.getLabel() + ", .-" + n.getLabel() + "\n";
       }
 
       return ret;
