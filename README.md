@@ -21,17 +21,9 @@ For Milestone 2:
 
     make tests/compat.il > myout && curl -s http://users.csc.calpoly.edu/~akeen/courses/csc431/handouts/references/compat.out | diff -u - myout
 
-## TODO
+For Milestone 3:
 
-Nat
-
- * Benchmarks running
- * generating Sparc instructions and ILOC to Sparc relations
-
-Ben
-
- * Gen / Kill stuff
- * Register building.
+    ./ecc benchmarks/mile3/mile3.ev && gcc -mcpu=v9 benchmarks/mile3/mile3.s && ./a.out; echo $?
 
 ## License
 

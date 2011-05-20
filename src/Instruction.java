@@ -47,7 +47,7 @@ public abstract class Instruction {
 
             // To deal with jumpi basically.
             if (instr.equals("ba") && this.sparcs.size() <= 2) {
-               for (Operand o : this.getSources()) {
+               for (Operand o : this.getOperands()) {
                   i.addSource(o);
                }
             }
