@@ -24,7 +24,7 @@ public class CbreqInstruction extends Instruction {
 
       for (Operand r : this.getOperands()) {
          if (!r.toString().equals(""))
-            ret = ret + r + ", ";
+            ret = ret + r.toILOC() + ", ";
       }
 
       ret = ret.trim();
