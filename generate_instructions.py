@@ -153,7 +153,8 @@ instructions = [
       'name': 'loadret',
       'sources': [ ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'mov' ],
+      'modified': 1
    },
    {
       'name': 'computeformaladdress',
@@ -199,7 +200,8 @@ instructions = [
       'name': 'storeret',
       'sources': [ 'Register' ],
       'dest': [ ],
-      'sparc': [ ],
+      'sparc': [ 'mov' ],
+      'modified': 1
    },
 
 # Invocation (Casting spells, raising demons)
@@ -263,7 +265,7 @@ instructions = [
       'name': 'mov',
       'sources': [ 'Register' ],
       'dest': [ 'Register' ],
-      'sparc': [ 'mova' ],
+      'sparc': [ 'mov' ],
    },
    {
       'name': 'moveq',
