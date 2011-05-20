@@ -7,7 +7,7 @@ import java.lang.*;
 public class CallInstruction extends Instruction {
    public static Integer operandCount = 1;
    public CallInstruction() {
-      super();sparcs.add("call");
+      super();sparcs.add("call");sparcs.add("nop");
    }
 
    public String toString() { return this.toILOC(); }

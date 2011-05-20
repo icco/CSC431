@@ -210,7 +210,7 @@ instructions = [
       'name': 'call',
       'sources': [ 'Label' ],
       'dest': [ ],
-      'sparc': [ 'call' ],
+      'sparc': [ 'call', 'nop' ],
    },
    {
       'name': 'ret',

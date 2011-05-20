@@ -71,6 +71,8 @@ public abstract class Instruction {
       if (firstthree.equals("cbr")) {
          instructions.get(0).addOp(this.getOperands().get(1));
          instructions.get(2).addOp(this.getOperands().get(2));
+      } else if (this instanceof CallInstruction) {
+         instructions.get(0).addOp(this.getOperands().get(0));
       }
 
       return instructions;
