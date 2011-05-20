@@ -57,28 +57,54 @@ public class RegisterAllocator {
          addNode(block); 
       }
 
-      /*
       for (Register r : graph.keySet()) {
-         System.out.print(r + ":  ");
+         if (r.toString().charAt(0) != '%') {
+            System.out.print(r + ":  ");
 
-         for (ColorNode n : graph.get(r).getEdges()) {
-            System.out.print(n + ", ");
+            for (ColorNode n : graph.get(r).getEdges()) {
+               System.out.print(n.getVertex() + ", ");
+            }
+
+            System.out.println();
          }
-
-         System.out.println();
       }
-      */
+
+      System.out.println("sum: ");
+      Node n = graphTable.get("sum");
+
+      System.out.print("kill: ");
+      for (Register r : n.getKillSet()) {
+         System.out.print(r + ", ");
+      }
+      System.out.println();
+
+      System.out.print("gen: ");
+      for (Register r : n.getGenSet()) {
+         System.out.print(r + ", ");
+      }
+      System.out.println();
+
+      System.out.print("live: ");
+      for (Register r : n.getLiveSet()) {
+         System.out.print(r + ", ");
+      }
+      System.out.println();
+
    }
 
    /**
     * Fill the graph with all the registers from a block of code.
+    * Iterate backwards through instructions.
     */
    private void addNode(Node block) {
       List<Register> srcs;
       List<Register> dests;
       Set<Register> liveSet = new HashSet<Register>(block.getLiveSet());
-    
-      for (Instruction instr : block.getInstr()) {
+      List<Instruction> instrs = block.getInstr();
+      ListIterator<Instruction> iter = instrs.listIterator(instrs.size());
+
+      while (iter.hasPrevious()) { 
+         Instruction instr = iter.previous();
          srcs = new ArrayList<Register>(instr.getSources());
          dests = new ArrayList<Register>(instr.getDestinations());
 

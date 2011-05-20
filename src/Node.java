@@ -71,9 +71,10 @@ public class Node implements Iterable<Node> {
       Set<Register> nonImmediate;
 
       for (Node successor : children) {
-         if (successor != this) {
+         if (successor != this) { // Ask about this?
             immediate = successor.getGenSet();
-            nonImmediate = successor.getLiveSet();
+            nonImmediate = 
+             new HashSet<Register>(successor.getLiveSet());
             nonImmediate.removeAll(successor.getKillSet());
 
             liveOut.addAll(immediate);
