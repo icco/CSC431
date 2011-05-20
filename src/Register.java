@@ -28,7 +28,11 @@ public class Register implements Operand {
    }
 
    public String toSparc() {
-      return this.toString();
+      if (this.id.contains("%")) {
+         return this.toString();
+      } else {
+         return "%" + this.toString();
+      }
    }
 
    public String toILOC() {

@@ -10,6 +10,7 @@ public class Node implements Iterable<Node> {
    protected ArrayList<Node> parents;
    protected ArrayList<Node> children;
    private String label;
+   protected Boolean function = false;
 
    private Set<Register> gen;
    private Set<Register> kill;
@@ -38,6 +39,10 @@ public class Node implements Iterable<Node> {
       }
 
       return live; 
+   }
+
+   public Boolean isFunction() {
+      return this.function;
    }
 
    /**
@@ -78,7 +83,6 @@ public class Node implements Iterable<Node> {
 
       this.live = liveOut;
    }
-
 
    public void addParent(Node parent) { this.parents.add(parent); }
 
@@ -126,10 +130,17 @@ public class Node implements Iterable<Node> {
    public String toSparc() {
       String ret = "";
 
-      // TODO: We need to add special code above actual functions. Do we know
-      // which labels we made and which are real?
       if (this.getInstr().size() > 0) {
-         ret = getLabel() + ":\n";
+         ret = this.getLabel() + ":\n";
+
+         // If we are a function, we need to tell the stack how much space to
+         // save for calls.
+         if (this.isFunction()) {
+            //ret += "\t!#PROLOGUE# 0\n";
+            //ret += "\tsave %sp, " + this.getStackSize() + ", %sp\n";
+            //ret += "\t!#PROLOGUE# 1\n";
+            ret += "\t! -- This is a function.\n";
+         }
 
          for (Instruction i : this.getInstr()) {
             for (Sparc s : i.toSparc()) {
@@ -139,6 +150,16 @@ public class Node implements Iterable<Node> {
       }
 
       return ret;
+   }
+
+   // Returns amount of space based on number of calls.
+   // TODO: Figure out how to make correct
+   public int getStackSize() {
+      // Count number of calls
+      // multiply by word count
+      // return a number (should be negative I think)
+
+      return -1;
    }
 
    public static String nextLabel() {
