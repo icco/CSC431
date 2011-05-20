@@ -137,10 +137,9 @@ public class Node implements Iterable<Node> {
          // If we are a function, we need to tell the stack how much space to
          // save for calls.
          if (this.isFunction()) {
-            //ret += "\t!#PROLOGUE# 0\n";
-            //ret += "\tsave %sp, " + this.getStackSize() + ", %sp\n";
-            //ret += "\t!#PROLOGUE# 1\n";
-            ret += "\t! -- This is a function.\n";
+            ret += "\t!#PROLOGUE# 0\n";
+            ret += "\tsave %sp, " + this.getStackSize() + ", %sp\n";
+            ret += "\t!#PROLOGUE# 1\n";
          }
 
          for (Instruction i : this.getInstr()) {
@@ -156,11 +155,10 @@ public class Node implements Iterable<Node> {
    // Returns amount of space based on number of calls.
    // TODO: Figure out how to make correct
    public int getStackSize() {
-      // Count number of calls
-      // multiply by word count
-      // return a number (should be negative I think)
+      // max of number of arguments passed on the stack for all calls in this
+      // function.
 
-      return -1;
+      return -(4*5);
    }
 
    public static String nextLabel() {
