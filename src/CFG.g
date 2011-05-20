@@ -173,7 +173,10 @@ function
          param.setRegister(new Register());
          
          Instruction mov = new LoadinargumentInstruction();
-         Register tempReg = new Register();
+         Register newLocalReg = new Register();
+
+         /** The scope now counts as local for all purposes. */
+         param.setScope(Symbol.Scope.LOCAL);
 
          mov.addID(param.getName());
          mov.addImmediate(param.getOffset());
