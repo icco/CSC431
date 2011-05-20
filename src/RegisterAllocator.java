@@ -57,6 +57,8 @@ public class RegisterAllocator {
          addNode(block); 
       }
 
+      /* DEBUG code but I might need to debug again later.
+       * TODO: erase all this.
       for (Register r : graph.keySet()) {
          if (r.toString().charAt(0) != '%') {
             System.out.print(r + ":  ");
@@ -68,28 +70,7 @@ public class RegisterAllocator {
             System.out.println();
          }
       }
-
-      System.out.println("sum: ");
-      Node n = graphTable.get("sum");
-
-      System.out.print("kill: ");
-      for (Register r : n.getKillSet()) {
-         System.out.print(r + ", ");
-      }
-      System.out.println();
-
-      System.out.print("gen: ");
-      for (Register r : n.getGenSet()) {
-         System.out.print(r + ", ");
-      }
-      System.out.println();
-
-      System.out.print("live: ");
-      for (Register r : n.getLiveSet()) {
-         System.out.print(r + ", ");
-      }
-      System.out.println();
-
+      */
    }
 
    /**
