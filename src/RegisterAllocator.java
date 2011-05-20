@@ -52,8 +52,7 @@ public class RegisterAllocator {
     * from all the functions in a program.
     */
    public void buildGraph(GraphTable graph) {
-      List<Node> nodes = new LinkedList<Node>();
-
+      graph.topoSort();
       for (Node block : graph.allNodes) {
          addNode(block); 
       }
@@ -73,9 +72,11 @@ public class RegisterAllocator {
 
          // Edge cases
          if (instr instanceof CallInstruction) {
+            /*
             srcs.addAll(SparcRegisters.outputs);
             dests.addAll(SparcRegisters.globals);
             dests.addAll(SparcRegisters.outputs);
+            */
          }
 
          for (Register dest : dests) {
