@@ -1,6 +1,6 @@
 #!/bin/bash
 
-c=`ls -l benchamarks/ | wc -l`
+c=`ls -l benchmarks/ | wc -l`
 
 echo "-- Running all Benchmarks..."
 for i in `seq 1 $c`; do
