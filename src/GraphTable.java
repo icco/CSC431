@@ -21,6 +21,15 @@ public class GraphTable extends HashMap<String, Node> {
       return ret;
    }
 
+   public void topoSort() {
+      List<Node> nodes;
+
+      for (String s : this.keySet()) {
+         nodes = TopoSort.sort(this.get(s));
+         allNodes.addAll(nodes);
+      }
+   }
+
    public String toSparc() {
       String ret = "";
       List<Node> nodes = new LinkedList<Node>();
@@ -36,7 +45,6 @@ public class GraphTable extends HashMap<String, Node> {
          ret += "\t.type " + s + ", #function\n";
 
          nodes = TopoSort.sort(this.get(s));
-         allNodes.addAll(nodes);
 
          for (Node n : nodes) {
             ret += n.toSparc();

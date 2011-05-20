@@ -32,13 +32,14 @@ public abstract class Instruction {
             if (this.sparcs.size() == 1) {
 
                // Conditional moves need a %icc
-               if (instr.substring(0,3).equals("mov") && instr.length() > 3) {
+               if (instr.length() > 3 && instr.substring(0,3).equals("mov")) {
                   i.addSource(new ConditionCodeRegister());
                }
 
                for (Operand o : this.getOperands()) {
                   // Don't write out %icc for cmp.
-                  if (!(instr.equals("cmp") && o instanceof ConditionCodeRegister)) {
+                  if (!(instr.equals("cmp") && 
+                   o instanceof ConditionCodeRegister)) {
                      i.addOp(o);
                   }
                }
@@ -52,8 +53,16 @@ public abstract class Instruction {
             }
 
             instructions.add(i);
-         } catch (Exception e) {
-            Evil.error("You're doing it wrong: " + e.getMessage());
+         } catch (ClassNotFoundException e) {
+            Evil.error("No such class " + classname 
+             + ": " + e.getMessage());
+
+         } catch (InstantiationException e) {
+            Evil.error("Could not instantiate object " 
+             + classname + ": " + e.getMessage());
+         } catch (IllegalAccessException e) {
+            Evil.error("Could not access constructor for object " 
+             + classname + ": " + e.getMessage());
          }
       }
 
