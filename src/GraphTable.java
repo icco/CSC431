@@ -44,6 +44,9 @@ public class GraphTable extends HashMap<String, Node> {
          // .type    printList, #function
          ret += "\t.type " + s + ", #function\n";
 
+         // WE ARE A FUNCTION!
+         this.get(s).function = true;
+
          nodes = TopoSort.sort(this.get(s));
 
          for (Node n : nodes) {
