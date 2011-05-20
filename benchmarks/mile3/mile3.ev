@@ -3,14 +3,14 @@
 fun sum (int a, int b) int
 {
     return (a + b);
-
 }
 
 fun main () int 
 {
-        
    if ( 1 < 2 ) {
       print (sum (1, 2)) endl;
+   } else {
+      print (sum (2, 2)) endl;
    }
 
    return 0;
