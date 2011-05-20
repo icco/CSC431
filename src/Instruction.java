@@ -145,6 +145,18 @@ public abstract class Instruction {
       this.addOp(new Immediate(in));
    }
 
+   /**
+    * Instead of having a parent class for conditional moves.
+    */
+   public boolean isConditionalMove() {
+      return this instanceof MoveqInstruction
+       || this instanceof MovgeInstruction
+       || this instanceof MovgtInstruction
+       || this instanceof MovleInstruction
+       || this instanceof MovleInstruction
+       || this instanceof MovneInstruction;
+   }
+
    public void transformRegisters(Map<Register, Register> allocations) {
       Register virtual, real;
       int ndx = 0;
@@ -189,6 +201,5 @@ public abstract class Instruction {
             Evil.warning("No mapping for register " + virtual + ".");
          }
       }
-
    }
 }

@@ -96,6 +96,11 @@ public class RegisterAllocator {
             dests.addAll(SparcRegisters.outputs);
          }
 
+         if (instr.isConditionalMove()) {
+            srcs.add((Register) instr.getOperands().get(2));
+            dests.add((Register) instr.getOperands().get(2));
+         }
+
          for (Register dest : dests) {
             liveSet.remove(dest);
             addEdges(dest, liveSet);
