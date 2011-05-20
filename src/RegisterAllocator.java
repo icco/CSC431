@@ -97,8 +97,8 @@ public class RegisterAllocator {
          }
 
          if (instr.isConditionalMove()) {
-            srcs.add((Register) instr.getOperands().get(2));
-            dests.add((Register) instr.getOperands().get(2));
+            srcs.add((Register) instr.getOperands().get(1));
+            dests.add((Register) instr.getOperands().get(1));
          }
 
          if (instr instanceof PrintInstruction ||
