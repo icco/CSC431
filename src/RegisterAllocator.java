@@ -51,11 +51,23 @@ public class RegisterAllocator {
     * Build the graph by adding registers from all the nodes 
     * from all the functions in a program.
     */
-   public void buildGraph(GraphTable graph) {
-      graph.topoSort();
-      for (Node block : graph.allNodes) {
+   public void buildGraph(GraphTable graphTable) {
+      graphTable.topoSort();
+      for (Node block : graphTable.allNodes) {
          addNode(block); 
       }
+
+      /*
+      for (Register r : graph.keySet()) {
+         System.out.print(r + ":  ");
+
+         for (ColorNode n : graph.get(r).getEdges()) {
+            System.out.print(n + ", ");
+         }
+
+         System.out.println();
+      }
+      */
    }
 
    /**
@@ -72,11 +84,9 @@ public class RegisterAllocator {
 
          // Edge cases
          if (instr instanceof CallInstruction) {
-            /*
             srcs.addAll(SparcRegisters.outputs);
             dests.addAll(SparcRegisters.globals);
             dests.addAll(SparcRegisters.outputs);
-            */
          }
 
          for (Register dest : dests) {
@@ -138,7 +148,6 @@ public class RegisterAllocator {
     */
    public void colorGraph() {
       Stack<ColorNode> popped;
-      Set<Register> keys;
       
       popped = deconstructGraph();
       reconstructGraph(popped);
@@ -153,11 +162,10 @@ public class RegisterAllocator {
 
       // Sort of a hacky way to do this. 
       // First map colors (numbers) to a list of virtual registers.
-      keys = graph.keySet();
-      for (Register key : keys) {
+      for (Register key : graph.keySet()) {
          ColorNode node = graph.get(key);
 
-         if (!node.isReal()) {
+         if (!node.isReal() && node.getColor() != -1) {
             colorings.get(node.getColor()).add(node.getVertex());
          }
       }
@@ -167,9 +175,12 @@ public class RegisterAllocator {
       for (ColorNode realNode : realNodes) {
          int color = realNode.getColor();
          Register real = realNode.getVertex();
+         List<Register> shared = colorings.get(color);
 
-         for (Register virtual : colorings.get(color)) {
-            allocations.put(virtual, real);
+         if (shared != null) {
+            for (Register virtual : colorings.get(color)) {
+               allocations.put(virtual, real);
+            }
          }
       }
    }
@@ -219,12 +230,15 @@ public class RegisterAllocator {
          graph.put(vertex.getVertex(), vertex);
 
          // Color node based on neighbors that are back in graph.
-         boolean goodColor = true;
+         boolean goodColor;
          for (int color = 0; color < kColors; color++) {
+            goodColor = true;
+
             for (ColorNode edge : vertex.getEdges()) {
                // Is the edge in the graph already?
                if (graph.get(edge.getVertex()) != null) {
                   // Then make sure we don't choose it's color.
+
                   if (color == edge.getColor()) {
                      goodColor = false;
                   }
@@ -238,6 +252,10 @@ public class RegisterAllocator {
 
          if (vertex.getColor() == -1) {
             // TODO handle spills.
+            String debug = vertex + "\n"; 
+            for (ColorNode edge : vertex.getEdges()) {
+               debug += edge;
+            }
             Evil.warning("Spill for register: " + vertex.getVertex());
          }
       }

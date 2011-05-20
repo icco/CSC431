@@ -60,10 +60,14 @@ public class ColorNode implements Comparable<ColorNode> {
          }
       } else {
          if (this.isReal()) {
-            return 1;
-         } else {
             return -1;
+         } else {
+            return 1;
          }
       }
+   }
+
+   public String toString() {
+      return vertex.toString() + ": " + getColor();
    }
 }
