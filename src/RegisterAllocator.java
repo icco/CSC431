@@ -90,7 +90,7 @@ public class RegisterAllocator {
          dests = new ArrayList<Register>(instr.getDestinations());
 
          // Edge cases
-         if (instr instanceof CallInstruction) {
+         if (instr.isCall()) {
             srcs.addAll(SparcRegisters.outputs);
             dests.addAll(SparcRegisters.globals);
             dests.addAll(SparcRegisters.outputs);
@@ -99,6 +99,12 @@ public class RegisterAllocator {
          if (instr.isConditionalMove()) {
             srcs.add((Register) instr.getOperands().get(2));
             dests.add((Register) instr.getOperands().get(2));
+         }
+
+         if (instr instanceof PrintInstruction ||
+             instr instanceof PrintlnInstruction ||
+             instr instanceof ReadInstruction) {
+            dests.add(new Register("%i0"));
          }
 
          for (Register dest : dests) {

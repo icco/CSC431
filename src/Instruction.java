@@ -157,6 +157,17 @@ public abstract class Instruction {
        || this instanceof MovneInstruction;
    }
 
+   /**
+    * Instead of having a parent class for call-like functions.
+    */
+   public boolean isCall() {
+      return this instanceof CallInstruction
+       || this instanceof PrintInstruction
+       || this instanceof PrintlnInstruction
+       || this instanceof ReadInstruction
+       || this instanceof NewInstruction;
+   }
+
    public void transformRegisters(Map<Register, Register> allocations) {
       Register virtual, real;
       int ndx = 0;

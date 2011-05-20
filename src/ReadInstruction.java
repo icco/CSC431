@@ -30,9 +30,9 @@ public class ReadInstruction extends Instruction {
       i.addDest(new Register("%o0"));
       instructions.add(i);
 
-      // mov     %o1, %o1
+      // mov     %o0, %o1
       i = new MovSparc();
-      i.addSource(new Register("%o1"));
+      i.addSource(new Register("%o0"));
       i.addDest(new Register("%o1"));
       instructions.add(i);
 
