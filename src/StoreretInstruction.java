@@ -7,10 +7,22 @@ import java.lang.*;
 public class StoreretInstruction extends Instruction {
    public static Integer operandCount = 1;
    public StoreretInstruction() {
-      super();
+      super();sparcs.add("mov");
    }
 
    public String toString() { return this.toILOC(); }
+
+   public ArrayList<Sparc> toSparc() {
+      ArrayList<Sparc> instructions = new ArrayList<Sparc>();
+      Sparc i;
+
+      i = new MovSparc();
+      i.addOp(this.getOperands().get(0));
+      i.addOp(new Register("%i0"));
+
+      instructions.add(i);
+      return instructions;
+   }
 
    public String toILOC() {
       String classPattern = new String("Register");
