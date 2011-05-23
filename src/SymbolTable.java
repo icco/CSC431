@@ -63,7 +63,7 @@ public class SymbolTable {
 
       if (s != null)
          return s.getType();
-      else 
+      else
          return null;
    }
 
@@ -161,7 +161,7 @@ public class SymbolTable {
 
    public String toILOC() {
       String functionDefs = "", localDefs = "";
-      Set<String> functionNames, localNames; 
+      Set<String> functionNames, localNames;
       FuncType fun;
 
       functionNames = functions.keySet();

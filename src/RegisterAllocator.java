@@ -8,8 +8,8 @@ import java.util.*;
  *   get mappings using colorGraph().
  */
 public class RegisterAllocator {
-   /** 
-    * graph is just an easy way to access the vertices. 
+   /**
+    * graph is just an easy way to access the vertices.
     * All of the connections in the graph are stored in the ColorNode objects.
     */
    private Map<Register, ColorNode> graph;
@@ -28,7 +28,7 @@ public class RegisterAllocator {
       allocations = new HashMap<Register, Register>();
 
       /**
-       * Graph starts with all the real registers. 
+       * Graph starts with all the real registers.
        * These registers all interfere with each other, as
        * they each need a unique color.
        */
@@ -48,13 +48,13 @@ public class RegisterAllocator {
    }
 
    /**
-    * Build the graph by adding registers from all the nodes 
+    * Build the graph by adding registers from all the nodes
     * from all the functions in a program.
     */
    public void buildGraph(GraphTable graphTable) {
       graphTable.topoSort();
       for (Node block : graphTable.allNodes) {
-         addNode(block); 
+         addNode(block);
       }
 
       /* DEBUG code but I might need to debug again later.
@@ -84,7 +84,7 @@ public class RegisterAllocator {
       List<Instruction> instrs = block.getInstr();
       ListIterator<Instruction> iter = instrs.listIterator(instrs.size());
 
-      while (iter.hasPrevious()) { 
+      while (iter.hasPrevious()) {
          Instruction instr = iter.previous();
          srcs = new ArrayList<Register>(instr.getSources());
          dests = new ArrayList<Register>(instr.getDestinations());
@@ -111,9 +111,9 @@ public class RegisterAllocator {
             liveSet.remove(dest);
             addEdges(dest, liveSet);
          }
-            
+
          for (Register src : srcs) {
-            liveSet.add(src); 
+            liveSet.add(src);
          }
       }
    }
@@ -150,7 +150,7 @@ public class RegisterAllocator {
       }
    }
 
-   /** 
+   /**
     * Use the mappings to change the instructions.
     */
    public void transformCode(GraphTable graph) {
@@ -166,7 +166,7 @@ public class RegisterAllocator {
     */
    public void colorGraph() {
       Stack<ColorNode> popped;
-      
+
       popped = deconstructGraph();
       reconstructGraph(popped);
 
@@ -178,7 +178,7 @@ public class RegisterAllocator {
          colorings.put(color, new LinkedList<Register>());
       }
 
-      // Sort of a hacky way to do this. 
+      // Sort of a hacky way to do this.
       // First map colors (numbers) to a list of virtual registers.
       for (Register key : graph.keySet()) {
          ColorNode node = graph.get(key);
@@ -218,7 +218,7 @@ public class RegisterAllocator {
 
       return best;
    }
-   
+
    /**
     * Convert graph into a stack of nodes, where the
     * order of the stack is the order to color.
@@ -232,7 +232,7 @@ public class RegisterAllocator {
          rStack.push(next);
          graph.remove(next.getVertex());
       }
-         
+
       return rStack;
    }
 
@@ -269,11 +269,12 @@ public class RegisterAllocator {
          }
 
          if (vertex.getColor() == -1) {
-            // TODO handle spills.
-            String debug = vertex + "\n"; 
+            // TODO: handle spills.
+            String debug = vertex + "\n";
             for (ColorNode edge : vertex.getEdges()) {
                debug += edge;
             }
+
             Evil.warning("Spill for register: " + vertex.getVertex());
          }
       }

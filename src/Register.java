@@ -12,8 +12,8 @@ public class Register implements Operand {
       this.id = in;
    }
 
-   public StructType getType() { 
-      return this.type; 
+   public StructType getType() {
+      return this.type;
    }
 
    public void setType(Type type) {
@@ -42,7 +42,7 @@ public class Register implements Operand {
    public boolean equals(Object other) {
       if (other instanceof Register) {
          return toString().equals(other.toString());
-      } 
+      }
 
       return false;
    }

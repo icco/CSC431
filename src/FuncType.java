@@ -32,5 +32,4 @@ public class FuncType extends Type {
    public Map<String, Symbol> getLocalMap() { return this.localMap; }
    public Map<String, Symbol> getParamMap() { return this.paramMap; }
    public List<Symbol> getLocals() { return this.locals; };
-
 }

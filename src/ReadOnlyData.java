@@ -29,6 +29,4 @@ public class ReadOnlyData {
    public String toString() {
       return this.data;
    }
-
 }
-

@@ -5,7 +5,7 @@ public class ColorNode implements Comparable<ColorNode> {
    private Register vertex;
    private int color = -1; // -1 for color not set or a spill.
    private boolean real = false; // Node for virtual or real register.
- 
+
    public ColorNode(Register r) {
       this.vertex = r;
       this.edges = new HashSet<ColorNode>();
@@ -39,9 +39,9 @@ public class ColorNode implements Comparable<ColorNode> {
    public boolean isReal() { return real; }
    public void setReal(boolean real) { this.real = real; }
 
-   /** 
-    * Hueristic for order to color. 
-    * Pick non-virtual nodes last. 
+   /**
+    * Hueristic for order to color.
+    * Pick non-virtual nodes last.
     * Otherwise pick node with smallest edges.
     *
     * Best pick is "highest" when comparing.

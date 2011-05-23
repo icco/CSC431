@@ -6,18 +6,18 @@ public class StructIdentifier extends StructType implements Operand {
    }
 
    public String toString() {
-      return this.toILOC(); 
+      return this.toILOC();
    }
 
    /* TODO: Implement... */
    public String toSparc() {
-      return this.toILOC(); 
+      return this.toILOC();
    }
 
    public String toILOC() {
       String def = "";
 
-      def += getName() + ", ["; 
+      def += getName() + ", [";
 
       for (int ndx = 0; ndx < memberOrder.size(); ndx++) {
          def += memberOrder.get(ndx);

@@ -32,7 +32,7 @@ public class Symbol {
    public void setType(Type t) { this.t = t; }
    public void setLine(int line) { this.lineNumber = line; }
 
-   public void setScope(Scope s) { this.scopeLevel = s; } 
+   public void setScope(Scope s) { this.scopeLevel = s; }
    public boolean isLocal() { return this.scopeLevel == Scope.LOCAL; }
    public boolean isParam() { return this.scopeLevel == Scope.PARAM; }
    public boolean isGlobal() { return this.scopeLevel == Scope.GLOBAL; }

@@ -16,29 +16,29 @@ public class Node implements Iterable<Node> {
    private Set<Register> kill;
    private Set<Register> live;
 
-   public Set<Register> getGenSet() { 
+   public Set<Register> getGenSet() {
       if (gen == null) {
          createGenAndKill();
       }
-      
-      return gen; 
+
+      return gen;
    }
 
-   public Set<Register> getKillSet() { 
+   public Set<Register> getKillSet() {
       if (kill == null) {
          createGenAndKill();
       }
-      
-      return kill; 
+
+      return kill;
    }
 
-   public Set<Register> getLiveSet() { 
+   public Set<Register> getLiveSet() {
       if (live == null) {
           // This needs to iterate, AND still might not be the right place to do this.
          createLive();
       }
 
-      return live; 
+      return live;
    }
 
    public Boolean isFunction() {
@@ -73,7 +73,7 @@ public class Node implements Iterable<Node> {
       for (Node successor : children) {
          if (successor != this) { // Ask about this?
             immediate = successor.getGenSet();
-            nonImmediate = 
+            nonImmediate =
              new HashSet<Register>(successor.getLiveSet());
             nonImmediate.removeAll(successor.getKillSet());
 

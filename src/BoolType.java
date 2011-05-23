@@ -1,3 +1,1 @@
-public class BoolType extends Type {
-
-}
+public class BoolType extends Type { }

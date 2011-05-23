@@ -2,12 +2,12 @@ public class Field extends ID {
    private StructType type;
 
    public Field() { }
-   public Field(String id) { 
-      this.id = id; 
+   public Field(String id) {
+      this.id = id;
    }
 
-   public Field(String id, StructType type) { 
-      this.id = id; 
+   public Field(String id, StructType type) {
+      this.id = id;
       this.type = type;
    }
 
@@ -18,7 +18,7 @@ public class Field extends ID {
       return type.getOffset(id);
    }
 
-   public String toString() { 
+   public String toString() {
       return this.id.toString();
    }
 }

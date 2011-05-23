@@ -171,7 +171,7 @@ function
       for (Symbol param : currentFunc.getParams()) {
          param.setOffset(offset++);
          param.setRegister(new Register());
-         
+
          Instruction mov = new LoadinargumentInstruction();
          Register newLocalReg = new Register();
 
@@ -190,7 +190,7 @@ function
       /* All paths from start end with the function's final node */
       finalNode = new Node();
       finalNode.setLabel(("." + $ID.getText() + "_final"));
-      
+
 
 
    }
@@ -432,7 +432,7 @@ ret[Node current] returns [Node exit]
    : ^(RETURN (e=expression[current])?) {
       if ($e.r != null) {
          Instruction sr = new StoreretInstruction();
-         sr.addSource($e.r); 
+         sr.addSource($e.r);
          current.addInstr(sr);
       }
 

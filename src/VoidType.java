@@ -1,3 +1,1 @@
-public class VoidType extends Type {
-
-}
+public class VoidType extends Type { }
