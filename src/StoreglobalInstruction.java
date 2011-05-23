@@ -7,7 +7,7 @@ import java.lang.*;
 public class StoreglobalInstruction extends Instruction {
    public static Integer operandCount = 2;
    public StoreglobalInstruction() {
-      super();
+      super();sparcs.add("set");
    }
 
    public String toString() { return this.toILOC(); }

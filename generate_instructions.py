@@ -140,7 +140,7 @@ instructions = [
       'name': 'loadglobal',
       'sources': [ 'ID' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': [ 'set' ],
    },
    {
       'name': 'loadinargument',
@@ -187,13 +187,13 @@ instructions = [
       'name': 'storeglobal',
       'sources': [ 'Register' ],
       'dest': [ 'ID' ],
-      'sparc': [ ],
+      'sparc': [ 'set' ],
    },
    {
       'name': 'storeoutargument',
       'sources': [ 'Register' ],
       'dest': [ 'Immediate' ],
-      'sparc': ['mov'],
+      'sparc': [ 'mov' ],
       'modified': 1
    },
    {

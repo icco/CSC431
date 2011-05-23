@@ -1,5 +1,8 @@
 # REMEMBER TO MODIFY the .c files and the INPUT and OUTPUT files.
 
+int global1;
+int global2;
+
 # adds two numbers
 fun sum (int a, int b) int
 {
@@ -9,8 +12,11 @@ fun sum (int a, int b) int
 # main function
 fun main () int 
 {
+   global1 = 10000;
+   global2 = 2;
+
    if ( 1 < 2 ) {
-      print (sum (10000, 2)) endl;
+      print (sum (global1, global2)) endl;
    } else {
       print (sum (2, 2)) endl;
    }
