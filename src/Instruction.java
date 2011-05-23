@@ -28,9 +28,7 @@ public abstract class Instruction {
             Class cls = Class.forName(classname);
             Sparc i = (Sparc)cls.newInstance();
 
-            // TODO: Need to add code here to deal with Immediates > 13 bits.
             if (this.sparcs.size() == 1) {
-
                // Conditional moves need a %icc
                if (instr.length() > 3 && instr.substring(0,3).equals("mov")) {
                   i.addSource(new ConditionCodeRegister());

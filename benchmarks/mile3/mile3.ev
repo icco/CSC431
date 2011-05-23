@@ -1,3 +1,4 @@
+# REMEMBER TO MODIFY the .c files and the INPUT and OUTPUT files.
 
 # adds two numbers
 fun sum (int a, int b) int
@@ -5,10 +6,11 @@ fun sum (int a, int b) int
     return (a + b);
 }
 
+# main function
 fun main () int 
 {
    if ( 1 < 2 ) {
-      print (sum (1, 2)) endl;
+      print (sum (10000, 2)) endl;
    } else {
       print (sum (2, 2)) endl;
    }

@@ -128,7 +128,7 @@ instructions = [
       'name': 'loadi',
       'sources': [ 'Immediate' ],
       'dest': [ 'Register' ],
-      'sparc': [ 'mov' ],
+      'sparc': [ 'set' ],
    },
    {
       'name': 'loadai',
