@@ -177,4 +177,14 @@ public class SymbolTable {
 
       return functionDefs + "\n" + localDefs + "\n";
    }
+
+   public String toSparc() {
+      String ret = "\n";
+
+      for (String gname : this.getGlobals().keySet()) {
+         ret += "\t.common " + gname + ",4,4\n";
+      }
+
+      return ret;
+   }
 }

@@ -34,6 +34,7 @@ public class GraphTable extends HashMap<String, Node> {
       String ret = "";
       List<Node> nodes = new LinkedList<Node>();
 
+      // Print out the functions.
       for (String s : this.keySet()) {
          // .align 4
          ret += "\t.align 4\n";

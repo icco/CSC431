@@ -33,7 +33,7 @@ options {
    }
 
    public String toSparc() {
-      return nodeTable.toSparc();
+      return nodeTable.toSparc() + symTable.toSparc();
    }
 
    private Register loadVar(String name, Node current) {
