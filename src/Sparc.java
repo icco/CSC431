@@ -13,7 +13,11 @@ public abstract class Sparc {
    }
 
    public void addOp(Operand in) {
-      this.operands.add(in);
+      if (in instanceof ID) {
+         this.operands.add(0, in);
+      } else {
+         this.operands.add(in);
+      }
    }
 
    public ArrayList<Operand> getOperands() {
