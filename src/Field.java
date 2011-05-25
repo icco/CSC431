@@ -15,7 +15,7 @@ public class Field extends ID {
    public StructType getType() { return this.type; }
 
    public Integer getOffset() {
-      return type.getOffset(id);
+      return 4 * type.getOffset(id);
    }
 
    public String toString() {

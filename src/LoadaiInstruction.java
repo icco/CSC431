@@ -10,6 +10,25 @@ public class LoadaiInstruction extends Instruction {
       super();sparcs.add("ldsw");
    }
 
+   public ArrayList<Sparc> toSparc() {
+      ArrayList<Sparc> instructions = new ArrayList<Sparc>();
+      
+      LdswSparc load = new LdswSparc();
+
+      Register src = (Register) this.getOperands().get(0);
+      Field member = (Field) this.getOperands().get(1);
+      Register dest = this.getDestinations().get(0);
+
+      src = new Register(src.id); // Make a copy before adding offset.
+      src.addOffset(member.getOffset());
+
+      load.addSource(src);
+      load.addDest(dest);
+      instructions.add(load);
+
+      return instructions;
+   }
+
    public String toString() { return this.toILOC(); }
 
    public String toILOC() {

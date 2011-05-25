@@ -7,10 +7,29 @@ import java.lang.*;
 public class StoreaiInstruction extends Instruction {
    public static Integer operandCount = 3;
    public StoreaiInstruction() {
-      super();
+      super();sparcs.add("st");
    }
 
    public String toString() { return this.toILOC(); }
+
+   public ArrayList<Sparc> toSparc() {
+      ArrayList<Sparc> instructions = new ArrayList<Sparc>();
+      
+      StSparc store = new StSparc();
+
+      Register src = this.getSources().get(0);
+      Field member = (Field) this.getOperands().get(2);
+      Register address = this.getSources().get(1);
+
+      address = new Register(address.id); // Make a copy before adding offset.
+      address.addOffset(member.getOffset());
+
+      store.addSource(src);
+      store.addSource(address);
+      instructions.add(store);
+
+      return instructions;
+   }
 
    public String toILOC() {
       String classPattern = new String("Register Register Field");

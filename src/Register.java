@@ -2,6 +2,7 @@ public class Register implements Operand {
    public static int regCounter = 0;
    public String id = "";
    public StructType type;
+   public Integer offset; // Only used in Sparc loads and stores.
 
    public Register() {
       regCounter = regCounter + 1;
@@ -23,7 +24,18 @@ public class Register implements Operand {
       }
    }
 
+   /**
+    * Hack that's nice for the printing of Sparc loads and stores.
+    */
+   public void addOffset(Integer offset) {
+      this.offset = offset;
+   }
+
    public String toString() {
+      if (this.offset != null) {
+         return "[" + this.id + "+" + this.offset + "]";
+      }
+
       return this.id;
    }
 
@@ -48,6 +60,6 @@ public class Register implements Operand {
    }
 
    public int hashCode() {
-      return toString().hashCode();
+      return id.hashCode();
    }
 }

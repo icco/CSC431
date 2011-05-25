@@ -135,6 +135,7 @@ instructions = [
       'sources': [ 'Register', 'Field' ],
       'dest': [ 'Register' ],
       'sparc': [ 'ldsw' ],
+      'modified': 1
    },
    {
       'name': 'loadglobal',
@@ -179,9 +180,10 @@ instructions = [
 
    {
       'name': 'storeai',
-      'sources': [ 'Register' ],
-      'dest': [ 'Register', 'Field' ],
-      'sparc': [ ],
+      'sources': [ 'Register', 'Register' ],
+      'dest': [ 'Field' ],
+      'sparc': ['st'],
+      'modified': 1
    },
    {
       'name': 'storeglobal',
