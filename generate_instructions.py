@@ -227,7 +227,8 @@ instructions = [
       'name': 'new',
       'sources': [ 'StructIdentifier' ],
       'dest': [ 'Register' ],
-      'sparc': [ ],
+      'sparc': ['mov', 'call', 'nop', 'mov'],
+      'modified': 1
    },
    {
       'name': 'del',
