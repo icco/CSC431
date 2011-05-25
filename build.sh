@@ -15,7 +15,7 @@ select dir in `ls benchmarks`; do
          $ECC $s
          ./a.out < benchmarks/$dir/input > benchmarks/$dir/output.ev
          echo " -- returns: $?"
-         diff -qwbu benchmarks/$dir/output.ev benchmarks/$dir/output
+         diff -wbu benchmarks/$dir/output.ev benchmarks/$dir/output
       else
          echo "ssh to sparc03 to actually compile your .s file."
       fi
