@@ -7,7 +7,7 @@ import java.lang.*;
 public class LoadiInstruction extends Instruction {
    public static Integer operandCount = 2;
    public LoadiInstruction() {
-      super();sparcs.add("mov");
+      super();sparcs.add("set");
    }
 
    public String toString() { return this.toILOC(); }
