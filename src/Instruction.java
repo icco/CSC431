@@ -68,7 +68,7 @@ public abstract class Instruction {
          Register r = new Register("%o1");
          r.addOffset(0);
          instructions.get(0).addOp(this.getOperands().get(1));
-         instructions.get(0).addOp(r);
+         instructions.get(0).addOp(r.copy());
          instructions.get(1).addOp(this.getOperands().get(0));
          instructions.get(1).addOp(r);
       }
@@ -77,7 +77,7 @@ public abstract class Instruction {
          Register r = new Register("%o1");
          r.addOffset(0);
          instructions.get(0).addOp(this.getOperands().get(0));
-         instructions.get(0).addOp(r);
+         instructions.get(0).addOp(r.copy());
          instructions.get(1).addOp(r);
          instructions.get(1).addOp(this.getOperands().get(1));
       }
