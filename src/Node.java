@@ -14,7 +14,7 @@ public class Node implements Iterable<Node> {
 
    private Set<Register> gen;
    private Set<Register> kill;
-   private Set<Register> live;
+   private Set<Register> live = new HashSet<Register>();
 
    public Set<Register> getGenSet() {
       if (gen == null) {
@@ -32,12 +32,19 @@ public class Node implements Iterable<Node> {
       return kill;
    }
 
-   public Set<Register> getLiveSet() {
-      if (live == null) {
-          // This needs to iterate, AND still might not be the right place to do this.
-         createLive();
-      }
+   /**
+    * Recompute the live set.
+    * @returns true if the live set did not change.
+    */
+   public boolean redoLiveSet() {
+      Set<Register> oldLiveSet = new HashSet<Register>(live);
 
+      createLive();
+
+      return oldLiveSet.equals(live);
+   }
+
+   public Set<Register> getLiveSet() {
       return live;
    }
 
@@ -71,15 +78,13 @@ public class Node implements Iterable<Node> {
       Set<Register> nonImmediate;
 
       for (Node successor : children) {
-         if (successor != this) { // Ask about this?
-            immediate = successor.getGenSet();
-            nonImmediate =
-             new HashSet<Register>(successor.getLiveSet());
-            nonImmediate.removeAll(successor.getKillSet());
+         immediate = successor.getGenSet();
+         nonImmediate =
+          new HashSet<Register>(successor.getLiveSet());
+         nonImmediate.removeAll(successor.getKillSet());
 
-            liveOut.addAll(immediate);
-            liveOut.addAll(nonImmediate);
-         }
+         liveOut.addAll(immediate);
+         liveOut.addAll(nonImmediate);
       }
 
       this.live = liveOut;

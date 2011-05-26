@@ -52,8 +52,7 @@ public class RegisterAllocator {
     * from all the functions in a program.
     */
    public void buildGraph(GraphTable graphTable) {
-      graphTable.topoSort();
-      for (Node block : graphTable.allNodes) {
+      for (Node block : graphTable.getAllNodes()) {
          addNode(block);
       }
 
