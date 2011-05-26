@@ -10,6 +10,33 @@ public class NewInstruction extends Instruction {
       super();sparcs.add("mov");sparcs.add("call");sparcs.add("nop");sparcs.add("mov");
    }
 
+   public ArrayList<Sparc> toSparc() {
+      ArrayList<Sparc> instructions = new ArrayList<Sparc>();
+      Sparc i;
+
+      // mov sizeof(Struct), %o1
+      i = new MovSparc();
+      i.addOp(this.getOperands().get(0));
+      i.addDest(new Register("%o1"));
+      instructions.add(i);
+
+      // call malloc
+      i = new CallSparc();
+      i.addOp(new Label("malloc"));
+      instructions.add(i);
+
+      // nop
+      i = new NopSparc();
+      instructions.add(i);
+
+      // mov %o0 %dest
+      i = new MovSparc();
+      i.addSource(new Register("%o0"));
+      i.addDest(this.getDestinations().get(0));
+
+      return instructions;
+   }
+
    public String toString() { return this.toILOC(); }
 
    public String toILOC() {

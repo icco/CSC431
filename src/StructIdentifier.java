@@ -9,9 +9,8 @@ public class StructIdentifier extends StructType implements Operand {
       return this.toILOC();
    }
 
-   /* TODO: Implement... */
    public String toSparc() {
-      return this.toILOC();
+      return "" + this.members.size() * 4;
    }
 
    public String toILOC() {

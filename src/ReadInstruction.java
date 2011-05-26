@@ -38,7 +38,7 @@ public class ReadInstruction extends Instruction {
 
       // call    scanf
       i = new CallSparc();
-      i.addSource(new Label("scanf"));
+      i.addOp(new Label("scanf"));
       instructions.add(i);
 
       // nop
