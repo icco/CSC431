@@ -17,23 +17,10 @@ public class ReadInstruction extends Instruction {
       ArrayList<Sparc> instructions = new ArrayList<Sparc>();
       Sparc i;
 
-      // sethi   %hi(.LLC2), %i0
-      i = new SethiSparc();
-      i.addSource(new Register("%hi(.LLC2)"));
-      i.addDest(new Register("%i0"));
-      instructions.add(i);
-
-      // or      %i0, %lo(.LLC2), %o0
-      i = new OrSparc();
-      i.addSource(new Register("%i0"));
-      i.addSource(new Register("%lo(.LLC2)"));
+      // set   .LLC2, %o0
+      i = new SetSparc();
+      i.addOp(new Label(".LLC2"));
       i.addDest(new Register("%o0"));
-      instructions.add(i);
-
-      // mov     %o0, %o1
-      i = new MovSparc();
-      i.addSource(new Register("%o0"));
-      i.addDest(new Register("%o1"));
       instructions.add(i);
 
       // call    scanf
@@ -43,6 +30,12 @@ public class ReadInstruction extends Instruction {
 
       // nop
       instructions.add(new NopSparc());
+
+      // mov     %o0, %dest
+      i = new MovSparc();
+      i.addSource(new Register("%o0"));
+      i.addDest(this.getDestinations().get(0));
+      instructions.add(i);
 
       return instructions;
    }

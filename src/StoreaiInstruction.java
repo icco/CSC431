@@ -21,7 +21,7 @@ public class StoreaiInstruction extends Instruction {
       Field member = (Field) this.getOperands().get(2);
       Register address = this.getSources().get(1);
 
-      address = new Register(address.id); // Make a copy before adding offset.
+      address = address.copy();
       address.addOffset(member.getOffset());
 
       store.addSource(src);

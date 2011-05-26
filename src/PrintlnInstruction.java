@@ -16,7 +16,7 @@ public class PrintlnInstruction extends Instruction {
       ArrayList<Sparc> instructions = new ArrayList<Sparc>();
       Sparc i;
 
-      // sethi   %hi(.LLC1), %i0
+      // set   .LLC1, %o0
       i = new SetSparc();
       i.addSource(new Label(".LLC1"));
       i.addDest(new Register("%o0"));

@@ -100,10 +100,9 @@ public class RegisterAllocator {
             dests.add((Register) instr.getOperands().get(1));
          }
 
-         if (instr instanceof PrintInstruction ||
-             instr instanceof PrintlnInstruction ||
-             instr instanceof ReadInstruction) {
-            dests.add(new Register("%i0"));
+         if (instr instanceof StoreglobalInstruction ||
+             instr instanceof LoadglobalInstruction) {
+            dests.add(new Register("%o1"));
          }
 
          for (Register dest : dests) {

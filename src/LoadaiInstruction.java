@@ -19,7 +19,7 @@ public class LoadaiInstruction extends Instruction {
       Field member = (Field) this.getOperands().get(1);
       Register dest = this.getDestinations().get(0);
 
-      src = new Register(src.id); // Make a copy before adding offset.
+      src = src.copy();
       src.addOffset(member.getOffset());
 
       load.addSource(src);

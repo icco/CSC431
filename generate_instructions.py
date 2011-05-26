@@ -256,9 +256,9 @@ instructions = [
    },
    {
       'name': 'read',
-      'sources': [ 'Register' ],
-      'dest': [ ],
-      'sparc': [ 'sethi', 'or', 'mov', 'call', 'nop' ],
+      'sources': [ ],
+      'dest': ['Register'],
+      'sparc': [ 'set', 'or', 'mov', 'call', 'nop' ],
       'modified': 1,
    },
 
