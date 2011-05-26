@@ -32,19 +32,23 @@ public class Register implements Operand {
    }
 
    public String toString() {
-      if (this.offset != null) {
-         return "[" + this.id + "+" + this.offset + "]";
+      if (this.id.contains("%")) {
+         return this.id;
+      } else {
+         return "%" + this.id;
       }
-
-      return this.id;
    }
 
    public String toSparc() {
-      if (this.id.contains("%")) {
-         return this.toString();
-      } else {
-         return "%" + this.toString();
+      if (this.offset != null) {
+         if (this.offset == 0) {
+            return "[" + toString() + "]";
+         } else {
+            return "[" + toString() + "+" + this.offset + "]";
+         }
       }
+
+      return toString();
    }
 
    public String toILOC() {
