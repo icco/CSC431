@@ -51,6 +51,10 @@ public class Register implements Operand {
       return toString();
    }
 
+   public Register copy() {
+      return new Register(this.id);
+   }
+
    public String toILOC() {
       return this.toString();
    }

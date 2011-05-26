@@ -17,15 +17,8 @@ public class PrintlnInstruction extends Instruction {
       Sparc i;
 
       // sethi   %hi(.LLC1), %i0
-      i = new SethiSparc();
-      i.addSource(new Register("%hi(.LLC1)"));
-      i.addDest(new Register("%i0"));
-      instructions.add(i);
-
-      // or      %i0, %lo(.LLC1), %o0
-      i = new OrSparc();
-      i.addSource(new Register("%i0"));
-      i.addSource(new Register("%lo(.LLC1)"));
+      i = new SetSparc();
+      i.addSource(new Label(".LLC1"));
       i.addDest(new Register("%o0"));
       instructions.add(i);
 
