@@ -36,7 +36,7 @@ public abstract class Instruction {
 
                for (Operand o : this.getOperands()) {
                   // Don't write out %icc for cmp.
-                  if (!(instr.equals("cmp") && 
+                  if (!(instr.equals("cmp") &&
                    o instanceof ConditionCodeRegister)) {
                      i.addOp(o);
                   }
@@ -52,16 +52,34 @@ public abstract class Instruction {
 
             instructions.add(i);
          } catch (ClassNotFoundException e) {
-            Evil.error("No such class " + classname 
+            Evil.error("No such class " + classname
              + ": " + e.getMessage());
-
          } catch (InstantiationException e) {
-            Evil.error("Could not instantiate object " 
+            Evil.error("Could not instantiate object "
              + classname + ": " + e.getMessage());
          } catch (IllegalAccessException e) {
-            Evil.error("Could not access constructor for object " 
+            Evil.error("Could not access constructor for object "
              + classname + ": " + e.getMessage());
          }
+      }
+
+      // Globals
+      if (this instanceof StoreglobalInstruction) {
+         Register r = new Register("%o1");
+         r.addOffset(0);
+         instructions.get(0).addOp(this.getOperands().get(1));
+         instructions.get(0).addOp(r);
+         instructions.get(1).addOp(this.getOperands().get(0));
+         instructions.get(1).addOp(r);
+      }
+
+      if (this instanceof LoadglobalInstruction) {
+         Register r = new Register("%o1");
+         r.addOffset(0);
+         instructions.get(0).addOp(this.getOperands().get(0));
+         instructions.get(0).addOp(r);
+         instructions.get(1).addOp(r);
+         instructions.get(1).addOp(this.getOperands().get(1));
       }
 
       // Conditional Branches.
