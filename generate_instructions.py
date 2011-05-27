@@ -244,15 +244,14 @@ instructions = [
       'name': 'print',
       'sources': [ 'Register' ],
       'dest': [ ],
-      'sparc': [ 'sethi', 'or', 'mov', 'call', 'nop' ],
+      'sparc': [ 'set', 'mov', 'call', 'nop' ],
       'modified': 1,
    },
    {
       'name': 'println',
       'sources': [ 'Register' ],
       'dest': [ ],
-      'sparc': [ ],
-      'sparc': [ 'sethi', 'or', 'mov', 'call', 'nop' ],
+      'sparc': [ 'set', 'mov', 'call', 'nop' ],
       'modified': 1,
    },
    {
