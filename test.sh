@@ -5,7 +5,7 @@ passed=0
 
 echo "-- Running all Benchmarks..."
 for i in `ls benchmarks/`; do
-   echo $i | ./build.sh -q &> /dev/null
+   echo $i | ./build.sh -q #&> /dev/null
 
    if [ $? = 0 ]; then
       passed=`expr $passed + 1`

@@ -16,9 +16,13 @@ function build() {
       if [[ `hostname` = sparc* ]]; then
          s=`echo $ev | sed 's/\.ev/\.s/'`
          $ECC $s
+
+         # I wish we had timeout....
          ./a.out < benchmarks/$dir/input > benchmarks/$dir/output.ev
+
          echo " -- returns: $?"
-         diff -wbu benchmarks/$dir/output.ev benchmarks/$dir/output
+         diff -wbu benchmarks/$dir/output benchmarks/$dir/output.ev
+
          passed=$?
       else
          echo "ssh to sparc03 to actually compile your .s file."
