@@ -7,7 +7,29 @@ import java.lang.*;
 public class DelInstruction extends Instruction {
    public static Integer operandCount = 1;
    public DelInstruction() {
-      super();
+      super();sparcs.add("mov");sparcs.add("call");sparcs.add("nop");
+   }
+
+   public ArrayList<Sparc> toSparc() {
+      ArrayList<Sparc> instructions = new ArrayList<Sparc>();
+      Sparc i;
+
+      // mov %i1, %o0
+      i = new MovSparc();
+      i.addOp(this.getOperands().get(0));
+      i.addDest(new Register("%o0"));
+      instructions.add(i);
+
+      // call free
+      i = new CallSparc();
+      i.addOp(new Label("free"));
+      instructions.add(i);
+
+      // nop
+      i = new NopSparc();
+      instructions.add(i);
+
+      return instructions;
    }
 
    public String toString() { return this.toILOC(); }
