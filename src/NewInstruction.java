@@ -14,10 +14,10 @@ public class NewInstruction extends Instruction {
       ArrayList<Sparc> instructions = new ArrayList<Sparc>();
       Sparc i;
 
-      // mov sizeof(Struct), %o1
+      // mov sizeof(Struct), %o0
       i = new MovSparc();
       i.addOp(this.getOperands().get(0));
-      i.addDest(new Register("%o1"));
+      i.addDest(new Register("%o0"));
       instructions.add(i);
 
       // call malloc
@@ -33,6 +33,7 @@ public class NewInstruction extends Instruction {
       i = new MovSparc();
       i.addSource(new Register("%o0"));
       i.addDest(this.getDestinations().get(0));
+      instructions.add(i);
 
       return instructions;
    }
