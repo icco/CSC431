@@ -7,7 +7,7 @@ import java.lang.*;
 public class DelInstruction extends Instruction {
    public static Integer operandCount = 1;
    public DelInstruction() {
-      super();
+      super();sparcs.add("mov");sparcs.add("call");sparcs.add("nop");
    }
 
    public String toString() { return this.toILOC(); }
