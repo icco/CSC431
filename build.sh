@@ -1,7 +1,7 @@
 #!/bin/bash
 
-ECC="gcc -mcpu=v9"
-comp="./ecc"
+ECC="gcc -g -mcpu=v9"
+comp="./ecc -i"
 passed=1
 
 ulimit -s unlimited 
@@ -13,7 +13,7 @@ function build() {
    echo -e "\n${dir}: "
    FILES=`ls benchmarks/${dir}/${dir}.ev`
    for ev in $FILES; do
-      $comp $ev
+      $comp $ev # compiles the .s
 
       if [[ `hostname` = sparc* ]]; then
          s=`echo $ev | sed 's/\.ev/\.s/'`
