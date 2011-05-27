@@ -163,7 +163,7 @@ public class Node implements Iterable<Node> {
       // max of number of arguments passed on the stack for all calls in this
       // function.
 
-      return -120;
+      return -144;
    }
 
    public static String nextLabel() {

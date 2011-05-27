@@ -13,7 +13,7 @@ function build() {
    echo -e "\n${dir}: "
    FILES=`ls benchmarks/${dir}/${dir}.ev`
    for ev in $FILES; do
-      $comp $ev
+      $comp $ev # compiles the .s
 
       if [[ `hostname` = sparc* ]]; then
          s=`echo $ev | sed 's/\.ev/\.s/'`
