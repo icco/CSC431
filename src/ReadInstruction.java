@@ -23,6 +23,12 @@ public class ReadInstruction extends Instruction {
       i.addDest(new Register("%o0"));
       instructions.add(i);
 
+      // set .readspot %o1
+      i = new SetSparc();
+      i.addOp(new Label(".readspot"));
+      i.addDest(new Register("%o1"));
+      instructions.add(i);
+
       // call    scanf
       i = new CallSparc();
       i.addOp(new Label("scanf"));
@@ -31,9 +37,15 @@ public class ReadInstruction extends Instruction {
       // nop
       instructions.add(new NopSparc());
 
-      // mov     %o0, %dest
-      i = new MovSparc();
-      i.addSource(new Register("%o0"));
+      // set .readspot %o1
+      i = new SetSparc();
+      i.addOp(new Label(".readspot"));
+      i.addDest(new Register("%o1"));
+      instructions.add(i);
+
+      // ldsw     [%o1], %dest
+      i = new LdswSparc();
+      i.addSource(new Register("%o1"));
       i.addDest(this.getDestinations().get(0));
       instructions.add(i);
 
