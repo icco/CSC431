@@ -45,7 +45,11 @@ public class ReadInstruction extends Instruction {
 
       // ldsw     [%o1], %dest
       i = new LdswSparc();
-      i.addSource(new Register("%o1"));
+
+      Register readSpotAddress = new Register("%o1");
+      readSpotAddress.addOffset(0);
+
+      i.addSource(readSpotAddress);
       i.addDest(this.getDestinations().get(0));
       instructions.add(i);
 
