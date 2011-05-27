@@ -28,6 +28,9 @@ options {
 
 verify
 @init {
+   // Always have a global where we read to.
+   Symbol readGlobal = new Symbol(".readspot", new IntType());
+   symTable.bind(readGlobal, true);
 }
    : ^(PROGRAM types
 

@@ -81,7 +81,8 @@ public class GraphTable extends HashMap<String, Node> {
          itr = getAllNodes().listIterator(getAllNodes().size());
 
          while (itr.hasPrevious()) {
-            liveSetsAreConstant = liveSetsAreConstant && itr.previous().redoLiveSet();
+            liveSetsAreConstant = 
+             itr.previous().redoLiveSet() && liveSetsAreConstant;
          }
 
       } while (!liveSetsAreConstant);
