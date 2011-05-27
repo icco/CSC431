@@ -236,6 +236,7 @@ instructions = [
       'sources': [ 'Register' ],
       'dest': [ ],
       'sparc': [ 'mov', 'call', 'nop' ],
+      'modified': 1
    },
 
 # I/0 (That's a planet right?)
