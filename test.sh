@@ -1,7 +1,5 @@
 #!/bin/bash
 
-make clean # for safety's sake.
-
 failed=""
 passed=0
 

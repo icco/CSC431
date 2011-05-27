@@ -69,7 +69,11 @@ typetest: all
 	@./typetest.sh
 
 .PHONY: test
-test: tests/compat.ev
+test: all
+	@./test.sh
+
+.PHONY: compat
+compat: tests/compat.ev
 
 .PHONY: benchmarks
 bechmarks:
