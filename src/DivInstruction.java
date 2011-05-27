@@ -39,7 +39,7 @@ public class DivInstruction extends Instruction {
 
       //mov  %o0, %l0 ; result
       i = new MovSparc();
-      i.addSource(new Register("%O0"));
+      i.addSource(new Register("%o0"));
       i.addDest(this.getOperands().get(2));
       instructions.add(i);
 
