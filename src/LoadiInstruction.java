@@ -7,7 +7,33 @@ import java.lang.*;
 public class LoadiInstruction extends Instruction {
    public static Integer operandCount = 2;
    public LoadiInstruction() {
-      super();sparcs.add("set");
+      super();sparcs.add("set");sparcs.add("neg");
+   }
+
+   public ArrayList<Sparc> toSparc() {
+      ArrayList<Sparc> instructions = new ArrayList<Sparc>();
+      Sparc i;
+
+      Immediate num = (Immediate) this.getOperands().get(0);
+      boolean isNegative = num.getValue() < 0;
+
+      // Make positve.
+      num.setValue(Math.abs(num.getValue()));
+
+      i = new SetSparc();
+      i.addOp(num);
+      i.addDest(this.getDestinations().get(0));
+      instructions.add(i);
+
+      if (isNegative) {
+         i = new SubSparc();
+         i.addSource(new Register("g0")); // g0 is always 0.
+         i.addSource(this.getDestinations().get(0));
+         i.addDest(this.getDestinations().get(0));
+         instructions.add(i);
+      }
+
+      return instructions;
    }
 
    public String toString() { return this.toILOC(); }
