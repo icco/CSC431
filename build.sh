@@ -4,6 +4,8 @@ ECC="gcc -mcpu=v9"
 comp="./ecc"
 passed=1
 
+#ulimit -s unlimited 
+
 if [ "$1" != "-q" ]; then
    echo " --- Select a test case to run."
 fi
