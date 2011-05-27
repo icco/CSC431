@@ -1,7 +1,7 @@
 #!/bin/bash
 
-ECC="gcc -mcpu=v9"
-comp="./ecc"
+ECC="gcc -g -mcpu=v9"
+comp="./ecc -i"
 passed=1
 
 ulimit -s unlimited 

@@ -88,7 +88,7 @@ public class RegisterAllocator {
          srcs = new ArrayList<Register>(instr.getSources());
          dests = new ArrayList<Register>(instr.getDestinations());
 
-         // Edge cases
+         // Edge cases and psudeo sources/targets.
          if (instr.isCall()) {
             srcs.addAll(SparcRegisters.outputs);
             dests.addAll(SparcRegisters.globals);
@@ -103,6 +103,13 @@ public class RegisterAllocator {
          if (instr instanceof StoreglobalInstruction ||
              instr instanceof LoadglobalInstruction) {
             dests.add(new Register("%o1"));
+         }
+
+         if (instr instanceof LoadinargumentInstruction) {
+            Sparc movArg = instr.toSparc().get(0);
+            Register arg = (Register) movArg.getOperands().get(0);
+
+            srcs.add(arg);
          }
 
          for (Register dest : dests) {
