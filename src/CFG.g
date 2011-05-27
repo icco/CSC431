@@ -409,9 +409,9 @@ loop[Node current] returns [Node exit]
 
       addBranchInstructions($ex1.r, loopNode.getLabel(), $exit.getLabel(), current);
 
-   } block[loopNode] ex2=expression[loopNode]) {
+   } loopExit=block[loopNode] ex2=expression[loopExit]) {
 
-      addBranchInstructions($ex2.r, loopNode.getLabel(), $exit.getLabel(), loopNode);
+      addBranchInstructions($ex2.r, loopNode.getLabel(), $exit.getLabel(), $loopExit.exit);
 
    }
    ;
