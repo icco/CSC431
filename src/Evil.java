@@ -115,6 +115,8 @@ public class Evil {
    private static boolean debugFlag = false;
    private static boolean dumpFlag = false;
    private static boolean typeFlag = true;
+   private static boolean opt1Flag = false;
+   private static boolean opt2Flag = false;
 
    /**
     * Defines possible options and sets them up.
@@ -132,6 +134,8 @@ public class Evil {
       options.addOption("?", "help", false, "Print this help message." );
       options.addOption("i", "dumpIL", false, "Dump ILOC to a file." );
       options.addOption("t", "notype", false, "Don't Typecheck." );
+      options.addOption("o1", "opt1", false, "Local Value Numbering Optimization." );
+      options.addOption("o2", "opt2", false, "Useless Code Removal Optimization." );
 
       try {
          // parse the command line arguments
@@ -151,6 +155,14 @@ public class Evil {
 
          if (cmd.hasOption("notype")) {
             typeFlag = false;
+         }
+
+         if (cmd.hasOption("opt1")) {
+            opt1Flag = true;
+         }
+
+         if (cmd.hasOption("opt2")) {
+            opt2Flag = true;
          }
 
          String[] fileArgs = cmd.getArgs();
