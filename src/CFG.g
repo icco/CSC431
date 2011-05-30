@@ -459,6 +459,7 @@ invocation[Node current] returns [Register r]
       $r = new Register();
       $r.setType(fun.getReturn());
 
+      //System.out.println("Call with " +$arguments.args.size());
       current.addCall($arguments.args.size());
 
       // Put arguemnts into out registers.

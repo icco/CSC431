@@ -54,23 +54,19 @@ public class Node implements Iterable<Node> {
    }
 
    public Integer getMaxCallArguments() {
-      Integer ret = 6;
+      Integer ret = 0;
 
       if (this.isFunction()) {
-         ret = Math.max(6, this.callArg);
+         for (Node n : this.children) {
+            ret = Math.max(n.callArg, this.callArg);
+         }
       }
 
-      return ret;
+      return Math.max(6, ret);
    }
 
    public void addCall(Integer argCount) {
-      if (this.isFunction()) {
-         this.callArg = Math.max(argCount, this.callArg);
-      } else {
-         for (Node n : this.parents) {
-            n.addCall(argCount);
-         }
-      }
+      this.callArg = Math.max(argCount, this.callArg);
    }
 
    public Integer getLocalCount() {
