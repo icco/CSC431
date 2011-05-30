@@ -11,6 +11,7 @@ public class Node implements Iterable<Node> {
    protected ArrayList<Node> children;
    private String label;
    protected Boolean function = false;
+   public Integer callArg = 6;
 
    private Set<Register> gen;
    private Set<Register> kill;
@@ -50,6 +51,30 @@ public class Node implements Iterable<Node> {
 
    public Boolean isFunction() {
       return this.function;
+   }
+
+   public Integer getMaxCallArguments() {
+      Integer ret = 6;
+
+      if (this.isFunction()) {
+         ret = Math.max(6, this.callArg);
+      }
+
+      return ret;
+   }
+
+   public void addCall(Integer argCount) {
+      if (this.isFunction()) {
+         this.callArg = Math.max(argCount, this.callArg);
+      } else {
+         for (Node n : this.parents) {
+            n.addCall(argCount);
+         }
+      }
+   }
+
+   public Integer getLocalCount() {
+      return 26;
    }
 
    /**
@@ -160,10 +185,13 @@ public class Node implements Iterable<Node> {
    // Returns amount of space based on number of calls.
    // TODO: Figure out how to make correct
    public int getStackSize() {
-      // max of number of arguments passed on the stack for all calls in this
-      // function.
+      int ret = (96 + (this.getLocalCount() * 4) + (this.getMaxCallArguments() * 4));
 
-      return -144;
+      while ((ret % 8) != 0) {
+         ret += 1;
+      }
+
+      return (-1) * ret;
    }
 
    public static String nextLabel() {

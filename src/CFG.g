@@ -459,6 +459,8 @@ invocation[Node current] returns [Register r]
       $r = new Register();
       $r.setType(fun.getReturn());
 
+      current.addCall($arguments.args.size());
+
       // Put arguemnts into out registers.
       for (Register arg : $arguments.args) {
          store = new StoreoutargumentInstruction();
