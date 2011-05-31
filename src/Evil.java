@@ -57,7 +57,6 @@ public class Evil {
          cfg.symTable = tparser.symTable;
 
          cfg.build();
-         String iloc = cfg.dump();
 
          cfg.nodeTable.computeLiveSets();
          SparcRegisters.setupRegisters();
@@ -66,6 +65,8 @@ public class Evil {
             DeadCodeRemoval.deleteUselessInstructions(cfg.nodeTable);
             cfg.nodeTable.computeLiveSets();
          }
+
+         String iloc = cfg.dump();
 
          RegisterAllocator allocator = new RegisterAllocator();
          allocator.buildGraph(cfg.nodeTable);
