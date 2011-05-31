@@ -62,14 +62,17 @@ public class Evil {
          cfg.nodeTable.computeLiveSets();
          SparcRegisters.setupRegisters();
 
+         if (opt2Flag) {
+            DeadCodeRemoval.deleteUselessInstructions(cfg.nodeTable);
+            cfg.nodeTable.computeLiveSets();
+         }
+
          RegisterAllocator allocator = new RegisterAllocator();
          allocator.buildGraph(cfg.nodeTable);
          allocator.colorGraph();
          allocator.transformCode(cfg.nodeTable);
 
          if (dumpFlag) {
-            //System.out.println(iloc);
-
             try {
                String outFile = new String(inputFile);
                outFile = outFile.replaceFirst(".ev", ".il");
