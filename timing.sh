@@ -14,9 +14,7 @@ function time_test() {
    echo -e "\n${dir}: "
    FILES=`ls benchmarks/${dir}/${dir}.ev`
    for ev in $FILES; do
-      if [ ! -a $ev ]; then
-         $comp $ev # compiles the .s
-      fi
+      $comp $ev # compiles the .s (which we have to redo since we now optimize)
 
       if [[ `hostname` = sparc* ]]; then
          s=`echo $ev | sed 's/\.ev/\.s/'`
