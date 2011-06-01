@@ -2,8 +2,6 @@ import java.util.*;
 
 public class DeadCodeRemoval {
    public static void deleteUselessInstructions(GraphTable gt) {
-      System.out.println("Removing dead code.");
-
       for (Node n : gt.getAllNodes()) {
          Set<Register> liveset = new HashSet<Register>(n.getLiveSet());
 
