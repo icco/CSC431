@@ -13,6 +13,9 @@ So, we wrote a shell script wrapper for our compiler, so you can run it just fin
      -a,--displayAST   Print out a dotty graph of the AST.
      -d,--debug        Print debug messages while running.
      -i,--dumpIL       Dump ILOC to a file.
+     -o1,--opt1        Local Value Numbering Optimization.
+     -o2,--opt2        Useless Code Removal Optimization.
+     -q,--quiet        Run with no output.
      -t,--notype       Don't Typecheck.
 
 ## Notes
@@ -24,6 +27,10 @@ For Milestone 2:
 For Milestone 3:
 
     ./ecc benchmarks/mile3/mile3.ev && gcc -mcpu=v9 benchmarks/mile3/mile3.s && ./a.out; echo $?
+
+For Milestone 4:
+
+    ./timing.sh
 
 ## License
 
