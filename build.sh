@@ -2,14 +2,13 @@
 
 ECC="gcc -g -mcpu=v9"
 comp="./ecc -i"
-passed=1
 
-ulimit -s unlimited 
+ulimit -s unlimited
 
 # Actually does our work.
 function build() {
+   passed=1
    dir=$1
-
    echo -e "\n${dir}: "
    FILES=`ls benchmarks/${dir}/${dir}.ev`
    for ev in $FILES; do
