@@ -8,23 +8,27 @@ public class DeadCodeRemoval {
          Set<Register> liveset = new HashSet<Register>(n.getLiveSet());
 
          for (int i = n.instructions.size() - 1; i >= 0; i--) {
+            //System.out.println(n.instructions.get(i) + " \t\t\t - destinations: " + n.instructions.get(i).getDestinations() + " Liveset: " + liveset);
 
-            // Check if destination in liveset, if not remove
             for (Register d : n.instructions.get(i).getDestinations()) {
-               if (!liveset.contains(d)) {
 
-                  // We can only look at: add, sub, mult, div, loads.
-                  if (DeadCodeRemoval.isOptimizable(n.instructions.get(i))) {
-                     System.out.println("Removing: " + n.instructions.get(i));
+               // We can only look at: add, sub, mult, div, loads.
+               if (DeadCodeRemoval.isOptimizable(n.instructions.get(i))) {
+
+                  // Check if destination in liveset, if not remove
+                  if (!liveset.contains(d)) {
+                     //System.out.println("Removing: " + n.instructions.get(i));
                      n.instructions.remove(i);
+                  } else {
+                     //System.out.println(d + " is in " + liveset);
                   }
+               } else {
+                  //System.out.println("Not valid: " + n.instructions.get(i));
                }
             }
 
             // Add all sources to live set.
-            for (Instruction ist : n.instructions) {
-               liveset.addAll(ist.getSources());
-            }
+            liveset.addAll(n.instructions.get(i).getSources());
          }
       }
    }
@@ -33,14 +37,17 @@ public class DeadCodeRemoval {
       return (
             instr instanceof AddInstruction
          || instr instanceof AddiInstruction
-         || instr instanceof LoadiInstruction
-         || instr instanceof DivInstruction
-         || instr instanceof MultInstruction
-         || instr instanceof SubInstruction
          || instr instanceof AndInstruction
-         || instr instanceof OrInstruction
-         || instr instanceof XoriInstruction
+         || instr instanceof DivInstruction
+         || instr instanceof LoadaiInstruction
+         || instr instanceof LoadglobalInstruction
          || instr instanceof LoadiInstruction
+         || instr instanceof LoadinargumentInstruction
+         || instr instanceof MovInstruction
+         || instr instanceof MultInstruction
+         || instr instanceof OrInstruction
+         || instr instanceof SubInstruction
+         || instr instanceof XoriInstruction
          );
    }
 }
