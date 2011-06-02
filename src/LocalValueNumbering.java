@@ -21,8 +21,8 @@ public class LocalValueNumbering {
             if (!(instr instanceof MovInstruction)) {
                exp = getValueOf(instr);
                if (numberings.get(exp) != null) {
-                  System.out.println("found optimization!");
-                  System.out.println(numberings.get(exp) + " instead of " + exp);
+                  //System.out.println("found optimization!");
+                  //System.out.println(numberings.get(exp) + " instead of " + exp);
                   valuesToSave.add(numberings.get(exp));
 
                   temp = new MovInstruction();
