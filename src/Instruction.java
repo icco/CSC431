@@ -200,7 +200,7 @@ public abstract class Instruction {
             if (real != null) {
                operands.set(ndx, real);
             } else {
-               Evil.warning("No mapping for register " + virtual + ".");
+               //Evil.warning("No mapping for register " + virtual + ".");
             }
          }
 
@@ -215,7 +215,7 @@ public abstract class Instruction {
          if (real != null) {
             dests.set(ndx, real);
          } else {
-            Evil.warning("No mapping for register " + virtual + ".");
+            //Evil.warning("No mapping for register " + virtual + ".");
          }
       }
 
@@ -227,7 +227,7 @@ public abstract class Instruction {
          if (real != null) {
             srcs.set(ndx, real);
          } else {
-            Evil.warning("No mapping for register " + virtual + ".");
+            //Evil.warning("No mapping for register " + virtual + ".");
          }
       }
    }

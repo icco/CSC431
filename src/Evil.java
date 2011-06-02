@@ -58,6 +58,15 @@ public class Evil {
 
          cfg.build();
 
+
+         if (opt1Flag) {
+            LocalValueNumbering opt = new LocalValueNumbering();
+
+            for (Node n : cfg.nodeTable.getAllNodes())  {
+               opt.optimize(n);
+            }
+         }
+
          cfg.nodeTable.computeLiveSets();
          SparcRegisters.setupRegisters();
 
