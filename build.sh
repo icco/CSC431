@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ECC="gcc -g -mcpu=v9"
-comp="./ecc -i"
+comp="./ecc -i -q"
 
 ulimit -s unlimited
 
@@ -21,7 +21,7 @@ function build() {
          # I wish we had timeout....
          ./a.out < benchmarks/$dir/input > benchmarks/$dir/output.ev
 
-         echo " -- returns: $?"
+         #echo " -- returns: $?"
          diff -wbu benchmarks/$dir/output benchmarks/$dir/output.ev
 
          passed=$?
