@@ -20,12 +20,12 @@ function time_test() {
          s=`echo $ev | sed 's/\.ev/\.s/'`
          $ECC $s
          echo -n "EV : "
-         /usr/bin/env time  -f "%e" ./a.out < benchmarks/$dir/input > /dev/null
+         /usr/bin/env time --quiet -f "%e" ./a.out < benchmarks/$dir/input > /dev/null
 
          s=`echo $ev | sed 's/\.ev/\.c/'`
          $ECC $s
          echo -n "C  : "
-         /usr/bin/env time -f "%e" ./a.out < benchmarks/$dir/input > /dev/null
+         /usr/bin/env time --quiet -f "%e" ./a.out < benchmarks/$dir/input > /dev/null
 
          passed=$?
       else
