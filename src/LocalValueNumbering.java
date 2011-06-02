@@ -3,11 +3,19 @@ import java.util.*;
 public class LocalValueNumbering {
    private Map<String, String> numberings;
    private Map<Instruction, String> computed;
+   private Map<String, Instruction> computed2;
    private Integer nextNumber = 1;
 
    public void optimize(Node block) {
+      while (number(block)) { 
+         System.out.println("number again");
+      } 
+   }
+
+   public boolean number(Node block) {
       numberings = new HashMap<String, String>();
       computed = new HashMap<Instruction, String>();
+      computed2 = new HashMap<String, Instruction>();
       String exp, target, dest, val;
       ArrayList<Instruction> instructions = block.getInstr();
       Instruction instr, temp;
@@ -35,6 +43,7 @@ public class LocalValueNumbering {
                   target = getTargetOf(instr);
                   numberings.put(exp, target);
                   computed.put(instr, target);
+                  computed2.put(target, instr);
                }
             }
 
@@ -42,7 +51,6 @@ public class LocalValueNumbering {
             dest = instr.getDestinations().get(0).toString();
             val = numberings.get(getValueOf(instr));
             numberings.put(dest, val);
-
          }
       }
 
@@ -62,6 +70,9 @@ public class LocalValueNumbering {
             }
          }
       }
+
+      // Return true if optimization happened.
+      return !valuesToSave.isEmpty();
    }
 
    /** For debugging purposes only. */
@@ -92,7 +103,11 @@ public class LocalValueNumbering {
       }
 
       ret = getOpSymbol(instr);
-      Collections.sort(srcValues);
+
+      if (isAssociative(instr)) {
+         Collections.sort(srcValues);
+      }
+
       for (int ndx = 0; ndx < srcValues.size(); ndx++) {
          ret += srcValues.get(ndx);
 
@@ -128,6 +143,15 @@ public class LocalValueNumbering {
        || instr instanceof OrInstruction
        || instr instanceof XoriInstruction
        || instr instanceof MovInstruction);
+   }
+
+   private boolean isAssociative(Instruction instr) {
+      return (instr instanceof AddInstruction
+       || instr instanceof AddiInstruction
+       || instr instanceof MultInstruction
+       || instr instanceof AndInstruction
+       || instr instanceof OrInstruction
+       || instr instanceof XoriInstruction);
    }
 
    /**
