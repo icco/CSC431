@@ -6,7 +6,11 @@ int global2;
 # adds two numbers
 fun sum (int a, int b) int
 {
-    return (a + b);
+   int c, d, e, f;
+   c = 10;
+   d = 12;
+
+   return (a + b);
 }
 
 # main function

@@ -71,6 +71,9 @@ public class Evil {
          SparcRegisters.setupRegisters();
 
          if (opt2Flag) {
+            if (!quietFlag)
+               System.out.println("Removing dead code.");
+
             DeadCodeRemoval.deleteUselessInstructions(cfg.nodeTable);
             cfg.nodeTable.computeLiveSets();
          }
@@ -91,7 +94,8 @@ public class Evil {
                out.write(iloc);
                out.close();
 
-               System.out.println("ILOC written to: " + outFile);
+               if (!quietFlag)
+                  System.out.println("ILOC written to: " + outFile);
             } catch (Exception e) {
                System.err.println("File Write Error: " + e.getMessage());
             }
@@ -113,7 +117,8 @@ public class Evil {
 
             out.close();
 
-            System.out.println("Sparc written to: " + outFile);
+            if (!quietFlag)
+               System.out.println("Sparc written to: " + outFile);
          } catch (Exception e) {
             System.err.println("File Write Error: " + e.getMessage());
          }
@@ -130,6 +135,7 @@ public class Evil {
    private static boolean typeFlag = true;
    private static boolean opt1Flag = false;
    private static boolean opt2Flag = false;
+   private static boolean quietFlag = false;
 
    /**
     * Defines possible options and sets them up.
@@ -149,6 +155,7 @@ public class Evil {
       options.addOption("t", "notype", false, "Don't Typecheck." );
       options.addOption("o1", "opt1", false, "Local Value Numbering Optimization." );
       options.addOption("o2", "opt2", false, "Useless Code Removal Optimization." );
+      options.addOption("q", "quiet", false, "Run with no output." );
 
       try {
          // parse the command line arguments
@@ -176,6 +183,10 @@ public class Evil {
 
          if (cmd.hasOption("opt2")) {
             opt2Flag = true;
+         }
+
+         if (cmd.hasOption("quiet")) {
+            quietFlag = true;
          }
 
          String[] fileArgs = cmd.getArgs();
