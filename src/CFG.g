@@ -395,24 +395,26 @@ loop[Node current] returns [Node exit]
    $exit = new Node();
    $exit.setLabel(loopNode.getLabel() + "_done");
 
-   // Link the nodes.
-   $exit.addParent(current);
-   $exit.addParent(loopNode);
-
-   current.addChild(loopNode);
-   current.addChild($exit);
-
-   loopNode.addChild(loopNode); // Is this right?
-   loopNode.addChild($exit);
 }
    : ^(WHILE ex1=expression[current] {
 
       addBranchInstructions($ex1.r, loopNode.getLabel(), $exit.getLabel(), current);
 
+      current.addChild(loopNode);
+      current.addChild($exit);
+
+      loopNode.addParent(current); 
+      $exit.addParent(current);
+
    } loopExit=block[loopNode] ex2=expression[loopExit]) {
 
       addBranchInstructions($ex2.r, loopNode.getLabel(), $exit.getLabel(), $loopExit.exit);
 
+      $loopExit.exit.addChild(loopNode);
+      $loopExit.exit.addChild($exit);
+
+      loopNode.addParent($loopExit.exit); 
+      $exit.addParent($loopExit.exit);
    }
    ;
 
