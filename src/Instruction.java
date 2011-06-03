@@ -177,7 +177,9 @@ public abstract class Instruction {
        || this instanceof PrintInstruction
        || this instanceof PrintlnInstruction
        || this instanceof ReadInstruction
-       || this instanceof NewInstruction;
+       || this instanceof NewInstruction
+       || this instanceof MultInstruction
+       || this instanceof DivInstruction;
    }
 
    public void transformRegisters(Map<Register, Register> allocations) {

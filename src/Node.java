@@ -42,6 +42,15 @@ public class Node implements Iterable<Node> {
 
       createLive();
 
+      /*
+      System.out.print(getLabel() + "-> ");
+      for (Node n : this.children) {
+         System.out.print(n.getLabel() + ", ");
+      }
+      System.out.println();
+      System.out.println(live);
+      */
+
       return oldLiveSet.equals(live);
    }
 
