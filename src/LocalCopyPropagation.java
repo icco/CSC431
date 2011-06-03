@@ -37,6 +37,7 @@ public class LocalCopyPropagation {
                for (Register old : validCopies.keySet()) {
                   betterSrc = validCopies.get(old);
                   if (betterSrc.equals(dest)) {
+                     notValidAnymore.add(old);
                   }
                }
 
