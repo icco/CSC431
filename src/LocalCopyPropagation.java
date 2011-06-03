@@ -19,6 +19,8 @@ public class LocalCopyPropagation {
                betterSrc = validCopies.get(oldSource);
 
                if (betterSrc != null) {
+                  //System.out.println("found better source in " + instr);
+                  //System.out.println("use " + betterSrc + " instead of " + oldSource);
                   instr.transformSources(oldSource, betterSrc);
                }
             }
@@ -27,9 +29,21 @@ public class LocalCopyPropagation {
          if (!instr.getDestinations().isEmpty()) {
             dest = instr.getDestinations().get(0);
 
-            // Don't need to kill on useless moves.
+            // Don't need to kill on useless moves. (mov %r1 %r1)
             if (!(dest.equals(src) && instr instanceof MovInstruction)) {
-               validCopies.remove(dest);
+
+               Set<Register> notValidAnymore = new HashSet<Register>();
+
+               for (Register old : validCopies.keySet()) {
+                  betterSrc = validCopies.get(old);
+                  if (betterSrc.equals(dest)) {
+                  }
+               }
+
+               // Remove mappings now just to not modify set while iterating.
+               for (Register old : notValidAnymore) {
+                  validCopies.remove(old);
+               }
             }
          }
 
