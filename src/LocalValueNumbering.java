@@ -7,9 +7,7 @@ public class LocalValueNumbering {
    private Integer nextNumber = 1;
 
    public void optimize(Node block) {
-      while (number(block)) { 
-         System.out.println("number again");
-      } 
+      while (number(block)) { } 
    }
 
    public boolean number(Node block) {
@@ -25,12 +23,10 @@ public class LocalValueNumbering {
       for (int ndx = 0; ndx < instructions.size(); ndx++) {
          instr = instructions.get(ndx);
 
-         if (isOptimizable(instr)) { // TODO clean this up.
+         if (isOptimizable(instr)) { // TODO clean this up maybe.
             if (!(instr instanceof MovInstruction)) {
                exp = getValueOf(instr);
                if (numberings.get(exp) != null) {
-                  //System.out.println("found optimization!");
-                  //System.out.println(numberings.get(exp) + " instead of " + exp);
                   valuesToSave.add(numberings.get(exp));
 
                   temp = new MovInstruction();

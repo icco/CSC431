@@ -110,9 +110,6 @@ public abstract class Instruction {
     * Add a register to the source and operand list.
     */
    public void addSource(Register in) {
-      if (in instanceof ConditionCodeRegister) {
-         System.out.println(this + " has it!");
-      }
       this.srcs.add(in);
       this.operands.add(in);
    }
@@ -121,9 +118,6 @@ public abstract class Instruction {
     * Add a register the the destination and operand list.
     */
    public void addDest(Register in) {
-      if (in instanceof ConditionCodeRegister) {
-         System.out.println(this + " has it!");
-      }
       this.dests.add(in);
       this.operands.add(in);
    }
@@ -228,6 +222,38 @@ public abstract class Instruction {
             srcs.set(ndx, real);
          } else {
             //Evil.warning("No mapping for register " + virtual + ".");
+         }
+      }
+   }
+
+   /** 
+    * In copy propagation we never want to transform a destination.
+    * It was easier to write this function than use transformRegisters.
+    */
+   public void transformSources(Register src, Register betterSrc) {
+      Map<Register, Register> temp = new HashMap<Register, Register>();
+      int destSize = getDestinations().size();
+      Register oldSource;
+
+      // Transform sources list.
+      for (int ndx = 0; ndx < srcs.size(); ndx++) {
+         oldSource = srcs.get(ndx);
+
+         if (oldSource.equals(src)) {
+            srcs.set(ndx, betterSrc);
+         } 
+      }
+
+      // Transfor operands list but don't touch the destinations.
+      for (int ndx = 0; ndx < this.operands.size() - destSize; ndx++) {
+         Operand op = this.operands.get(ndx);
+
+         if (op instanceof Register && !(op instanceof ConditionCodeRegister)) {
+            oldSource = (Register) op;
+
+            if (oldSource.equals(src)) {
+               operands.set(ndx, betterSrc);
+            }
          }
       }
    }
