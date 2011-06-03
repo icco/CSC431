@@ -60,10 +60,15 @@ public class Evil {
 
 
          if (opt1Flag) {
-            LocalValueNumbering opt = new LocalValueNumbering();
+            if (!quietFlag)
+               System.out.println("Local value numbering and copy propagation.");
+
+            LocalValueNumbering lvn = new LocalValueNumbering();
+            LocalCopyPropagation lcp = new LocalCopyPropagation();
 
             for (Node n : cfg.nodeTable.getAllNodes())  {
-               opt.optimize(n);
+               lvn.optimize(n);
+               lcp.optimize(n);
             }
          }
 

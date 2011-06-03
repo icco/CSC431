@@ -56,18 +56,19 @@ public class RegisterAllocator {
          addNode(block);
       }
 
-      /* DEBUG code but I might need to debug again later.
-       * TODO: erase all this.
+      /*
       for (Register r : graph.keySet()) {
-         if (r.toString().charAt(0) != '%') {
-            System.out.print(r + ":  ");
+         System.out.print(r + ":  ");
 
+         if (!graph.get(r).isReal()) {
             for (ColorNode n : graph.get(r).getEdges()) {
-               System.out.print(n.getVertex() + ", ");
+               if (!n.isReal()) {
+                  System.out.print(n.getVertex() + ", ");
+               }
             }
-
-            System.out.println();
          }
+
+         System.out.println();
       }
       */
    }
@@ -206,6 +207,16 @@ public class RegisterAllocator {
             }
          }
       }
+
+      /*
+      for (Integer c : colorings.keySet()) {
+         System.out.print(c + ": ");
+         for (Register r : colorings.get(c)) {
+            System.out.print(r + ", ");
+         }
+         System.out.println();
+      }
+      */
    }
 
    /** Get the ColorNode with the best hueristic for reducing spills. */
