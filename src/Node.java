@@ -178,9 +178,29 @@ public class Node implements Iterable<Node> {
          }
 
          for (Instruction i : this.getInstr()) {
-            for (Sparc s : i.toSparc()) {
-               ret += "\t" + s + "\n";
+
+            // Transform here
+            for (Register r : s.getSources()) {
+               // if r in spills
+               // r = new register w/ offset
             }
+
+            for (Register r : s.getDestinations()) {
+               // if r in spills
+               // r = new register w/ offset
+               // create store but don't add
+            }
+
+            //check for spill registers
+            // insert loads
+            for (Sparc s : i.toSparc()) {
+
+
+
+               ret += "\t" + s + "\n";
+
+            }
+            // Print out stores
          }
       }
 
