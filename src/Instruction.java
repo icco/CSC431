@@ -182,7 +182,9 @@ public abstract class Instruction {
        || this instanceof DivInstruction;
    }
 
-   public void transformRegisters(Map<Register, Register> allocations) {
+   public void transformRegisters(
+    Map<Register, Register> allocations, Node func) {
+
       Register virtual, real;
       int ndx = 0;
 
@@ -196,7 +198,8 @@ public abstract class Instruction {
             if (real != null) {
                operands.set(ndx, real);
             } else {
-               //Evil.warning("No mapping for register " + virtual + ".");
+               func.addSpill(virtual);
+               Evil.warning(virtual + " marked as spilled");
             }
          }
 
@@ -211,7 +214,8 @@ public abstract class Instruction {
          if (real != null) {
             dests.set(ndx, real);
          } else {
-            //Evil.warning("No mapping for register " + virtual + ".");
+            Evil.warning(virtual + " marked as spilled");
+            func.addSpill(virtual);
          }
       }
 
@@ -223,7 +227,8 @@ public abstract class Instruction {
          if (real != null) {
             srcs.set(ndx, real);
          } else {
-            //Evil.warning("No mapping for register " + virtual + ".");
+            Evil.warning(virtual + " marked as spilled");
+            func.addSpill(virtual);
          }
       }
    }

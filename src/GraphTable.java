@@ -5,6 +5,7 @@ import java.util.*;
  */
 public class GraphTable extends HashMap<String, Node> {
    public List<Node> allNodes = null;
+   public HashMap<String, List<Node>> funcNodes = null;
 
    public String toILOC() {
       String ret = "";
@@ -29,12 +30,20 @@ public class GraphTable extends HashMap<String, Node> {
       return allNodes;
    }
 
+   public List<Node> getFuncNodes(String funcName) {
+      return this.funcNodes.get(funcName);
+   }
+
    public void topoSort() {
       List<Node> nodes; 
 
       allNodes = new LinkedList<Node>();
+      funcNodes = new HashMap<String, List<Node>>();
+
       for (String s : this.keySet()) {
          nodes = TopoSort.sort(this.get(s));
+
+         funcNodes.put(s, nodes);
          allNodes.addAll(nodes);
       }
    }

@@ -160,9 +160,15 @@ public class RegisterAllocator {
     * Use the mappings to change the instructions.
     */
    public void transformCode(GraphTable graph) {
-      for (Node block : graph.allNodes) {
-         for (Instruction instr : block.getInstr()) {
-            instr.transformRegisters(allocations);
+      Node block, funcNode;
+
+      for (String blockName : graph.keySet()) {
+         funcNode = graph.get(blockName);
+
+         for (Node child : graph.getFuncNodes(blockName)) {
+            for (Instruction instr : child.getInstr()) {
+               instr.transformRegisters(allocations, funcNode);
+            }
          }
       }
    }

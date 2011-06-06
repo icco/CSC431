@@ -12,6 +12,7 @@ public class Node implements Iterable<Node> {
    private String label;
    protected Boolean function = false;
    public Integer callArg = 6;
+   private HashMap<Register, Integer> spills = new HashMap<Register, Integer>();
 
    private Set<Register> gen;
    private Set<Register> kill;
@@ -179,6 +180,17 @@ public class Node implements Iterable<Node> {
 
          for (Instruction i : this.getInstr()) {
             for (Sparc s : i.toSparc()) {
+               for (Register r : s.getSources()) {
+                  if 
+
+
+               }
+
+               for (Register r : s.getDestinations()) {
+
+
+               }
+
                ret += "\t" + s + "\n";
             }
          }
@@ -209,5 +221,19 @@ public class Node implements Iterable<Node> {
 
    public Iterator<Node> iterator() {
       return children.iterator();
+   }
+
+   public int getNumberOfSpills() {
+      return this.spills.size();
+   }
+
+   public int getSpillOffset(Register r) {
+      return spills.get(r) * 4;
+   }
+
+   public void addSpill(Register r) {
+      if (spills.get(r) == null) {
+         spills.put(r, spills.size());
+      }
    }
 }
