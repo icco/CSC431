@@ -228,7 +228,7 @@ public abstract class Instruction {
       }
    }
 
-   /** 
+   /**
     * In copy propagation we never want to transform a destination.
     * It was easier to write this function than use transformRegisters.
     */
@@ -243,7 +243,7 @@ public abstract class Instruction {
 
          if (oldSource.equals(src)) {
             srcs.set(ndx, betterSrc);
-         } 
+         }
       }
 
       // Transfor operands list but don't touch the destinations.
