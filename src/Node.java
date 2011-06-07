@@ -166,6 +166,7 @@ public class Node implements Iterable<Node> {
 
    public String toSparc() {
       String ret = "";
+      Register spillReg;
 
       if (this.getInstr().size() > 0) {
          ret = this.getLabel() + ":\n";
@@ -179,17 +180,46 @@ public class Node implements Iterable<Node> {
          }
 
          for (Instruction i : this.getInstr()) {
+            // Transform spills here
+            boolean firstSource = true;
+            for (int sourceNdx = 0; sourceNdx < i.getSources().size(); sourceNdx++) {
+               Register r = i.getSources().get(sourceNdx);
 
-            // Transform here
-            for (Register r : s.getSources()) {
-               // if r in spills
-               // r = new register w/ offset
+               if (isSpilled(r)) {
+                  if (sourceNdx == 0) {
+                     spillReg = new Register("%g1");
+                  } else {
+                     spillReg = new Register("%g2");
+                  }
+
+                  i.transformSources(r, spillReg);
+
+                  // Add load instruction.
+                  Sparc s = new LdswSparc();
+                  Register stack = new Register("%sp");
+                  stack.addOffset(getSpillOffset(r));
+
+                  s.addSource(stack);
+                  s.addDest(spillReg);
+                  ret += "\t" + s + "\n";
+               }
             }
 
-            for (Register r : s.getDestinations()) {
-               // if r in spills
-               // r = new register w/ offset
-               // create store but don't add
+            String spillStores = "";
+            for (Register r : i.getDestinations()) {
+               if (isSpilled(r)) {
+                  spillReg = new Register("%g3");
+
+                  i.transformDests(r, spillReg);
+
+                  Sparc s = new StSparc();
+                  Register stack = new Register("%sp");
+                  stack.addOffset(getSpillOffset(r));
+
+                  s.addSource(spillReg);
+                  s.addDest(stack);
+                  spillStores += "\t" + s + "\n";
+               }
             }
 
             //check for spill registers
@@ -199,6 +229,7 @@ public class Node implements Iterable<Node> {
 
             }
             // Print out stores
+            ret += spillStores;
          }
       }
 
@@ -206,9 +237,12 @@ public class Node implements Iterable<Node> {
    }
 
    // Returns amount of space based on number of calls.
-   // TODO: Figure out how to make correct
    public int getStackSize() {
-      int ret = (96 + (this.getLocalCount() * 4) + (this.getMaxCallArguments() * 4));
+      int ret = 96;
+
+      ret += (this.getLocalCount() * 4);
+      ret += this.getMaxCallArguments() * 4;
+      ret += getNumberOfSpills() * 4;
 
       while ((ret % 8) != 0) {
          ret += 1;
@@ -241,5 +275,9 @@ public class Node implements Iterable<Node> {
       if (spills.get(r) == null) {
          spills.put(r, spills.size());
       }
+   }
+
+   public boolean isSpilled(Register r) {
+      return this.spills.get(r) != null;
    }
 }

@@ -15,9 +15,10 @@ public class SparcRegisters {
       all = new ArrayList<Register>();
 
       // %g0 is always 0, can't write to it.
-      globals.add(new Register("%g1"));
-      globals.add(new Register("%g2"));
-      globals.add(new Register("%g3"));
+      // 1 2 3 used for spills only.
+      //globals.add(new Register("%g1"));
+      //globals.add(new Register("%g2"));
+      //globals.add(new Register("%g3"));
       globals.add(new Register("%g4"));
       globals.add(new Register("%g5"));
       // %g6 and %g7 are used by the system so don't use them.

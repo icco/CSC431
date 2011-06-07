@@ -199,7 +199,6 @@ public abstract class Instruction {
                operands.set(ndx, real);
             } else {
                func.addSpill(virtual);
-               Evil.warning(virtual + " marked as spilled");
             }
          }
 
@@ -214,7 +213,6 @@ public abstract class Instruction {
          if (real != null) {
             dests.set(ndx, real);
          } else {
-            Evil.warning(virtual + " marked as spilled");
             func.addSpill(virtual);
          }
       }
@@ -227,7 +225,6 @@ public abstract class Instruction {
          if (real != null) {
             srcs.set(ndx, real);
          } else {
-            Evil.warning(virtual + " marked as spilled");
             func.addSpill(virtual);
          }
       }
@@ -263,5 +260,11 @@ public abstract class Instruction {
             }
          }
       }
+   }
+
+   // HACK
+   public void transformDests(Register src, Register betterSrc) {
+      dests.set(0, betterSrc);
+      operands.set(operands.size() - 1, betterSrc);
    }
 }
