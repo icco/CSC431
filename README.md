@@ -34,6 +34,10 @@ For Milestone 4:
 
     ./timing.sh
 
+Run all timings:
+
+    make; for t in `ls benchmarks`; do echo $t | ./timing.sh -q; done
+
 ## License
 
 Copyright (c) 2011 Ben Sweedler and Nathaniel Welch

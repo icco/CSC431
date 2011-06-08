@@ -3,7 +3,10 @@
 # Tests our output time against gcc's
 
 ECC="gcc -O1 -mcpu=v9"
-comp="./ecc -o1 -o2 -i -q"
+#comp="./ecc -i -q"
+#comp="./ecc -o1 -i -q"
+comp="./ecc -o2 -i -q"
+#comp="./ecc -o1 -o2 -i -q"
 
 ulimit -s unlimited
 

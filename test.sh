@@ -31,6 +31,4 @@ if [ "$failed" != "" ]; then
 fi
 
 # uncomment for timing tests.
-#for t in $to_test; do
-#   echo $t | ./timing.sh -q
-#done
+#for t in $to_test; do echo $t | ./timing.sh -q; done
