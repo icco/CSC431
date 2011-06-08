@@ -1,0 +1,83 @@
+BenchMarkishTopics: 
+EV : 0.00
+C  : 0.00
+
+bert: 
+EV : 0.00
+C  : 0.00
+
+biggest: 
+EV : 0.00
+C  : 0.00
+
+binaryConverter: 
+EV : 15.14
+C  : 39.09
+
+creativeBenchMarkName: 
+EV : 17.32
+C  : 44.73
+
+fact_sum: 
+EV : 0.01
+C  : 0.01
+
+Fibonacci: 
+EV : 32.62
+C  : 46.14
+
+GeneralFunctAndOptimize: 
+EV : 22.69
+C  : 11.54
+
+hailstone: 
+EV : 0.00
+C  : 0.00
+
+hanoi_benchmark: 
+EV : 84.96
+C  : 109.69
+
+killerBubbles: 
+EV : 35.14
+C  : 55.42
+
+mile1: 
+EV : 0.32
+C  : 0.32
+
+mile3: 
+EV : 0.00
+C  : 0.00
+
+mixed: 
+EV : 17.59
+C  : 18.35
+
+OptimizationBenchmark: 
+EV : 0.19
+C  : 0.42
+
+primes: 
+EV : 1.96
+C  : 3.62
+
+programBreaker: 
+EV : 0.04
+C  : 0.05
+
+stats: 
+EV : 0.00
+C  : 0.00
+
+TicTac: 
+EV : 0.00
+C  : 0.00
+
+uncreativeBenchmark: 
+EV : 0.00
+C  : 0.00
+
+wasteOfCycles: 
+EV : 0.00
+C  : 0.00
