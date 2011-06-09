@@ -102,3 +102,4 @@ clean:
 	@rm -fv benchmarks/*/*.{s,il}
 	@rm -fv benchmarks/*/output.{ev,c}
 	@rm -fv a.out
+	@rm -fv tests/types/*.s
