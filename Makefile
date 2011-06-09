@@ -45,10 +45,6 @@ antlr.generated.cfg: ${SOURCEDIR}/CFG.g
 	java org.antlr.Tool ${ANTLRFLAGS} ${DEBUGFLAGS} src/CFG.g
 	@touch antlr.generated.cfg
 
-antlr.generated.walker : ${SOURCEDIR}/Walker.g
-	java org.antlr.Tool ${ANTLRFLAGS} ${DEBUGFLAGS} src/Walker.g
-	@touch antlr.generated.walker
-
 # Technically not antlr, but looks nice.
 antlr.generated.inst: generate_instructions.py
 	bash -c "rm -f src/[A-Z]*Sparc.java"
