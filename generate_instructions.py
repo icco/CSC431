@@ -44,7 +44,7 @@ instructions = [
       'sparc': [ 'sub' ],
    },
 
-# Boolean
+# Boolean (Yes? or No?)
 
    {
       'name': 'and',
