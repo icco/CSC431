@@ -38,6 +38,10 @@ Run all timings:
 
     make; for t in `ls benchmarks`; do echo $t | ./timing.sh -q; done
 
+Run all LOC comparisons:
+
+    make; for t in `ls benchmarks`; do echo $t | ./size-test.sh -q; done
+
 ## License
 
 Copyright (c) 2011 Ben Sweedler and Nathaniel Welch
