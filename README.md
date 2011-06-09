@@ -4,11 +4,13 @@ Programming Languages 2: The Compiling.
 
 This repository is the work of Ben Sweedler and Nat Welch.
 
+To run all of the benchmarks, run `make test`.
+
 ## Usage
 
-So, we wrote a shell script wrapper for our compiler, so you can run it just fine. From within this directory, run ./ecc -? for the following info:
+So, we wrote a shell script wrapper for our compiler, so you can run it just fine. From within this directory, run `./ecc -?` for the following info:
 
-    usage: ecc [options] filename.ev
+    usage: ./ecc [options] filename.ev
      -?,--help         Print this help message.
      -a,--displayAST   Print out a dotty graph of the AST.
      -d,--debug        Print debug messages while running.
@@ -31,6 +33,10 @@ For Milestone 3:
 For Milestone 4:
 
     ./timing.sh
+
+Run all timings:
+
+    make; for t in `ls benchmarks`; do echo $t | ./timing.sh -q; done
 
 ## License
 

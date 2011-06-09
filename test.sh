@@ -30,6 +30,5 @@ if [ "$failed" != "" ]; then
    echo "-- Failed these tests: ${failed}"
 fi
 
-for t in $to_test; do
-   echo $t | ./timing.sh -q
-done
+# uncomment for timing tests.
+#for t in $to_test; do echo $t | ./timing.sh -q; done

@@ -297,7 +297,7 @@ public class RegisterAllocator {
                debug += edge;
             }
 
-            Evil.warning("Spill for register: " + vertex.getVertex());
+            //Evil.warning("Spill for register: " + vertex.getVertex());
          }
       }
    }
