@@ -3,7 +3,7 @@
 # This is a test script for milestone 1.
 ERROR=""
 for file in $(ls tests/types/*.ev); do
-   ERROR1=$( { java Evil $file; } 2>&1 )
+   ERROR1=$( { ./ecc $file; } 2>&1 )
    if [ $? -eq 0 ]; then
       echo -n "."
    else

@@ -35,7 +35,7 @@ public class GraphTable extends HashMap<String, Node> {
    }
 
    public void topoSort() {
-      List<Node> nodes; 
+      List<Node> nodes;
 
       allNodes = new LinkedList<Node>();
       funcNodes = new HashMap<String, List<Node>>();
@@ -83,14 +83,14 @@ public class GraphTable extends HashMap<String, Node> {
       ListIterator<Node> itr;
       boolean liveSetsAreConstant;
       Node check;
-         
+
       do {
          // Start iterator and end of nodes.
          liveSetsAreConstant = true;
          itr = getAllNodes().listIterator(getAllNodes().size());
 
          while (itr.hasPrevious()) {
-            liveSetsAreConstant = 
+            liveSetsAreConstant =
              itr.previous().redoLiveSet() && liveSetsAreConstant;
          }
 

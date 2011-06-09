@@ -58,7 +58,6 @@ public class Evil {
 
          cfg.build();
 
-
          if (opt1Flag) {
             if (!quietFlag)
                System.out.println("Local value numbering and copy propagation.");
